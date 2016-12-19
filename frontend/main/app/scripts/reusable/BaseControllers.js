@@ -209,11 +209,15 @@ angular.module('inspiracode.baseControllers', [])
                 if (theCatalog.slice(-1) != 's') {
                     theCatalog += 's';
                 }
-                scope[theCatalog] = _baseService.catalogs[filter].getAll();
-                scope[theCatalog].unshift({
-                    id: null,
-                    Value: 'All'
-                });
+                if (_baseService.catalogs[filter]) {
+                    scope[theCatalog] = _baseService.catalogs[filter].getAll();
+                    scope[theCatalog].unshift({
+                        id: null,
+                        Value: 'All'
+                    });
+                }else{
+                    console.log('There is no [' + filter + '] catalog for service: ' + oMainConfig.entityName);
+                }
 
             });
         };
@@ -306,7 +310,7 @@ angular.module('inspiracode.baseControllers', [])
 .directive('listView', function() {
     return {
         restrict: 'E',
-        templateUrl: 'scripts/commonModules/listview.html',
+        templateUrl: 'scripts/reusable/listview.html',
         transclude: true,
         link: function postLink(scope, element, attrs) {}
     };
@@ -314,7 +318,7 @@ angular.module('inspiracode.baseControllers', [])
 
 .directive('toolbarList', function() {
     return {
-        templateUrl: 'scripts/commonModules/toolbarlist.html',
+        templateUrl: 'scripts/reusable/toolbarlist.html',
         restrict: 'E',
         transclude: {
             'filters': '?filters'
@@ -398,7 +402,7 @@ angular.module('inspiracode.baseControllers', [])
 
 .directive('toolbarFooter', function() {
     return {
-        templateUrl: 'scripts/commonModules/toolbarfooter.html',
+        templateUrl: 'scripts/reusable/toolbarfooter.html',
         restrict: 'E',
         // scope: {
         //     oEntity: '=entity',

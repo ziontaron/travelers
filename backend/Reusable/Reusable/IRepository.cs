@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Reusable
 {
@@ -9,7 +10,7 @@ namespace Reusable
         string EntityName { get; set; }
 
         IList<T> GetAll();
-        IList<T> GetList(Func<T, bool> where);
+        IEnumerable<T> GetList(Expression<Func<T, object>> orderBy, params Expression<Func<T, bool>>[] wheres);
         T GetByID(int id);
         T GetSingle(Func<T, bool> where);
         void Add(params T[] items);

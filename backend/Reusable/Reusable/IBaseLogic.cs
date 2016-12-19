@@ -1,4 +1,7 @@
-﻿namespace Reusable
+﻿using System;
+using System.Linq.Expressions;
+
+namespace Reusable
 {
     public interface IBaseLogic<Entity> where Entity : BaseEntity
     {
@@ -6,6 +9,7 @@
         CommonResponse Add(Entity entity);
         CommonResponse GetAll();
         CommonResponse GetByID(int ID);
+        CommonResponse GetPage(int perPage, int page, string filterGeneral, Expression<Func<Entity, object>> orderby, params Expression<Func<Entity, bool>>[] wheres);
         CommonResponse Remove(int id);
         CommonResponse Activate(int id);
         CommonResponse Update(Entity entity);

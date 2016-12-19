@@ -2,8 +2,12 @@
 using Reusable;
 using ReusableWebAPI.Auth;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Script.Serialization;
@@ -22,6 +26,33 @@ namespace ReusableWebAPI.Controllers
             //LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             //_logic.byUserId = loggedUser.UserID;
             _logic.byUserId = 2;
+        }
+
+        protected bool isValidJSValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || value == "null" || value == "undefined")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        protected bool isValidParam(string param)
+        {
+            //reserved and invalid params:
+            if (new string[] {
+                "perPage",
+                "page",
+                "filterGeneral",
+                "itemsCount",
+                "noCache",
+                "totalItems",
+                ""
+            }.Contains(param))
+                return false;
+
+            return true;
         }
 
         // GET: api/Base
@@ -181,5 +212,42 @@ namespace ReusableWebAPI.Controllers
                 return response.Error("ERROR: " + e.ToString());
             }
         }
+
+
+        [HttpGet, Route("GetPage/{perPage}/{page}")]
+        virtual public CommonResponse GetPage(int perPage, int page)
+        {
+            CommonResponse response = new CommonResponse();
+            List<Expression<Func<Entity, bool>>> wheres = new List<Expression<Func<Entity, bool>>>();
+
+            string filterGeneral = HttpContext.Current.Request["filterGeneral"];
+            if (!isValidJSValue(filterGeneral))
+            {
+                filterGeneral = "";
+            }
+
+
+            try
+            {
+                foreach (var queryParam in HttpContext.Current.Request.QueryString.AllKeys)
+                {
+                    string queryParamValue = HttpContext.Current.Request.QueryString[queryParam];
+                    if (isValidParam(queryParam) && isValidJSValue(queryParamValue))
+                    {
+                        Expression<Func<Entity, bool>> where = entityFiltered =>
+                            typeof(Entity).GetProperty(queryParam.Substring(6)).GetValue(entityFiltered, null).ToString() == queryParamValue;
+                        wheres.Add(where);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return response.Error(ex.ToString());
+            }
+
+            return _logic.GetPage(perPage, page, filterGeneral, orderBy, wheres.ToArray());
+        }
+
+        protected Expression<Func<Entity, object>> orderBy = null;
     }
 }

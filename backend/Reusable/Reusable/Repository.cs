@@ -1,9 +1,10 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Reusable
 {
@@ -90,29 +91,32 @@ namespace Reusable
             return list;
         }
 
-        public virtual IList<T> GetList(Func<T, bool> where)
+        public virtual IEnumerable<T> GetList(Expression<Func<T, object>> orderBy, params Expression<Func<T, bool>>[] wheres)
         {
-            List<T> list;
+            var predicate = PredicateBuilder.New<T>(true);
+
+            foreach (var where in wheres)
+            {
+                predicate = predicate.And(where);
+            }
+
+            IEnumerable<T> list;
             IQueryable<T> dbQuery = context.Set<T>();
 
-            if (where != null)
+            list = dbQuery.AsExpandable()
+            .AsNoTracking()
+            .Where(predicate);
+            if (orderBy != null)
             {
-                list = dbQuery
-                .AsNoTracking()
-                .Where(where)
-                .ToList();
-            }
-            else
-            {
-                list = dbQuery
-                .AsNoTracking()
-                .ToList();
+                list = list.AsQueryable().OrderBy(orderBy);
             }
 
             /*DOCUMENT*/
             if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
             {
-                list = list.Where(d => (d as BaseDocument).sys_active == true).ToList();
+                predicate = predicate.And(d => (d as BaseDocument).sys_active == true);
+
+                list = list.ToList();
 
                 foreach (T item in list)
                 {
@@ -125,6 +129,7 @@ namespace Reusable
                 }
             }
             return list;
+
         }
 
         public virtual T GetSingle(Func<T, bool> where)

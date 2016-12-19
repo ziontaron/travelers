@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 using static Reusable.BaseEntity;
 
 namespace Reusable
@@ -59,6 +62,11 @@ namespace Reusable
 
                         transaction.Commit();
                     }
+                    catch(DbUpdateException ex)
+                    {
+                        transaction.Rollback();
+                        return response.Error(ex.InnerException.InnerException.Message);
+                    }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
@@ -102,8 +110,6 @@ namespace Reusable
             try
             {
 
-                //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
-
                 Entity entity = repository.GetByID(ID);
                 if (entity != null)
                 {
@@ -116,6 +122,64 @@ namespace Reusable
                 {
                     return response.Error("Entity not found.");
                 }
+
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
+
+        private class FilterResponse
+        {
+            public List<List<BaseEntity>> Dropdowns { get; set; }
+            public int total_items { get; set; }
+            public int total_filtered_items { get; set; }
+        }
+
+        public virtual CommonResponse GetPage(int perPage, int page, string filterGeneral, Expression<Func<Entity, object>> orderby,  params Expression<Func<Entity, bool>>[] wheres)
+        {
+            CommonResponse response = new CommonResponse();
+            FilterResponse filterResponse = new FilterResponse();
+
+            IEnumerable<Entity> entities;
+            try
+            {
+                repository.byUserId = byUserId;
+
+                #region Apply Database Filtering
+
+                entities = repository.GetList(orderby, wheres);
+
+                #endregion
+
+                #region Apply Roles Filtering
+
+                #endregion
+
+                filterResponse.total_items = entities.Count();
+
+                #region Apply General Search Filter
+
+                if (!string.IsNullOrWhiteSpace(filterGeneral))
+                {
+                    string[] arrFilterGeneral = filterGeneral.ToLower().Split(' ');
+                    entities = entities.Where(e => e.GeneralSearchFields.Any(field =>
+                                                        arrFilterGeneral.All(keyword =>
+                                                            field.ToLower().Contains(keyword))));
+                }
+
+                #endregion
+
+                filterResponse.total_filtered_items = entities.Count();
+
+                #region Pagination
+
+                var result = entities.Skip((page - 1) * perPage).Take(perPage).ToList();
+                
+                #endregion
+
+                return response.Success(result, filterResponse);
             }
             catch (Exception e)
             {
@@ -404,5 +468,6 @@ namespace Reusable
             }
             return response.Success();
         }
+
     }
 }

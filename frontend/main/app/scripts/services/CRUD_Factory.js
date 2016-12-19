@@ -733,7 +733,7 @@ angular.module('inspiracode.crudFactory', [])
 
                 if (bAtLeastOneCatalog) {
                     $http.get(appConfig.API_URL + mainEntity.entityName + '/getCatalogs' + '?noCache=' + Number(new Date()))
-                        .success(function(data) {
+                        .then(function(data) {
                             var backendResponse = data;
                             if (backendResponse.ErrorThrown) {
                                 var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
@@ -749,8 +749,7 @@ angular.module('inspiracode.crudFactory', [])
                                 _loadCatalogsExecuted = true;
                                 deferred.resolve(data);
                             }
-                        })
-                        .error(function(data) {
+                        }, function(data) {
                             // something went wrong
                             alertify.alert('An error has occurried, see console for more details.').set('modal', true);
                             log.debug(data);
@@ -1085,6 +1084,36 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
+        var _getPage = function(perPage, pageNumber, qParams) {
+            var deferred = $q.defer();
+
+            if (qParams === undefined || qParams == null) {
+                qParams = '?';
+            }
+
+            $http.get(appConfig.API_URL + mainEntity.entityName + '/getPage/' + perPage + '/' + pageNumber + qParams + '&noCache=' + Number(new Date()))
+                .then(function(response) {
+                    var backendResponse = response.data;
+                    if (backendResponse.ErrorThrown) {
+                        alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                        log.debug(response);
+                        deferred.reject(backendResponse);
+                    } else {
+                        for (var i = 0; i < backendResponse.Result.length; i++) {
+                            mainEntity.adapterIn(_adapter(backendResponse.Result[i], _self));
+                        }
+                        deferred.resolve(backendResponse);
+                    }
+
+                }, function(response) {
+                    // something went wrong
+                    alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                    log.debug(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
         var _getRawAll = function() {
             return _arrAllRecords;
         };
@@ -1133,7 +1162,9 @@ angular.module('inspiracode.crudFactory', [])
             //After Implementation with Generic Repository and Entity Framework:
             customPost: _customPost, //Request a custom name method via Post.
             createEntity: _createEntity, //Gets a new instance of entity from the backend.
-            addToParent: _addToParent //Saves an entity and attaches to parent specified.
+            addToParent: _addToParent, //Saves an entity and attaches to parent specified.
+            getFilteredPage: _getPage //Get Page List based on Page Number, Items Per Page, and Query parameters for more filters.
+
         };
         _arrDependenciesAndThis.push(oAPI);
         var _self = oAPI;

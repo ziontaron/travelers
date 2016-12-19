@@ -5,6 +5,7 @@
         public bool ErrorThrown { get; set; }
         public string ResponseDescription { get; set; }
         public object Result { get; set; }
+        public object AdditionalData { get; set; }
 
         public CommonResponse()
         {
@@ -33,6 +34,15 @@
             ErrorThrown = false;
             Result = oResult;
             ResponseDescription = sMessage;
+            return this;
+        }
+
+        public CommonResponse Success(object oResult, object oAdditionalData)
+        {
+            ErrorThrown = false;
+            Result = oResult;
+            ResponseDescription = "OK";
+            AdditionalData = oAdditionalData;
             return this;
         }
 

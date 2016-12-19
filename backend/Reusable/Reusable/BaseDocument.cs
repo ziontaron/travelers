@@ -8,6 +8,6 @@ namespace Reusable
         [NotMapped]
         public Track InfoTrack { get; set; }
 
-        public virtual bool sys_active { get; set; }
+        virtual public bool sys_active { get; set; }
     }
 }

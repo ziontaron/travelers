@@ -17,6 +17,8 @@ angular.module('appApp', [
     'LocalStorageModule',
     'inspiracode.crudFactory',
     'CRUDServices',
+    'inspiracode.baseControllers',
+    'angularUtils.directives.dirPagination',
     // 'ngTagsInput',
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -60,7 +62,7 @@ angular.module('appApp', [
     alertify.set('notifier', 'position', 'top-left');
     alertify.set('notifier', 'delay', 2);
 
-    
+
     // $httpProvider.interceptors.push('authInterceptorService');
 }).run(function(authService, $rootScope, $location) {
 
@@ -92,9 +94,9 @@ angular.module('appApp', [
 
     });
 
-    // $rootScope.$on('$routeChangeSuccess', function() {
-    //     $rootScope.activePath = $location.path();
-    // });
+    $rootScope.$on('$routeChangeSuccess', function() {
+        $rootScope.activePath = $location.path();
+    });
 
 
     $rootScope.logOut = function() {
