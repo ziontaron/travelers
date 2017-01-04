@@ -2,137 +2,98 @@
 <list-view config="config">
     <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
     <div hide-when-loading="isLoading" class="panel panel-default" dir-paginate="item in baseList | itemsPerPage: filterOptions.perPage track by item.id" total-items="filterOptions.itemsCount" current-page="filterOptions.page">
-        <div class="panel-heading" style="font-size:11px;">
+        <div class="panel-heading" style="font-size:.8em;">
             <div class="row">
                 <div class="col-sm-2">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <span class="btn">{{item.itemNumber}}</span>
-                        </div>
-                        <div class="col-xs-3 text-center">
-                            <span class="btn glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeItem(item);$event.stopPropagation();"></span>
-                        </div>
-                        <div class="col-xs-3 text-center">
-                            <span class="btn glyphicon glyphicon-pencil" aria-hidden="true" ng-click="openSIF(item);$event.stopPropagation();"></span>
-                        </div>
-                        <div class="col-xs-3 text-center">
-                            <label class="sr-only"></label>
-                            <input type="checkbox" class="form-control Unbordered" ng-model="item.checked" style="margin: 0; width: 20px; margin-left: auto; margin-right: auto;" ng-click="checkItem(item.checked);$event.stopPropagation();" />
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <progress-tracker entity="item.progressTrackerEntity"></progress-tracker>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>{{item.itemNumber}}</label>
+                        </div>
+                        <div class="col-xs-3 text-center">
+                            <button class="btn btn-default btn-xs" ng-click="removeItem(item);$event.stopPropagation();">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="col-xs-3 text-center">
+                            <button class="btn btn-default btn-xs" ng-click="openSIF(item);$event.stopPropagation();">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="col-xs-3 text-center">
+                            <input type="checkbox" class="form-control Unbordered" ng-model="item.checked" style="margin: 0; width: 20px; margin-left: auto; margin-right: auto;height:1.8em;" ng-click="checkItem(item.checked);$event.stopPropagation();" />
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>CQA Number</label>
+                            <p class="form-control-static">{{::item.CQANumber}}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Customer</label>
+                            <p class="form-control-static">{{::item.Customer.CustomerName}}</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Notification Date</label>
+                            <p class="form-control-static">{{::item.NotificationDate | date:'medium'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Part Number</label>
+                            <p class="form-control-static">{{::item.cat_PartNumber}}</p>
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Part Description</label>
+                            <p class="form-control-static">{{::item.cat_PartNumber}}</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Product Line</label>
+                            <p class="form-control-static">{{::item.cat_ProductLine}}</p>
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Reoccurring Issue</label>
+                            <p class="form-control-static">{{::item.ReoccurringIssue}}</p>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-2">
-                            <label>SIF</label>
-                            <p class="form-control-static">{{::item.SIFAndRevision}}</p>
+                            <label>Concern Type</label>
+                            <p class="form-control-static">{{::item.cat_ConcernType}}</p>
                         </div>
-                        <div class="col-sm-1">
-                            <label>Priority</label>
-                            <p class="form-control-static">{{::item.Priority}}</p>
-                        </div>
-                        <div class="col-sm-2">
-                            <label>Detail Level</label>
-                            <p class="form-control-static">{{::item.DetailLevel}}</p>
+                        <div class="col-sm-4">
+                            <label>Concern Description</label>
+                            <p class="form-control-static">{{::item.cat_ConcernType}}</p>
                         </div>
                         <div class="col-sm-2">
-                            <label>Conf. Level</label>
-                            <p class="form-control-static">{{::item.ConfLevel}}</p>
+                            <label>Result</label>
+                            <p class="form-control-static">{{::item.cat_Result}}</p>
                         </div>
                         <div class="col-sm-2">
                             <label>Status</label>
-                            <p class="form-control-static">{{::item.Status}}</p>
+                            <p class="form-control-static">{{::item.cat_Status}}</p>
                         </div>
-                        <div class="col-sm-3">
-                            <label>Customer</label>
-                            <p class="form-control-static">{{::item.Customer}}</p>
-                        </div>
-                        <!-- <div class="col-sm-1">
-                            <label>Family</label>
-                            <table style="width: 100%;">
-                                <tr ng-repeat="aSIF in item.SIFIncl" ng-if="aSIF.id != item.id">
-                                    <td class="text-center">{{aSIF.SIFAndRevision}}</td>
-                                </tr>
-                            </table>
-                        </div> -->
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label>Finished Good PN</label>
-                            <p class="form-control-static">{{::item.PartNumber}}</p>
-                        </div>
-                        <div class="col-sm-4">
-                            <label>Product Description</label>
-                            <p class="form-control-static">{{::item.ProductDescription}}</p>
-                        </div>
-                        <div class="col-sm-5">
-                            <label>Task Description / Revision Reason</label>
-                            <p class="form-control-static">{{::item.TaskDescriptionRevisionReason}}</p>
+                        <div class="col-sm-2">
+                            <label>Number of concerned parts</label>
+                            <p class="form-control-static">{{::item.NumberConcernedParts}}</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-3">
-                    <table class="TableSIFResponsibles table table-condensed" style="font-size: 10px;">
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="width:45px;">Area</th>
-                                <th class="text-center">Responsible</th>
-                                <th class="text-center" style="width:70px;">Due Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="text-right">SIF</th>
-                                <td class="text-center">
-                                    <span style="padding:0;" class="form-control-static" ng-hide="item.assignedTo == ''">{{item.assignedTo}}</span>
-                                    <a style="padding:0;cursor: pointer;" class="form-control-static btn-link" ng-click="take(item, currentUser);$event.stopPropagation();" ng-if="item.assignedTo == ''">Take</a>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">Eng</th>
-                                <td class="text-center">
-                                    <span style="padding:0;" class="form-control-static" ng-hide="item.bomResponsible == ''">{{item.bomResponsible}}</span>
-                                    <a style="padding:0;cursor: pointer;" class="form-control-static btn-link" ng-click="takeBOM(item, currentUser);$event.stopPropagation();" ng-if="item.bomResponsible == ''">Take</a>
-                                </td>
-                                <td>{{item.CA2BOMCompl}}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">APQM</th>
-                                <td class="text-center">
-                                    <span style="padding:0;" class="form-control-static" ng-hide="item.apqmResponsible == ''">{{item.apqmResponsible}}</span>
-                                    <a style="padding:0;cursor: pointer;" class="form-control-static btn-link" ng-click="takeAPQMBOM(item, currentUser);$event.stopPropagation();" ng-if="item.apqmResponsible == ''">Take</a>
-                                </td>
-                                <td>{{item.CA2APCompl}}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">MMOD</th>
-                                <td class="text-center">
-                                    <span style="padding:0;" class="form-control-static" ng-hide="item.mmodResponsible == ''">{{item.mmodResponsible}}</span>
-                                    <a style="padding:0;cursor: pointer;" class="form-control-static btn-link" ng-click="takeMMOD(item, currentUser);$event.stopPropagation();" ng-if="item.mmodResponsible == ''">Take</a>
-                                </td>
-                                <td>{{item.CA2MMOD}}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">PMOD</th>
-                                <td class="text-center">
-                                    <span style="padding:0;" class="form-control-static" ng-hide="item.pmodResponsible == ''">{{item.pmodResponsible}}</span>
-                                    <a style="padding:0;cursor: pointer;" class="form-control-static btn-link" ng-click="takePMOD(item, currentUser);$event.stopPropagation();" ng-if="item.pmodResponsible == ''">Take</a>
-                                </td>
-                                <td>{{item.CA2PricingModel}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
     </div>
     <dir-pagination-controls></dir-pagination-controls>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 </list-view>
 <nav class="navbar navbar-default navbar-fixed-bottom myToolbar">
     <div class="container-fluid">
@@ -148,53 +109,46 @@
             <form class="navbar-form navbar-left" role="search">
                 <!-- <input class="text-center form-control" type="text" ng-model-options="{debounce: 200}" ng-model="search.InquiryNumber" placeholder="SIF Search" style="max-width:100px;font-size:10px;">
                 <input class="text-center form-control" type="text" ng-model-options="{debounce: 200}" ng-model="search.Revision" placeholder="Revision Search" style="max-width:100px;font-size:10px;"> -->
-                <input type="text" ng-model-options="{debounce: 200}" class="text-center form-control" placeholder="General Search" ng-change="on_filter_changed();" ng-model="filterOptions.filterGeneral" style="max-width:180px;font-size:10px; ">
+                <input type="text" ng-model-options="{debounce: 200}" class="text-center form-control" placeholder="General Search" ng-change="on_filter_changed();" ng-model="filterOptions.filterGeneral" style="max-width:180px;font-size:10px;">
             </form>
-            <p class="navbar-text navbar-left " style="margin-top: 20px; ">{{filterLabel}}</p>
-            <ul class="nav navbar-nav navbar-right " style="margin-left:20px; font-size:10px; ">
+            <p class="navbar-text navbar-left" style="margin-top: 20px;">{{filterLabel}}</p>
+            <ul class="nav navbar-nav navbar-right" style="margin-left:20px; font-size:10px;">
                 <li>
-                    <div class="row ProgressFilter " style="width:270px; ">
-                        <div class="filterContainer ">
-                            <label style="width:100px;margin: 0; ">Document</label>
-                            <select style="height:20px;padding:0;font-size: 11px; " class="form-control " ng-model="filterOptions.filterDocument " ng-options="item.id as item.Value for item in theDocuments " ng-change="on_filter_changed(); ">
-                            </select>
-                        </div>
-                        <div class="filterContainer ">
-                            <label style="width:100px;margin: 0; ">Progress</label>
-                            <select style="height:20px;padding:0;width:150px;font-size: 11px; " class="form-control " ng-model="filterOptions.filterProgress " ng-options="item.id as item.Value for item in theProgress " ng-change="on_filter_changed(); ">
-                            </select>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="filterContainer ">
-                        <label style="width:100px;margin: 0; ">Status</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:100px; " class="form-control " ng-model="filterOptions.filterStatus " ng-options="item.id as item.Value for item in theStatus " ng-change="on_filter_changed(); ">
+                    <div class="filterContainer">
+                        <label style="width:100px;margin: 0;">Progress</label>
+                        <select style="height:20px;padding:0;font-size: 12px;width:100px;" class="form-control" ng-model="filterOptions.filterProgress" ng-options="item.id as item.Value for item in theProgress" ng-change="on_filter_changed();">
                         </select>
                     </div>
                 </li>
                 <li>
-                    <div class="filterContainer ">
-                        <label style="width:100px;margin: 0; ">Customer</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:100px; " class="form-control " ng-model="filterOptions.filterCustomer " ng-options="item.id as item.Value for item in theCustomers " ng-change="on_filter_changed(); ">
+                    <div class="filterContainer">
+                        <label style="width:100px;margin: 0;">Status</label>
+                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.filterStatus" ng-options="item.id as item.Value for item in theStatus" ng-change="on_filter_changed();">
                         </select>
                     </div>
                 </li>
                 <li>
-                    <div class="filterContainer ">
-                        <label style="width:100px;margin: 0; ">User</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:100px; " class="form-control " ng-model="filterOptions.filterUser " ng-options="item.id as item.Value group by item.Role for item in theUsers " ng-change="on_filter_changed(); ">
+                    <div class="filterContainer">
+                        <label style="width:100px;margin: 0;">Customer</label>
+                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.filterCustomer" ng-options="item.id as item.Value for item in theCustomers" ng-change="on_filter_changed();">
                         </select>
                     </div>
                 </li>
-                <li style="padding:0 2px; ">
-                    <button type="button " class="btn btn-default navbar-btn " ng-click="create(); " style="font-size:11px; ">New</button>
+                <li>
+                    <div class="filterContainer">
+                        <label style="width:100px;margin: 0;">User</label>
+                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.filterUser" ng-options="item.id as item.Value group by item.Role for item in theUsers" ng-change="on_filter_changed();">
+                        </select>
+                    </div>
                 </li>
-                <li style="display:none; ">
-                    <a href=" " ng-click="selectedToFamily(); ">Make Family <span class="badge ">{{selectedCount}}</span></a>
+                <li style="padding:0 2px;">
+                    <button type="button" class="btn btn-default navbar-btn" ng-click="create();" style="font-size:11px;">New</button>
                 </li>
-                <li style="padding:0 2px; ">
-                    <button type="button " class="btn btn-default navbar-btn " ng-click="clearFilters(); " style="font-size:11px; ">Clear Filters</button>
+                <li style="display:none;">
+                    <a href="" ng-click="selectedToFamily();">Make Family <span class="badge">{{selectedCount}}</span></a>
+                </li>
+                <li style="padding:0 2px;">
+                    <button type="button" class="btn btn-default navbar-btn" ng-click="clearFilters();" style="font-size:11px;">Clear Filters</button>
                 </li>
             </ul>
         </div>
@@ -202,11 +156,3 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
-<style type="text/css ">
-.host .autocomplete {
-    position: absolute;
-    bottom: 35px;
-    z-index: 0;
-    width: 100%;
-}
-</style>

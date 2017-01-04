@@ -1,0 +1,61 @@
+<form class="form-horizontal" role="form" novalidate>
+    <div class="form-group">
+        <div class="col-sm-3 col-sm-offset-9 well">
+            <h4 class="text-center">CQA Number</h4>
+            <h4 class="text-center">12345{{::baseEntity.CQANumber}}</h4>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-6">
+            <label>Customer</label>
+            <selection id-resize="SelCustomer"></selection>
+        </div>
+        <div class="col-sm-3 text-right">
+            <label>Notification Date</label>
+            <p class="form-control-static">{{::baseEntity.NotificationDate | date:'medium'}}</p>
+        </div>
+        <div class="col-sm-3 text-right">
+            <label>Reoccurring Issue</label>
+            <p class="form-control-static">{{::baseEntity.ReoccurringIssue}}</p>
+        </div>
+    </div>
+    <div class="form-group well well-sm">
+        <div class="col-sm-3">
+            <label>Part Number</label>
+            <p class="form-control-static">{{::baseEntity.cat_PartNumber}}</p>
+        </div>
+        <div class="col-sm-6">
+            <label>Part Description</label>
+            <p class="form-control-static">{{::baseEntity.cat_PartNumber}}</p>
+        </div>
+        <div class="col-sm-3 text-right">
+            <label>Product Line</label>
+            <p class="form-control-static">{{::baseEntity.cat_ProductLine}}</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3">
+            <label>Concern Type</label>
+            <p class="form-control-static">{{::baseEntity.cat_ConcernType}}</p>
+        </div>
+        <div class="col-sm-5">
+            <label>Concern Description</label>
+            <p class="form-control-static">{{::baseEntity.cat_ConcernType}}</p>
+        </div>
+        <div class="col-sm-4 text-right">
+            <label>Number of concerned parts</label>
+            <p class="form-control-static">{{::baseEntity.NumberConcernedParts}}</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3">
+            <label>Result</label>
+            <p class="form-control-static">{{::baseEntity.cat_Result}}</p>
+        </div>
+        <div class="col-sm-3">
+            <label>Status</label>
+            <p class="form-control-static">{{::baseEntity.cat_Status}}</p>
+        </div>
+    </div>
+</form>
+<pre>{{baseEntity | json:'4'}}</pre>

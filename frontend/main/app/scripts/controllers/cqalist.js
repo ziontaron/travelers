@@ -31,7 +31,7 @@ angular.module('appApp').controller('CqalistCtrl', function($scope, listControll
 
     var go = function(path) {
         if (path != $location.url()) {
-            $window.open('#' + path, '_blank');
+            $window.open('#!' + path, '_blank');
         }
     };
 

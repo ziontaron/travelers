@@ -9,7 +9,7 @@ namespace Reusable
         int? byUserId { get; set; }
         string EntityName { get; set; }
 
-        IList<T> GetAll();
+        IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties);
         IEnumerable<T> GetList(Expression<Func<T, object>> orderBy, params Expression<Func<T, bool>>[] wheres);
         T GetByID(int id);
         T GetSingle(Func<T, bool> where);

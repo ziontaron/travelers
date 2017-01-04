@@ -82,6 +82,8 @@ namespace Reusable
             return response.Success(entity);
         }
 
+        public virtual List<Expression<Func<Entity, object>>> NavigationPropertiesWhenGetAll { get; }
+        
         public virtual CommonResponse GetAll()
         {
             CommonResponse response = new CommonResponse();
@@ -91,9 +93,7 @@ namespace Reusable
                 //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                 repository.byUserId = byUserId;
-                entities = repository.GetAll();
-
-                //loadNavigationProperties(context, entities);
+                entities = repository.GetAll(NavigationPropertiesWhenGetAll.ToArray());
             }
             catch (Exception e)
             {
@@ -176,7 +176,7 @@ namespace Reusable
                 #region Pagination
 
                 var result = entities.Skip((page - 1) * perPage).Take(perPage).ToList();
-                
+                loadNavigationProperties(context, result.ToArray());
                 #endregion
 
                 return response.Success(result, filterResponse);

@@ -61,10 +61,16 @@ namespace Reusable
             }
         }
 
-        public virtual IList<T> GetAll()
+        public virtual IList<T> GetAll(params Expression<Func<T, object>> [] navigationProperties)
         {
             List<T> list;
             IQueryable<T> dbQuery = context.Set<T>();
+
+            //Eager Loading:
+            foreach (var navigationProperty in navigationProperties)
+            {
+                dbQuery.Include(navigationProperty);
+            }
 
             list = dbQuery
                 .AsNoTracking()

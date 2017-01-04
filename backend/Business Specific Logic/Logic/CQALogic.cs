@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace BusinessSpecificLogic.Logic
 {
@@ -16,13 +17,45 @@ namespace BusinessSpecificLogic.Logic
 
     public class CQAHeaderLogic : BaseLogic<CQAHeader>, ICQAHeaderLogic
     {
-        public CQAHeaderLogic(DbContext context, IRepository<CQAHeader> repository) : base(context, repository)
+        private readonly IRepository<Customer> customerRepository;
+
+        public CQAHeaderLogic(DbContext context, IRepository<CQAHeader> repository,
+            IRepository<Customer> customerRepository) : base(context, repository)
         {
+            this.customerRepository = customerRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, params CQAHeader[] entities)
         {
-            
+            foreach (var item in entities)
+            {
+                item.Customer = customerRepository.GetByID(item.CustomerKey);
+            }   
         }
+
+        public override List<Expression<Func<CQAHeader, object>>> NavigationPropertiesWhenGetAll
+        {
+            get
+            {
+                return new List<Expression<Func<CQAHeader, object>>>()
+                {
+                    e => e.CQANumber
+                };
+            }
+        }
+
+
+        protected override void onCreate(CQAHeader entity)
+        {
+            base.onCreate(entity);
+            entity.NotificationDate = DateTime.Now;
+            entity.CQANumberKey = 2;
+            entity.PartNumberKey = 1;
+            entity.CustomerKey = 1;
+        }
+
     }
+
+    
+
 }

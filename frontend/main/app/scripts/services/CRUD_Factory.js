@@ -375,6 +375,7 @@ angular.module('inspiracode.crudFactory', [])
 
 
         //INIT CONFIG/////////////////////////////////////////////////////////////////////////////////////////////////////////
+        oMainConfig.catalogs = oMainConfig.catalogs || [];
         createCatalogs(oMainConfig.catalogs);
         var _adapter = oMainConfig.adapter;
         var _arrDependencies = angular.copy(oMainConfig.dependencies);
@@ -642,9 +643,9 @@ angular.module('inspiracode.crudFactory', [])
                 qParams = '?';
             }
             if (id > 0) {
-                $http.get(appConfig.API_URL + mainEntity.entityName + '/' + id + qParams + '&noCache=' + Number(new Date()),
+                $http.get(appConfig.API_URL + mainEntity.entityName + '/' + id + qParams + '&noCache=' + Number(new Date())).then(
                     function(data) {
-                        var backendResponse = data;
+                        var backendResponse = data.data;
                         if (backendResponse.ErrorThrown) {
                             var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                             alertify.alert(alertifyContent).set('modal', true);

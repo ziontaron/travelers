@@ -84,12 +84,14 @@ angular.module('inspiracode.baseControllers', [])
             alertify.confirm('Create new ' + oMainConfig.entityName + '?', function() {
                 scope.$apply(function() {
                     $activityIndicator.startAnimating();
-                    var theNewEntity = _baseService.create();
-                    _baseService.save(theNewEntity).then(function(data) {
-                        var theCreatedEntity = angular.copy(data.Result);
-                        scope.baseList.push(theCreatedEntity);
-                        _afterCreateCallBack(theCreatedEntity);
-                        $activityIndicator.stopAnimating();
+                    _baseService.createEntity().then(function(oNewEntity) {
+                        _baseService.save(oNewEntity).then(function(data) {
+                            var theCreatedEntity = angular.copy(data.Result);
+                            scope.baseList.push(theCreatedEntity);
+                            _afterCreateCallBack(theCreatedEntity);
+                            $activityIndicator.stopAnimating();
+                        });
+
                     });
                 });
             });
@@ -178,11 +180,6 @@ angular.module('inspiracode.baseControllers', [])
         };
 
         var _afterLoad = function() {
-            // for (catalog in _baseService.catalogs) {
-            //  if (_baseService.catalogs.hasOwnProperty(catalog)) {
-            //      scope["the" + catalog + "s"] = _baseService.catalogs[catalog].getAll();
-            //  }
-            // }
             _afterLoadCallBack();
             scope.selectedCount = _getSelectedCount();
             $activityIndicator.stopAnimating();
@@ -215,8 +212,6 @@ angular.module('inspiracode.baseControllers', [])
                         id: null,
                         Value: 'All'
                     });
-                }else{
-                    console.log('There is no [' + filter + '] catalog for service: ' + oMainConfig.entityName);
                 }
 
             });
@@ -422,4 +417,202 @@ angular.module('inspiracode.baseControllers', [])
             }
         }
     };
+})
+
+
+
+
+
+.factory('formController', function($log, $activityIndicator, $routeParams, validatorService, appConfig, $timeout, $rootScope) {
+
+    var log = $log;
+
+    return function(oMainConfig) {
+
+        //INIT CONFIG/////////////////////////////////////
+
+        var scope = oMainConfig.scope;
+
+        var _baseService = oMainConfig.baseService;
+        if (!oMainConfig.entityName || oMainConfig.entityName == '') {
+            oMainConfig.entityName = '';
+        }
+
+        //After Load callback
+        var _afterLoadCallBack = oMainConfig.afterLoad;
+        if (!_afterLoadCallBack || typeof _afterLoadCallBack != "function") {
+            _afterLoadCallBack = function() {};
+        }
+
+        //After create entity callback
+        var _afterCreateCallBack = oMainConfig.afterCreate;
+        if (!_afterCreateCallBack || typeof _afterCreateCallBack != "function") {
+            _afterCreateCallBack = function() {};
+        }
+
+        //END CONFIG/////////////////////////////////////
+
+
+        //scope---------------------------------------------
+        //let's use normal variables (without underscore) so they can be
+        //accessed in view normally
+        scope.isLoading = true;
+        scope.remove = function(oEntity) {
+            alertify.confirm(
+                'Are you sure you want to delete this ' + oMainConfig.entityName + '?',
+                function() {
+                    scope.$apply(function() {
+                        $activityIndicator.startAnimating();
+                        _baseService.remove(oEntity, scope.baseList).then(function(data) {
+                            _updateList();
+                        }, function() {
+                            $activityIndicator.stopAnimating();
+                        });
+                    });
+                });
+        };
+        scope.take = function(objToTake, toUser) {
+            _baseService.take(objToTake, toUser).then(function(data) {
+                objToTake.assignedTo = toUser.Value;
+                objToTake.AssignationMade = false;
+            });
+        };
+
+        scope.create = function() {
+            alertify.confirm('Create new ' + oMainConfig.entityName + '?', function() {
+                scope.$apply(function() {
+                    $activityIndicator.startAnimating();
+                    _baseService.createEntity().then(function(oNewEntity) {
+                        _baseService.save(oNewEntity).then(function(data) {
+                            var theCreatedEntity = angular.copy(data.Result);
+                            scope.baseList.push(theCreatedEntity);
+                            _afterCreateCallBack(theCreatedEntity);
+                            $activityIndicator.stopAnimating();
+                        });
+
+                    });
+                });
+            });
+        };
+
+        //Updating items:*******************************
+        scope.save = function(oItem) {
+            $activityIndicator.startAnimating();
+            _baseService.save(oItem).then(function(data) {
+                $activityIndicator.stopAnimating();
+            });
+        };
+        scope.on_input_change = function(oItem) {
+            oItem.editMode = true;
+        };
+        scope.undo = function(oItem) {
+            var originalItem = _baseService.getById(oItem.id);
+            angular.copy(originalItem, oItem);
+        };
+        //end scope----------------------------------------
+
+        var _afterLoad = function() {
+            _afterLoadCallBack();
+            $activityIndicator.stopAnimating();
+        };
+
+        var _load = function() {
+            $activityIndicator.startAnimating();
+            alertify.closeAll();
+
+
+
+            _baseService.loadDependencies().then(function(data) {
+                _fillCatalogs();
+                _updateForm();
+            });
+        };
+
+        var _fillCatalogs = function() {
+            //for filters:
+
+            for (catalog in _baseService.catalogs) {
+                if (_baseService.catalogs.hasOwnProperty(catalog)) {
+
+                    var theCatalog = 'the' + capitalizeFirstLetter(catalog);
+                    if (theCatalog.slice(-1) != 's') {
+                        theCatalog += 's';
+                    }
+                    scope[theCatalog] = _baseService.catalogs[catalog].getAll();
+                }
+            }
+
+        };
+
+        function capitalizeFirstLetter(sWord) {
+            var result = sWord.charAt(0).toUpperCase() + sWord.slice(1).toLowerCase();
+            return result;
+        }
+
+        var _setFilterOptions = function() {
+
+            scope.filterOptions = localStorageService.get(_filterStorageName);
+
+            if (!scope.filterOptions) {
+                scope.clearFilters();
+            } else {
+                scope.filterOptions = JSON.parse(scope.filterOptions);
+            }
+
+        };
+
+        var _persistFilter = function() {
+            localStorageService.set(_filterStorageName, JSON.stringify(scope.filterOptions));
+        };
+
+        var _makeQueryParameters = function() {
+            var result = '?';
+
+            for (var prop in scope.filterOptions) {
+                if (scope.filterOptions.hasOwnProperty(prop)) {
+                    result += prop + '=' + scope.filterOptions[prop] + '&';
+                }
+            }
+
+            return result;
+        };
+
+        var _updateForm = function() {
+            $activityIndicator.startAnimating();
+            scope.isLoading = true;
+
+            switch (true) {
+                case $routeParams.id !== true && $routeParams.id > 0: //Get By id
+                    scope.openingMode = 'id';
+                    _baseService.loadEntity($routeParams.id).then(function(data) {
+                        $activityIndicator.stopAnimating();
+                        var theSelectedEntity = data;
+                        if (!theSelectedEntity) {
+                            alertify.alert('Nonexistent record.').set('modal', true).set('closable', false);
+                            scope.openingMode = 'error';
+                            return;
+                        }
+                        scope.baseEntity = angular.copy(theSelectedEntity);
+                        _afterLoad();
+                        scope.isLoading = false;
+                    });
+                    break;
+
+                default:
+                    $activityIndicator.stopAnimating();
+                    scope.openingMode = 'error';
+                    alertify.alert('Verify URL parameters.').set('modal', true).set('closable', false);
+                    return;
+            }
+
+        };
+
+        // Public baseController API:////////////////////////////////////////////////////////////
+        var oAPI = {
+            load: _load,
+            // unselectAll: _unselectAll
+        };
+        return oAPI;
+    };
+
 });
