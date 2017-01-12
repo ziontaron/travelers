@@ -6,56 +6,58 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <label>Customer</label>
-            <selection id-resize="SelCustomer"></selection>
+            <ng-selectize placeholder="Customer" value-field="id" label-field="CustomerName" options="theCustomers" ng-model="baseEntity.Customer"></ng-selectize>
         </div>
-        <div class="col-sm-3 text-right">
+        <div class="col-sm-5">
             <label>Notification Date</label>
-            <p class="form-control-static">{{::baseEntity.NotificationDate | date:'medium'}}</p>
+            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
         </div>
-        <div class="col-sm-3 text-right">
+        <div class="col-sm-3">
             <label>Reoccurring Issue</label>
-            <p class="form-control-static">{{::baseEntity.ReoccurringIssue}}</p>
+            <select class="form-control" ng-model="baseEntity.ReoccurringIssue" ng-options="option.value as option.label for option in [{value: false, label:'No'}, {value: true, label:'Yes'}]"></select>
         </div>
     </div>
     <div class="form-group well well-sm">
         <div class="col-sm-3">
             <label>Part Number</label>
-            <p class="form-control-static">{{::baseEntity.cat_PartNumber}}</p>
+            <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize>
         </div>
         <div class="col-sm-6">
             <label>Part Description</label>
-            <p class="form-control-static">{{::baseEntity.cat_PartNumber}}</p>
+            <input type="text" class="form-control" ng-model="baseEntity.cat_PartNumber.PartDescription">
         </div>
-        <div class="col-sm-3 text-right">
+        <div class="col-sm-3">
             <label>Product Line</label>
-            <p class="form-control-static">{{::baseEntity.cat_ProductLine}}</p>
+            <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-3">
             <label>Concern Type</label>
-            <p class="form-control-static">{{::baseEntity.cat_ConcernType}}</p>
+            <ng-selectize placeholder="Concern Type" value-field="id" label-field="Value" options="[{id:1,Value:'Concern One'},{id:2,Value:'Concern Two'}]" ng-model="baseEntity.cat_ConcernType"></ng-selectize>
         </div>
         <div class="col-sm-5">
             <label>Concern Description</label>
-            <p class="form-control-static">{{::baseEntity.cat_ConcernType}}</p>
+            <input type="text" class="form-control" ng-model="baseEntity.ConcertDescription">
         </div>
         <div class="col-sm-4 text-right">
             <label>Number of concerned parts</label>
-            <p class="form-control-static">{{::baseEntity.NumberConcernedParts}}</p>
+            <input type="text" class="form-control" ng-model="baseEntity.NumberConcernedParts">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-3">
             <label>Result</label>
-            <p class="form-control-static">{{::baseEntity.cat_Result}}</p>
+            <ng-selectize placeholder="Result" value-field="id" label-field="Value" options="[{id:1,Value:'Result One'},{id:2,Value:'Result Two'}]" ng-model="baseEntity.cat_Result"></ng-selectize>
         </div>
         <div class="col-sm-3">
             <label>Status</label>
+            <ng-selectize placeholder="Status" value-field="id" label-field="Value" options="[{id:1,Value:'Status One'},{id:2,Value:'Status Two'}]" ng-model="baseEntity.cat_Status"></ng-selectize>
             <p class="form-control-static">{{::baseEntity.cat_Status}}</p>
         </div>
     </div>
 </form>
+<input type="button" ng-click="save(baseEntity)" value="save">
 <pre>{{baseEntity | json:'4'}}</pre>

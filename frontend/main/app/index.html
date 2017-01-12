@@ -11,6 +11,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
     <link rel="stylesheet" href="bower_components/ngActivityIndicator/css/ngActivityIndicator.css" />
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -40,7 +41,8 @@
                 <div class="collapse navbar-collapse" id="js-navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a href="#!/">Home</a></li>
-                        <li><a ng-href="#!/about">About</a></li>
+                        <li><a ng-href="#!/CQAList">CQA List</a></li>
+                        <li><a ng-href="#!/about">Catalogs</a></li>
                         <li><a ng-href="#!/">Contact</a></li>
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{currentUser.Value}} <span class="caret"></span></a>
@@ -82,10 +84,14 @@
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/ngActivityIndicator/ngActivityIndicator.js"></script>
     <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+    <script src="bower_components/sifter/sifter.js"></script>
+    <script src="bower_components/microplugin/src/microplugin.js"></script>
+    <script src="bower_components/selectize/dist/js/selectize.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <script src="scripts/vendor/alertify.js"></script>
     <script src="scripts/services/CRUD_Factory.js"></script>
+    <script src="scripts/services/CRUD_Services.js"></script>
     <script src="scripts/reusable/BaseControllers.js"></script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
@@ -96,10 +102,10 @@
     <script src="scripts/controllers/signup.js"></script>
     <script src="scripts/services/authinterceptorservice.js"></script>
     <script src="scripts/services/authservice.js"></script>
-    <script src="scripts/services/userservice.js"></script>
     <script src="scripts/controllers/cqalist.js"></script>
     <script src="scripts/controllers/cqa.js"></script>
     <script src="scripts/directives/selection.js"></script>
+    <script src="scripts/directives/ngselectize.js"></script>
     <!-- endbuild -->
 </body>
 

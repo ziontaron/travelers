@@ -504,16 +504,24 @@ angular.module('inspiracode.crudFactory', [])
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
                                 if (!backendResponse.ErrorThrown) {
-                                    theEntity.editMode = false;
-                                    var current = _getById(theEntity.id);
-                                    _populateCatalogValues(_adapter(theEntity, _self));
-                                    if (!angular.equals(theEntity, current)) {
-                                        angular.copy(theEntity, current);
+
+                                    var entityFromServer = backendResponse.Result;
+                                    entityFromServer.editMode = false;
+                                    mainEntity.adapterIn(entityFromServer);
+                                    _populateCatalogValues(_adapter(entityFromServer, _self));
+                                    var oEntity = _getById(entityFromServer.id);
+                                    if (oEntity) { //Already exists, lets updated it if they are different.
+                                        if (!angular.equals(entityFromServer, oEntity)) {
+                                            angular.copy(entityFromServer, oEntity);
+                                        }
+                                    } else { //First time loaded, lets add it.
+                                        _arrAllRecords.push(entityFromServer);
                                     }
+
                                     $timeout(function() {
                                         alertify.success(backendResponse.ResponseDescription);
                                     }, 100);
-                                    deferred.resolve(response.data);
+                                    deferred.resolve(entityFromServer);
                                 } else {
                                     var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                                     alertify.alert(alertifyContent).set('modal', true);
@@ -653,6 +661,7 @@ angular.module('inspiracode.crudFactory', [])
                             deferred.reject(data);
                         } else {
                             mainEntity.adapterIn(backendResponse.Result);
+                            _populateCatalogValues(_adapter(backendResponse.Result, _self));
                             var oEntity = _getById(backendResponse.Result.id);
                             if (oEntity) { //Already exists, lets updated it.
                                 angular.copy(backendResponse.Result, oEntity);
@@ -664,9 +673,10 @@ angular.module('inspiracode.crudFactory', [])
                     },
                     function(data) {
                         // something went wrong
-                        alertify.alert(data).set('modal', true);
+                        var alertifyContent = '<div style="word-wrap: break-word;">' + JSON.stringify(data) + '</div>';
+                        alertify.alert(alertifyContent).set('modal', true);
                         log.debug(data);
-                        deferred.reject(backendResponse.Result);
+                        deferred.reject();
                     });
             } else {
                 deferred.reject();
@@ -735,20 +745,30 @@ angular.module('inspiracode.crudFactory', [])
                 if (bAtLeastOneCatalog) {
                     $http.get(appConfig.API_URL + mainEntity.entityName + '/getCatalogs' + '?noCache=' + Number(new Date()))
                         .then(function(data) {
-                            var backendResponse = data;
+                            var backendResponse = data.data;
                             if (backendResponse.ErrorThrown) {
                                 var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                                 alertify.alert(alertifyContent).set('modal', true);
                                 log.debug(response);
-                                deferred.reject(data);
+                                deferred.reject(data.data);
                             } else {
-                                for (var catalog in _catalogs) {
-                                    if (_catalogs.hasOwnProperty(catalog)) {
-                                        _catalogs[catalog]._arrAllRecords = backendResponse.Result[catalog];
+                                if (backendResponse.Result) {
+                                    for (var catalog in _catalogs) {
+                                        if (_catalogs.hasOwnProperty(catalog)) {
+                                            if (backendResponse.Result.hasOwnProperty(catalog)) {
+                                                _catalogs[catalog]._arrAllRecords = backendResponse.Result[catalog];
+                                            } else {
+                                                alertify.alert('Unable to load [' + catalog + '] catalog from ' + mainEntity.entityName).set('modal', true);
+                                                log.error('Unable to load [' + catalog + '] catalog from ' + mainEntity.entityName);
+                                            }
+                                        }
                                     }
+                                    _loadCatalogsExecuted = true;
+                                    deferred.resolve(data.data);
+                                } else {
+                                    alertify.alert('No catalogs for ' + mainEntity.entityName).set('modal', true);
+                                    log.error('No catalogs for ' + mainEntity.entityName);
                                 }
-                                _loadCatalogsExecuted = true;
-                                deferred.resolve(data);
                             }
                         }, function(data) {
                             // something went wrong
@@ -1033,7 +1053,7 @@ angular.module('inspiracode.crudFactory', [])
                             deferred.reject(backendResponse);
                         } else {
                             backendResponse.Result.EF_State = 1; //Adding
-                            deferred.resolve(backendResponse.Result);
+                            deferred.resolve(_adapt(backendResponse.Result));
                         }
                     } else {
                         // invalid response
@@ -1115,6 +1135,41 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
+        var _getSingleByParent = function(parentType, parentKey) {
+            var deferred = $q.defer();
+
+            $http.get(appConfig.API_URL + mainEntity.entityName + '/GetSingleByParent/' + parentType + '/' + parentKey + '?noCache=' + Number(new Date()))
+                .then(
+                    /*success*/
+                    function(response) {
+                        var backendResponse = response.data;
+                        if (backendResponse.ErrorThrown) {
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
+                            deferred.reject(response);
+                        } else {
+                            if (backendResponse.Result != null) {
+                                mainEntity.adapterIn(backendResponse.Result);
+                                var oEntity = _getById(backendResponse.Result.id);
+                                if (oEntity) { //Already exists, lets updated it.
+                                    angular.copy(backendResponse.Result, oEntity);
+                                } else { //First time loaded, lets add it.
+                                    _arrAllRecords.push(backendResponse.Result);
+                                }
+                            }
+                            deferred.resolve(backendResponse.Result);
+                        }
+                    },
+                    /*error*/
+                    function(response) {
+                        alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response);
+                    });
+
+            return deferred.promise;
+        };
+
         var _getRawAll = function() {
             return _arrAllRecords;
         };
@@ -1164,7 +1219,9 @@ angular.module('inspiracode.crudFactory', [])
             customPost: _customPost, //Request a custom name method via Post.
             createEntity: _createEntity, //Gets a new instance of entity from the backend.
             addToParent: _addToParent, //Saves an entity and attaches to parent specified.
-            getFilteredPage: _getPage //Get Page List based on Page Number, Items Per Page, and Query parameters for more filters.
+            getFilteredPage: _getPage, //Get Page List based on Page Number, Items Per Page, and Query parameters for more filters.
+            getSingleByParent: _getSingleByParent //Get single by parent
+
 
         };
         _arrDependenciesAndThis.push(oAPI);

@@ -180,7 +180,7 @@ angular.module('inspiracode.baseControllers', [])
         };
 
         var _afterLoad = function() {
-            _afterLoadCallBack();
+            _afterLoadCallBack(scope.baseList);
             scope.selectedCount = _getSelectedCount();
             $activityIndicator.stopAnimating();
         };
@@ -509,7 +509,7 @@ angular.module('inspiracode.baseControllers', [])
         //end scope----------------------------------------
 
         var _afterLoad = function() {
-            _afterLoadCallBack();
+            _afterLoadCallBack(scope.baseEntity);
             $activityIndicator.stopAnimating();
         };
 
@@ -528,7 +528,7 @@ angular.module('inspiracode.baseControllers', [])
         var _fillCatalogs = function() {
             //for filters:
 
-            for (catalog in _baseService.catalogs) {
+            for (var catalog in _baseService.catalogs) {
                 if (_baseService.catalogs.hasOwnProperty(catalog)) {
 
                     var theCatalog = 'the' + capitalizeFirstLetter(catalog);

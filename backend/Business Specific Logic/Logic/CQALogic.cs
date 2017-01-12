@@ -54,6 +54,26 @@ namespace BusinessSpecificLogic.Logic
             entity.CustomerKey = 1;
         }
 
+
+        #region Catalogs
+        protected override ICatalogContainer LoadCatalogs()
+        {
+            return new Catalogs()
+            {
+                Customer = customerRepository.GetAll()
+            };
+        }
+
+        private class Catalogs : ICatalogContainer
+        {
+            public IList<Customer> Customer { get; set; }
+        }
+        #endregion
+
+
+
+
+
     }
 
     
