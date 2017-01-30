@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -62,15 +63,25 @@ namespace Reusable
 
                         transaction.Commit();
                     }
-                    catch(DbUpdateException ex)
+                    catch (DbEntityValidationException ex)
                     {
-                        transaction.Rollback();
-                        return response.Error(ex.InnerException.InnerException.Message);
+                        // Retrieve the error messages as a list of strings.
+                        var errorMessages = ex.EntityValidationErrors
+                                .SelectMany(x => x.ValidationErrors)
+                                .Select(x => x.ErrorMessage);
+
+                        // Join the list to a single string.
+                        var fullErrorMessage = string.Join("; ", errorMessages);
+
+                        return response.Error(fullErrorMessage);
                     }
                     catch (Exception ex)
                     {
-                        transaction.Rollback();
                         return response.Error(ex.ToString());
+                    }
+                    finally
+                    {
+                        transaction.Rollback();
                     }
                 }
             }
@@ -466,7 +477,7 @@ namespace Reusable
             {
                 return response.Error("ERROR: " + e.ToString());
             }
-            return response;
+            return response.Success();
         }
 
     }
