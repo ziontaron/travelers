@@ -72,6 +72,7 @@ namespace ReusableWebAPI.App_Start
 
             //START SPECIFIC APP BINDINGS:
             kernel.Bind<ICQAHeaderLogic>().To<CQAHeaderLogic>();
+            kernel.Bind<ICQALineLogic>().To<CQALineLogic>();
             kernel.Bind<ICustomerLogic>().To<CustomerLogic>();
             kernel.Bind<ICatStatusLogic>().To<catStatusLogic>();
             kernel.Bind<ICatResultLogic>().To<catResultLogic>();

@@ -48,7 +48,8 @@ namespace ReusableWebAPI.Controllers
                 "itemsCount",
                 "noCache",
                 "totalItems",
-                ""
+                "parentKey",
+                "parentField"
             }.Contains(param))
                 return false;
 
@@ -226,9 +227,43 @@ namespace ReusableWebAPI.Controllers
                 filterGeneral = "";
             }
 
+            string filterParentField = HttpContext.Current.Request["parentField"];
+            if (!isValidJSValue(filterParentField))
+            {
+                filterParentField = "";
+            }
+
+            string filterParentKey = HttpContext.Current.Request["parentKey"];
+            if (!isValidJSValue(filterParentKey))
+            {
+                filterParentKey = "";
+            }
 
             try
             {
+                if (filterParentKey.Length > 0 && filterParentField.Length > 0)
+                {
+
+                    ParameterExpression entityParameter = Expression.Parameter(typeof(Entity), "entityParameter");
+                    Expression childProperty = Expression.PropertyOrField(entityParameter, filterParentField);
+                    
+                    Expression comparison = Expression.Equal(childProperty, Expression.Constant(int.Parse(filterParentKey)));
+
+                    Expression<Func<Entity, bool>> lambda = Expression.Lambda<Func<Entity, bool>>(comparison, entityParameter);
+
+                    //ConstantExpression idExpression = Expression.Constant(int.Parse(filterParentKey), typeof(int));
+                    //BinaryExpression parentFieldEqualsIdExpression = Expression.Equal(parentField, idExpression);
+                    //Expression<Func<int, bool>> lambda1 =
+                    //    Expression.Lambda<Func<int, bool>>(
+                    //        parentFieldEqualsIdExpression,
+                    //        new ParameterExpression[] { parentField });
+
+                    //Expression<Func<Entity, bool>> where = entityFiltered =>
+                    //        typeof(Entity).GetProperty(filterParentField).GetValue(entityFiltered, null).ToString() == filterParentKey;
+
+                    wheres.Add(lambda);
+                }
+
                 foreach (var queryParam in HttpContext.Current.Request.QueryString.AllKeys)
                 {
                     string queryParamValue = HttpContext.Current.Request.QueryString[queryParam];

@@ -1,6 +1,16 @@
 <div class="input-group" ng-class="idResize">
-    <tags-input ng-model="tags"></tags-input>
+    <script type="text/ng-template" id="tag-template">
+        <div style="background: yellow">
+            <div class="right-panel" style="background: red;">
+                <span>{{$getDisplayText()}}</span>
+                <a class="remove-button" ng-click="$removeTag()" style="vertical-align: middle;color:gray;">x</a>
+            </div>
+        </div>
+    </script>
+    <tags-input ng-model="entity" template="tag-template" key-property="{{idField}}" display-property="{{valueField}}" placeholder="{{placeholder}}" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_tag_added($tag, entity);">
+        <auto-complete source="loadTags($query)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+    </tags-input>
     <span class="input-group-btn">
-                                <input style="margin-left: 2px;" type="button" class="btn btn-default" value="New" ng-click="openNewCustomerModal();">
+                                <input style="margin-left: 2px;" type="button" class="btn btn-default" value="New" ng-click="openNew();">
                             </span>
 </div>

@@ -25,18 +25,19 @@ angular.module('inspiracode.baseControllers', [])
 
         //After Load callback
         var _afterLoadCallBack = oMainConfig.afterLoad;
-        if (!_afterLoadCallBack || typeof _afterLoadCallBack != "function") {
+        if (!_afterLoadCallBack || typeof _afterLoadCallBack != 'function') {
             _afterLoadCallBack = function() {};
         }
 
         //After create entity callback
         var _afterCreateCallBack = oMainConfig.afterCreate;
-        if (!_afterCreateCallBack || typeof _afterCreateCallBack != "function") {
+        if (!_afterCreateCallBack || typeof _afterCreateCallBack != 'function') {
             _afterCreateCallBack = function() {};
         }
 
         var _filterStorageName = oMainConfig.filterStorageName;
-        var _filters = oMainConfig.filters;
+        var _filters = oMainConfig.filters || [];
+        var _perPage = oMainConfig.perPage || 10;
         //END CONFIG/////////////////////////////////////
 
 
@@ -121,42 +122,13 @@ angular.module('inspiracode.baseControllers', [])
                 $activityIndicator.stopAnimating();
             });
         };
-        scope.saveModal = function() {
-            $activityIndicator.startAnimating();
-            _baseService.save(scope.itemToUpdate).then(function(data) {
-                angular.copy(scope.itemToUpdate, scope.selectedItem);
-                angular.element('#myModal').off('hidden.bs.modal');
-                angular.element('#myModal').modal('hide');
-                $activityIndicator.stopAnimating();
-            });
-        };
         scope.on_input_change = function(oItem) {
             oItem.editMode = true;
-        };
-        scope.on_closeModal = function() {
-            var originalItem = _baseService.getById(scope.itemToUpdate.id);
-            angular.copy(originalItem, scope.selectedItem);
         };
         scope.undoItem = function(oItem) {
             var originalItem = _baseService.getById(oItem.id);
             angular.copy(originalItem, oItem);
         };
-        //Popup**************************************************************************
-        scope.itemToUpdate = {};
-        scope.dialogTitle = '';
-        scope.openEditItem = function(theItem) {
-            scope.dialogTitle = 'Edit Entity';
-            scope.selectedItem = theItem;
-            scope.itemToUpdate = angular.copy(theItem);
-            angular.element('#myModal').modal('show');
-            angular.element('#myModal').off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
-                scope.$apply(function() {
-                    scope.on_closeModal();
-                });
-            })
-        };
-        //End Popup**********************************************************************
-
         //end scope----------------------------------------
 
         var _getSelectedCount = function() {
@@ -188,10 +160,25 @@ angular.module('inspiracode.baseControllers', [])
         var _load = function() {
             $activityIndicator.startAnimating();
             alertify.closeAll();
-            _baseService.loadDependencies().then(function(data) {
+            return _baseService.loadDependencies().then(function(data) {
                 _setFilterOptions();
                 _fillCatalogs();
-                _updateList();
+                return _updateList();
+
+                // scope.$evalAsync(function() {
+                // });
+            });
+        };
+
+
+        var _loadByParentKey = function(parentType, parentKey) {
+            $activityIndicator.startAnimating();
+            alertify.closeAll();
+
+            return _baseService.loadDependencies().then(function(data) {
+                _setFilterOptionsByParent(parentType, parentKey);
+                _fillCatalogs();
+                return _updateList();
 
                 // scope.$evalAsync(function() {
                 // });
@@ -234,6 +221,12 @@ angular.module('inspiracode.baseControllers', [])
 
         };
 
+        var _setFilterOptionsByParent = function(parentType, parentKey) {
+            _setFilterOptions();
+            scope.filterOptions.parentField = parentType + 'Key';
+            scope.filterOptions.parentKey = parentKey;
+        };
+
         var _persistFilter = function() {
             localStorageService.set(_filterStorageName, JSON.stringify(scope.filterOptions));
         };
@@ -260,7 +253,7 @@ angular.module('inspiracode.baseControllers', [])
 
             var queryParameters = _makeQueryParameters();
 
-            _baseService.getFilteredPage(perPage, page, queryParameters).then(function(data) {
+            return _baseService.getFilteredPage(perPage, page, queryParameters).then(function(data) {
                 scope.baseList = data.Result;
 
                 scope.filterOptions.itemsCount = data.AdditionalData.total_filtered_items;
@@ -279,7 +272,7 @@ angular.module('inspiracode.baseControllers', [])
 
         scope.clearFilters = function() {
             scope.filterOptions = {
-                perPage: 10,
+                perPage: _perPage,
                 page: 1,
                 itemsCount: 0
             };
@@ -295,6 +288,7 @@ angular.module('inspiracode.baseControllers', [])
         // Public baseController API:////////////////////////////////////////////////////////////
         var oAPI = {
             load: _load,
+            loadByParentKey: _loadByParentKey,
             // unselectAll: _unselectAll
         };
         return oAPI;
@@ -545,22 +539,6 @@ angular.module('inspiracode.baseControllers', [])
             var result = sWord.charAt(0).toUpperCase() + sWord.slice(1).toLowerCase();
             return result;
         }
-
-        var _setFilterOptions = function() {
-
-            scope.filterOptions = localStorageService.get(_filterStorageName);
-
-            if (!scope.filterOptions) {
-                scope.clearFilters();
-            } else {
-                scope.filterOptions = JSON.parse(scope.filterOptions);
-            }
-
-        };
-
-        var _persistFilter = function() {
-            localStorageService.set(_filterStorageName, JSON.stringify(scope.filterOptions));
-        };
 
         var _makeQueryParameters = function() {
             var result = '?';

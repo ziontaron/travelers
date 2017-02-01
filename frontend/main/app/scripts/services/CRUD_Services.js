@@ -82,6 +82,25 @@ angular.module('CRUDServices', [])
 
     return crudInstance;
 
+}).service('CQALineService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        entityName: 'CQALine',
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {},
+
+        dependencies: []
+    });
+
+    return crudInstance;
+
 }).service('CustomerService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:

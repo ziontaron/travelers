@@ -186,6 +186,7 @@
     <Compile Include="Auth\LoggedUser.cs" />
     <Compile Include="Auth\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CQALineController.cs" />
     <Compile Include="Controllers\CQAController.cs" />
     <Compile Include="Controllers\catConcernTypeController.cs" />
     <Compile Include="Controllers\catStatusController.cs" />

@@ -73,6 +73,7 @@
     <Compile Include="Logic\catConcernTypeLogic.cs" />
     <Compile Include="Logic\catResultLogic.cs" />
     <Compile Include="Logic\catStatusLogic.cs" />
+    <Compile Include="Logic\CQALineLogic.cs" />
     <Compile Include="Logic\CustomerLogic.cs" />
     <Compile Include="Logic\CQALogic.cs" />
     <Compile Include="MainContext.cs" />
