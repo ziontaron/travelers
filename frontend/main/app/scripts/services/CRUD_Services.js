@@ -81,4 +81,81 @@ angular.module('CRUDServices', [])
 
 
     return crudInstance;
+
+}).service('CustomerService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        //Entity Name = WebService/API to call:
+        entityName: 'Customer',
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {},
+
+        dependencies: []
+    });
+
+    return crudInstance;
+}).service('catConcernTypeService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        //Entity Name = WebService/API to call:
+        entityName: 'catConcernType',
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {},
+
+        dependencies: []
+    });
+
+    return crudInstance;
+}).service('catResultService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        //Entity Name = WebService/API to call:
+        entityName: 'catResult',
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {},
+
+        dependencies: []
+    });
+
+    return crudInstance;
+}).service('catStatusService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        //Entity Name = WebService/API to call:
+        entityName: 'catStatus',
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {},
+
+        dependencies: []
+    });
+
+    return crudInstance;
 });

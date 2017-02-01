@@ -8,7 +8,7 @@
     <div class="form-group">
         <div class="col-sm-4">
             <label>Customer</label>
-            <ng-selectize placeholder="Customer" value-field="id" label-field="CustomerName" options="theCustomers" ng-model="baseEntity.Customer"></ng-selectize>
+            <ng-selectize placeholder="Customer" value-field="id" label-field="CustomerName" the-model="baseEntity.CustomerKey" service="CustomerService"></ng-selectize>
         </div>
         <div class="col-sm-5">
             <label>Notification Date</label>
@@ -22,7 +22,7 @@
     <div class="form-group well well-sm">
         <div class="col-sm-3">
             <label>Part Number</label>
-            <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize>
+            <!-- <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize> -->
         </div>
         <div class="col-sm-6">
             <label>Part Description</label>
@@ -30,13 +30,13 @@
         </div>
         <div class="col-sm-3">
             <label>Product Line</label>
-            <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize>
+            <!-- <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize> -->
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-3">
             <label>Concern Type</label>
-            <ng-selectize placeholder="Concern Type" value-field="id" label-field="Value" options="[{id:1,Value:'Concern One'},{id:2,Value:'Concern Two'}]" ng-model="baseEntity.cat_ConcernType"></ng-selectize>
+            <ng-selectize placeholder="Concern Type" value-field="id" label-field="Value" the-model="baseEntity.ConcernTypeKey" service="catConcernTypeService"></ng-selectize>
         </div>
         <div class="col-sm-5">
             <label>Concern Description</label>
@@ -50,14 +50,16 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Result</label>
-            <ng-selectize placeholder="Result" value-field="id" label-field="Value" options="[{id:1,Value:'Result One'},{id:2,Value:'Result Two'}]" ng-model="baseEntity.cat_Result"></ng-selectize>
+            <ng-selectize placeholder="Result" value-field="id" label-field="Value" the-model="baseEntity.ResultKey" service="catResultService"></ng-selectize>
+            <!-- <ng-selectize placeholder="Result" value-field="id" label-field="Value" options="[{id:1,Value:'Result One'},{id:2,Value:'Result Two'}]" ng-model="baseEntity.cat_Result"></ng-selectize> -->
         </div>
         <div class="col-sm-3">
             <label>Status</label>
-            <ng-selectize placeholder="Status" value-field="id" label-field="Value" options="[{id:1,Value:'Status One'},{id:2,Value:'Status Two'}]" ng-model="baseEntity.cat_Status"></ng-selectize>
+            <ng-selectize placeholder="Status" value-field="id" label-field="Value" the-model="baseEntity.StatusKey" service="catStatusService"></ng-selectize>
+            <!-- <ng-selectize placeholder="Status" value-field="id" label-field="Value" options="[{id:1,Value:'Status One'},{id:2,Value:'Status Two'}]" ng-model="baseEntity.cat_Status"></ng-selectize> -->
             <p class="form-control-static">{{::baseEntity.cat_Status}}</p>
         </div>
     </div>
 </form>
 <input type="button" ng-click="save(baseEntity)" value="save">
-<pre>{{baseEntity | json:'4'}}</pre>
+<cqa-detail></cqa-detail>

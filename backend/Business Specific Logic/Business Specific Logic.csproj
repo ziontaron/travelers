@@ -70,6 +70,10 @@
     <Compile Include="Entities\cat_Result.cs" />
     <Compile Include="Entities\cat_ProductLine.cs" />
     <Compile Include="Entities\cat_ConcernType.cs" />
+    <Compile Include="Logic\catConcernTypeLogic.cs" />
+    <Compile Include="Logic\catResultLogic.cs" />
+    <Compile Include="Logic\catStatusLogic.cs" />
+    <Compile Include="Logic\CustomerLogic.cs" />
     <Compile Include="Logic\CQALogic.cs" />
     <Compile Include="MainContext.cs" />
     <Compile Include="Migrations\201612132233409_Initial.cs" />

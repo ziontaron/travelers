@@ -43,7 +43,8 @@ namespace Reusable
             }
         }
 
-        protected virtual void onSaving(DbContext context, Entity entity, BaseEntity parent = null) { }
+        protected virtual void onAfterSaving(DbContext context, Entity entity, BaseEntity parent = null) { }
+        protected virtual void onBeforeSaving(Entity entity, BaseEntity parent = null) { }
         protected virtual void onCreate(Entity entity) { }
 
         public virtual CommonResponse Add(Entity entity)
@@ -58,8 +59,10 @@ namespace Reusable
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                         repository.byUserId = byUserId;
+
+                        onBeforeSaving(entity);
                         repository.Add(entity);
-                        onSaving(context, entity);
+                        onAfterSaving(context, entity);
 
                         transaction.Commit();
                     }
@@ -73,15 +76,13 @@ namespace Reusable
                         // Join the list to a single string.
                         var fullErrorMessage = string.Join("; ", errorMessages);
 
+                        transaction.Rollback();
                         return response.Error(fullErrorMessage);
                     }
                     catch (Exception ex)
                     {
-                        return response.Error(ex.ToString());
-                    }
-                    finally
-                    {
                         transaction.Rollback();
+                        return response.Error(ex.ToString());
                     }
                 }
             }
@@ -93,7 +94,7 @@ namespace Reusable
             return response.Success(entity);
         }
 
-        public virtual List<Expression<Func<Entity, object>>> NavigationPropertiesWhenGetAll { get; }
+        public virtual List<Expression<Func<Entity, object>>> NavigationPropertiesWhenGetAll { get { return new List<Expression<Func<Entity, object>>>(); } }
         
         public virtual CommonResponse GetAll()
         {
@@ -270,7 +271,7 @@ namespace Reusable
 
                         repository.byUserId = byUserId;
                         repository.Update(entity);
-                        onSaving(context, entity);
+                        onAfterSaving(context, entity);
 
                         transaction.Commit();
                     }
@@ -323,7 +324,7 @@ namespace Reusable
 
                         repository.byUserId = byUserId;
                         ParentType parent = repository.AddToParent<ParentType>(parentID, entity);
-                        onSaving(context, entity, parent);
+                        onAfterSaving(context, entity, parent);
 
                         transaction.Commit();
                     }
