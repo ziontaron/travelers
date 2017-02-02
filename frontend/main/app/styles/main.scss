@@ -3,8 +3,12 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+@import "selectize.bootstrap3";
 @import "alertify";
 @import "alertify-theme";
+@import "theme-flatly";
+@import "selectize.bootstrap3.theme-flatly";
+
 
 .browsehappy {
   margin: 0.2em 0;
