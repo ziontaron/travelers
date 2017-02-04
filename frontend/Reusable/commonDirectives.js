@@ -24,8 +24,7 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
             });
         }
     };
-}).directive('attachmentsBox', function(FileUploader, appConfig, $http, $timeout, $activityIndicator, $q) {
-    var _uploadDeferred;
+}).directive('attachmentsBox', function(FileUploader, appConfig, $http, $timeout, $activityIndicator) {
     return {
         restrict: 'E',
         scope: {
@@ -35,39 +34,43 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
             afterUpload: '&',
             readOnly: '=',
             whenChange: '&',
-            afterDelete: '&'
+            afterDelete: '&',
+            customListBind: '@',
+            customFolderBind: '@'
         },
-        template: '<div nv-file-drop nv-file-over uploader="uploader" class="AttachmentsBox" over-class="UploaderOverClass" style="background-color: rgb(221, 221, 221);padding: 4px;border: solid 2px gray;border-style: dotted;padding-bottom: 34px;" ng-click="$event.stopPropagation();" ng-dblclick="addAttachment();$event.stopPropagation();"><input type="file" nv-file-select uploader="uploader" multiple style="display:none;" /><div class="noselect" ng-show="ownerEntity.Attachments.length==0 || ownerEntity.Attachments == null">No files.</div><p class="input-group noselect" style="border-bottom: solid 1px #E5E5E5;width: 100%;" ng-repeat="attachment in ownerEntity.Attachments"><a ng-hide="attachment.isForUpload" ng-href="{{baseURL}}attachment_download?directory={{attachment.Directory}}&fileName={{attachment.FileName}}&attachmentKind={{kind}}" href="" class="pull-left" style="display: block; top: 4px; position: relative;">{{attachment.FileName}}</a><span ng-show="attachment.isForUpload" class="glyphicon glyphicon-upload pull-left" style="padding: 3px 0;font-size: 14px;"></span><button ng-show="attachment.isForUpload" class="btn-link pull-left" style="display: block; top: 4px; position: relative;padding:0;">{{attachment.FileName}}</button><span class="btn glyphicon glyphicon-remove pull-right btn-sm" style="padding:0;"  ng-hide="printmode || readOnly" ng-click="removeAttachment(attachment, $index);$event.stopPropagation();"></span></p><input type="button" ng-hide="readOnly" class="btn btn-success btn-xs" value="Add File" ng-click="addAttachment();$event.stopPropagation();" style="margin-top: 4px;margin-bottom: 0;position: absolute;bottom: 5px;" /></div>',
+        template: '<div nv-file-drop nv-file-over uploader="uploader" class="AttachmentsBox" over-class="UploaderOverClass" style="background-color: rgb(221, 221, 221);padding: 4px;border: solid 2px gray;border-style: dotted;" ng-click="$event.stopPropagation();" ng-dblclick="addAttachment();$event.stopPropagation();"><input type="file" nv-file-select uploader="uploader" multiple style="display:none;" /><div class="noselect" ng-show="ownerEntity[attachmentsList].length==0 || ownerEntity[attachmentsList] == null">No files.</div><p class="input-group noselect" style="border-bottom: solid 1px #E5E5E5;width: 100%;" ng-repeat="attachment in ownerEntity[attachmentsList]"><a ng-hide="attachment.isForUpload" ng-href="{{baseURL}}attachment_download?directory={{attachment.Directory}}&fileName={{attachment.FileName}}&attachmentKind={{kind}}" href="" class="pull-left" style="display: block; top: 4px; position: relative;">{{attachment.FileName}}</a><span ng-show="attachment.isForUpload" class="glyphicon glyphicon-upload pull-left" style="padding: 3px 0;font-size: 14px;"></span><button ng-show="attachment.isForUpload" class="btn-link pull-left" style="display: block; top: 4px; position: relative;padding:0;">{{attachment.FileName}}</button><span class="btn glyphicon glyphicon-remove pull-right btn-sm" style="padding:0;"  ng-hide="printmode || readOnly" ng-click="removeAttachment(attachment, $index);$event.stopPropagation();"></span></p><input type="button" ng-hide="readOnly" class="btn btn-success btn-xs hidden-print" value="Add File" ng-click="addAttachment();$event.stopPropagation();" style="margin-top: 4px;margin-bottom: 0;" /></div>',
         compile: function compile(tElement, tAttrs, transclude) {
             return {
                 pre: function preLink(scope, iElement, iAttrs, controller) {
                     scope.uploader = new FileUploader();
+                    scope.attachmentsList = scope.customListBind || 'Attachments';
+                    scope.attachmentsFolder = scope.customFolderBind || 'AttachmentsFolder';
                     scope.uploader.onAfterAddingFile = function(fileItem) {
-                        if (!scope.ownerEntity.Attachments) {
-                            scope.ownerEntity.Attachments = [];
+                        if (!scope.ownerEntity[scope.attachmentsList]) {
+                            scope.ownerEntity[scope.attachmentsList] = [];
                         }
-                        scope.ownerEntity.Attachments.push({
+                        scope.ownerEntity[scope.attachmentsList].push({
                             FileName: fileItem.file.name,
-                            Directory: (scope.ownerEntity.AttachmentsFolder || ''),
+                            Directory: (scope.ownerEntity[scope.attachmentsFolder] || ''),
                             isForUpload: true
                         });
                         scope.whenChange({
                             oEntity: scope.ownerEntity
                         });
-                        // scope.ownerEntity.api_attachments.uploadFiles();
                     };
                     scope.uploader.onWhenAddingFileFailed = function(item, filter, options) {
-                        console.debug(item);
-                        console.debug(filter);
-                        console.debug(options);
+                        // console.debug(item);
+                        // console.debug(filter);
+                        // console.debug(options);
                     };
                     scope.uploader.onSuccessItem = function(item, response, status, headers) {
                         var backendResponse = response;
                         if (!backendResponse.ErrorThrown) {
-                            scope.ownerEntity.AttachmentsFolder = backendResponse.ResponseDescription;
+                            scope.ownerEntity[scope.attachmentsFolder] = backendResponse.ResponseDescription;
                             var theAttachment = scope.getAttachment(item.file.name);
                             delete theAttachment.isForUpload;
                         } else {
+                            scope.ErrorThrown = true;
                             alertify.alert(backendResponse.ResponseDescription).set('modal', true);
                             console.debug(response);
                         }
@@ -76,16 +79,16 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
                         console.debug(item);
                         console.debug(response);
                         console.debug(status);
-                        _uploadDeferred.reject(scope.ownerEntity);
                     };
                     scope.uploader.onCompleteAll = function() {
-                        scope.afterUpload({
-                            oEntity: scope.ownerEntity,
-                            oDeferred: _uploadDeferred
-                        });
+                        if (!scope.ErrorThrown) {
+                            scope.afterUpload({
+                                oEntity: scope.ownerEntity
+                            });
+                        }
                     };
                     scope.uploader.onBeforeUploadItem = function(item) {
-                        item.url = appConfig.API_URL + 'attachment?attachmentKind=' + (scope.kind || '') + '&targetFolder=' + (scope.ownerEntity.AttachmentsFolder || '')
+                        item.url = appConfig.API_URL + 'attachment?attachmentKind=' + (scope.kind || '') + '&targetFolder=' + (scope.ownerEntity[scope.attachmentsFolder] || '')
                     };
                 },
                 post: function(scope, iElement, iAttrs) {
@@ -93,21 +96,23 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
                     scope.$watch(function() {
                         return scope.ownerEntity;
                     }, function() {
-                        if (scope.ownerEntity && !scope.ownerEntity.api_attachments) {
-                            scope.ownerEntity.api_attachments = {};
-                            scope.ownerEntity.api_attachments.uploadFiles = function() {
-                                _uploadDeferred = $q.defer();
+                        if (scope.ownerEntity) {
+                            var apiName = 'api_attachments';
+                            if (scope.customListBind) {
+                                apiName = 'api_' + scope.customListBind;
+                            }
+                            scope.ownerEntity[apiName] = {};
+                            scope.ownerEntity[apiName].uploadFiles = function() {
+                                scope.ErrorThrown = false;
                                 if (scope.uploader.getNotUploadedItems().length > 0) {
                                     scope.uploader.uploadAll();
                                 } else {
                                     scope.afterUpload({
-                                        oEntity: scope.ownerEntity,
-                                        oDeferred: _uploadDeferred
+                                        oEntity: scope.ownerEntity
                                     });
                                 }
-                                return _uploadDeferred.promise;
                             };
-                            scope.ownerEntity.api_attachments.clearQueue = function() {
+                            scope.ownerEntity[apiName].clearQueue = function() {
                                 scope.uploader.clearQueue();
                             };
                         }
@@ -116,18 +121,18 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
                     scope.removeAttachment = function(attachment, index) {
 
                         if (attachment.isForUpload) {
-                            scope.ownerEntity.Attachments.splice(index, 1);
                             scope.uploader.removeFromQueue(scope.getItem(attachment.FileName));
+                            scope.ownerEntity[scope.attachmentsList].splice(index, 1);
                         } else {
                             alertify.confirm(
                                 'This action cannot be undo, do you want to continue?',
                                 function() {
                                     scope.$apply(function() {
                                         $activityIndicator.startAnimating();
-                                        $http.get(appConfig.API_URL + 'attachment_delete?directory=' + attachment.Directory + '&fileName=' + attachment.FileName + '&attachmentKind=' + scope.kind + '&noCache=' + Number(new Date())).then(function(data) {
+                                        $http.get(appConfig.API_URL + 'attachment_delete?directory=' + attachment.Directory + '&fileName=' + attachment.FileName + '&attachmentKind=' + scope.kind).then(function(data) {
                                             var backendResponse = data;
                                             if (!backendResponse.ErrorThrown) {
-                                                scope.ownerEntity.Attachments.splice(index, 1);
+                                                scope.ownerEntity[scope.attachmentsList].splice(index, 1);
                                                 $timeout(function() {
                                                     alertify.success('File deleted successfully.');
                                                 }, 100);
@@ -164,9 +169,9 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
                         }
                     };
                     scope.getAttachment = function(sName) {
-                        for (var i = 0; i < scope.ownerEntity.Attachments.length; i++) {
-                            if (scope.ownerEntity.Attachments[i].FileName == sName) {
-                                return scope.ownerEntity.Attachments[i];
+                        for (var i = 0; i < scope.ownerEntity[scope.attachmentsList].length; i++) {
+                            if (scope.ownerEntity[scope.attachmentsList][i].FileName == sName) {
+                                return scope.ownerEntity[scope.attachmentsList][i];
                             }
                         }
                         return null;

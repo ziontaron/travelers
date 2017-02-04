@@ -24,6 +24,7 @@
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     border-width: 2px;
     box-shadow: none;
+    padding-top: 6px;
 }
 
 .selectize-control.single .selectize-input.dropdown-active,
@@ -32,7 +33,7 @@
     border-color: #2c3e50;
     outline: 0;
     box-shadow: none;
-    padding-top: 3px
+    padding-top: 6px;
 }
 
 .selectize-control.single .selectize-input.dropdown-active:after {
@@ -41,4 +42,5 @@
 
 .selectize-control.single .selectize-input input {
     height: 35px;
+    top: 1px;
 }

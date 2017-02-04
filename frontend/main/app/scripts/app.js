@@ -20,6 +20,8 @@ angular.module('appApp', [
     'inspiracode.baseControllers',
     'angularUtils.directives.dirPagination',
     'ngTagsInput',
+    'angularFileUpload',
+    'CommonDirectives'
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -55,9 +57,9 @@ angular.module('appApp', [
             controllerAs: 'CQAList'
         })
         .when('/cqa', {
-          templateUrl: 'views/cqa.html',
-          controller: 'CqaCtrl',
-          controllerAs: 'cqa'
+            templateUrl: 'views/cqa.html',
+            controller: 'CqaCtrl',
+            controllerAs: 'cqa'
         })
         .otherwise({
             redirectTo: '/CQAList'

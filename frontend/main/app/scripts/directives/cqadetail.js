@@ -128,6 +128,12 @@ angular.module('appApp').directive('cqaDetail', function() {
                     savePending();
                 }
             });
+
+
+
+            $scope.openUpdate = function() {
+                angular.element('#modal-CQALine').modal('show');
+            };
         }
     };
 });

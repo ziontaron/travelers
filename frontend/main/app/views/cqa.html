@@ -1,10 +1,16 @@
 <form class="form-horizontal" role="form" novalidate>
     <div class="form-group">
-        <div class="col-sm-3 col-sm-offset-9 well">
+        <div class="col-sm-3 well">
             <h4 class="text-center">CQA Number</h4>
-            <h3 class="text-center">12345{{::baseEntity.CQANumber}}</h3>
+            <h4 class="text-center">12345{{::baseEntity.CQANumber}}</h4>
             <h4 class="text-center">PTR Number</h4>
-            <h3 class="text-center">12345{{::baseEntity.CQANumber}}</h3>
+            <h4 class="text-center">12345{{::baseEntity.CQANumber}}</h4>
+        </div>
+        <div class="col-sm-5 col-sm-offset-4 text-right">
+            <label>CQA Response</label>
+            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
+            <label>First Response</label>
+            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
         </div>
     </div>
     <div class="form-group">
@@ -21,18 +27,25 @@
             <select class="form-control" ng-model="baseEntity.ReoccurringIssue" ng-options="option.value as option.label for option in [{value: false, label:'No'}, {value: true, label:'Yes'}]"></select>
         </div>
     </div>
-    <div class="form-group well well-sm">
-        <div class="col-sm-3">
-            <label>Part Number</label>
-            <!-- <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize> -->
+    <div class="well well-sm">
+        <div class="form-group">
+            <div class="col-xs-12">
+                <button class="btn btn-primary btn-sm">Search</button>
+            </div>
         </div>
-        <div class="col-sm-6">
-            <label>Part Description</label>
-            <input type="text" class="form-control" ng-model="baseEntity.cat_PartNumber.PartDescription">
-        </div>
-        <div class="col-sm-3">
-            <label>Product Line</label>
-            <!-- <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize> -->
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label>Part Number</label>
+                <!-- <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize> -->
+            </div>
+            <div class="col-sm-6">
+                <label>Part Description</label>
+                <!-- <input type="text" class="form-control" ng-model="baseEntity.cat_PartNumber.PartDescription"> -->
+            </div>
+            <div class="col-sm-3">
+                <label>Product Line</label>
+                <!-- <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize> -->
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -46,7 +59,7 @@
         </div>
         <div class="col-sm-4 text-right">
             <label>Number of concerned parts</label>
-            <input type="text" class="form-control" ng-model="baseEntity.NumberConcernedParts">
+            <input type="text" class="form-control text-right" ng-model="baseEntity.NumberConcernedParts">
         </div>
     </div>
     <div class="form-group">
@@ -63,5 +76,28 @@
         </div>
     </div>
 </form>
-<input type="button" ng-click="save(baseEntity)" value="save">
 <cqa-detail parent-entity="baseEntity" parent-type="CQAHeader"></cqa-detail>
+<br>
+<br>
+<br>
+<nav class="navbar navbar-default navbar navbar-fixed-bottom navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <form class="navbar-form navbar-right">
+                <button type="submit" class="btn btn-primary" ng-click="addCQALine()">Add CQA Line</button>
+                <button type="submit" class="btn btn-primary" ng-click="save(baseEntity);">Save</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
