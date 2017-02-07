@@ -7,7 +7,7 @@
  * # CqaCtrl
  * Controller of the appApp
  */
-angular.module('appApp').controller('CqaCtrl', function($scope, formController, CQAHeaderService, CustomerService, catResultService, catStatusService, catConcernTypeService) {
+angular.module('appApp').controller('CqaCtrl', function($scope, formController, CQAHeaderService, CustomerService, catResultService, catStatusService, catConcernTypeService, CQALineService) {
 
     $scope.screenTitle = 'CQA Form';
 
@@ -28,8 +28,19 @@ angular.module('appApp').controller('CqaCtrl', function($scope, formController, 
     $scope.catConcernTypeService = catConcernTypeService;
     $scope.catStatusService = catStatusService;
 
+    $scope.CQALineService = CQALineService;
+
     $scope.addCQALine = function() {
-        angular.element('#modal-CQALine').modal('show');
+        CQALineService.createEntity().then(function(oNewEntity) {
+            $scope.CQALineToBeSaved = oNewEntity;
+            $scope.CQALineToBeSaved.CQAHeaderKey = $scope.baseEntity.id;
+            angular.element('#modal-CQALine').modal('show');
+        });
+    };
+
+    $scope.afterSaveCQALine = function(entitySaved) {
+        angular.element('#modal-CQALine').modal('hide');
+        $scope.$broadcast('RefreshCQADetail');
     };
 
 });

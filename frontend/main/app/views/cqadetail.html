@@ -1,96 +1,42 @@
 <ul class="list-group">
-    <li class="list-group-item">
+    <li class="list-group-item" ng-repeat="item in baseList">
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    <button class="btn btn-default btn-sm" ng-click="openUpdateCQALine(item)">Update</button>
+                    <button class="btn btn-default btn-sm" ng-click="deleteCQALine()">Delete</button>
+                </p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12 col-sm-4">
                 <div class="row">
-                    <div class="col-xs-12">
-                        <p>
-                            <button class="btn btn-default btn-sm" ng-click="openUpdate()">Update</button>
-                            <button class="btn btn-default btn-sm">Delete</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-xs-6">
                         <label>Due Date</label>
-                        <p class="form-control-static">10/02/1985</p>
+                        <p class="form-control-static">{{item.DueDate | date:'mediumDate'}}</p>
                     </div>
                     <div class="col-xs-6">
                         <label>Closed Date</label>
-                        <p class="form-control-static">fecha prueba</p>
+                        <p class="form-control-static">{{item.ClosedDate | date:'mediumDate'}}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-2">
+            <div class="col-xs-12 col-sm-4">
                 <label>Who's Got Next Step</label>
-                <p class="form-control-static">Tammy Poteracke</p>
+                <p class="form-control-static">{{item.Champion}}</p>
             </div>
-            <div class="col-xs-12 col-sm-3">
-                <label>Ongoing Activities</label>
-                <p class="form-control-static">Agape informed CQA of flash on INS 7858S or Capsonic 201170 actuator guide 201105 causing some assembly issues. Agape will work through the issue, but wants it fixed and ship no more. </p>
-            </div>
-            <div class="col-xs-12 col-sm-3">
+            <div class="col-xs-12 col-sm-4">
                 <label>Attachments</label>
                 <p class="form-control-static">
                     <attachments-box owner-entity="assembly" kind="BOMAttachments" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="true" when-change="on_attachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>
                 </p>
             </div>
         </div>
-    </li>
-    <li class="list-group-item">
         <div class="row">
-            <div class="col-xs-12 col-sm-4">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <p>
-                            <button class="btn btn-default btn-sm" ng-click="openUpdate()">Update</button>
-                            <button class="btn btn-default btn-sm">Delete</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <label>Due Date</label>
-                        <p class="form-control-static">10/02/1985</p>
-                    </div>
-                    <div class="col-xs-6">
-                        <label>Closed Date</label>
-                        <p class="form-control-static">fecha prueba</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-2">
-                <label>Who's Got Next Step</label>
-                <p class="form-control-static">Tammy Poteracke</p>
-            </div>
-            <div class="col-xs-12 col-sm-3">
+            <div class="col-xs-12 col-sm-12">
                 <label>Ongoing Activities</label>
-                <p class="form-control-static">Agape informed CQA of flash on INS 7858S or Capsonic 201170 actuator guide 201105 causing some assembly issues. Agape will work through the issue, but wants it fixed and ship no more. </p>
-            </div>
-            <div class="col-xs-12 col-sm-3">
-                <label>Attachments</label>
-                <p class="form-control-static">
-                    <attachments-box owner-entity="assembly" kind="BOMAttachments" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="true" when-change="on_attachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>
-                </p>
+                <p class="form-control-static">{{item.OngoingActivities}}</p>
             </div>
         </div>
     </li>
-    
 </ul>
-<div class="modal fade" id="modal-CQALine">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">CQA Line</h4>
-            </div>
-            <div class="modal-body">
-                <cqa-line></cqa-line>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
-</div>

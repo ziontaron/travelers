@@ -10,8 +10,8 @@ angular.module('appApp').directive('cqaLine', function() {
     return {
         templateUrl: 'views/cqaLine.html',
         restrict: 'E',
-        link: function postLink(scope, element, attrs) {
-        	
+        scope: {
+            entity: '='
         }
     };
 });

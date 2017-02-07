@@ -25,13 +25,14 @@ angular.module('appApp').controller('CqalistCtrl', function($scope, listControll
         filterStorageName: 'CQAList_filter'
     });
 
-    $scope.open = function(oEntity) {
+    $scope.openCQA = function(oEntity) {
         go('/cqa?id=' + oEntity.id);
     };
 
     var go = function(path) {
         if (path != $location.url()) {
-            $window.open('#!' + path, '_blank');
+            $location.url(path);
+            // $window.open('#!' + path, '_blank');
         }
     };
 

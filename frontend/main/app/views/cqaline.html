@@ -2,25 +2,25 @@
     <div class="form-group">
         <div class="col-xs-12">
             <label>Due Date</label>
-            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
+            <input type="date" class="form-control" ng-model="entity.ConvertedDueDate" />
         </div>
     </div>
     <div class="form-group">
         <div class="col-xs-12">
             <label>Closed Date</label>
-            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
+            <input type="date" class="form-control" ng-model="entity.ConvertedClosedDate" />
         </div>
     </div>
     <div class="form-group">
         <div class="col-xs-12">
             <label>Who-s Got Next Step</label>
-            <textarea class="form-control"></textarea>
+            <textarea class="form-control" ng-model="entity.Champion"></textarea>
         </div>
     </div>
     <div class="form-group">
         <div class="col-xs-12">
             <label>Ongoing Activities</label>
-            <textarea class="form-control"></textarea>
+            <textarea class="form-control" ng-model="entity.OngoingActivities"></textarea>
         </div>
     </div>
     <div class="form-group">
@@ -30,3 +30,6 @@
         </div>
     </div>
 </form>
+<pre>
+    {{entity | json: 4}}
+</pre>

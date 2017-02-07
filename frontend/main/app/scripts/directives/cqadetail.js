@@ -45,7 +45,8 @@ angular.module('appApp').directive('cqaDetail', function() {
 
             var insertItemForAdd = function(items, change) {
                 if (!items.length || (items[0] && items[0].id > -1)) {
-                    items.unshift({});
+                    // items.unshift({});
+                    
                     if (change) {
                         // table.selectCellByProp(1, change[1]); TODO
                     }
@@ -55,12 +56,16 @@ angular.module('appApp').directive('cqaDetail', function() {
             $scope.$watch(function() {
                 return $scope.parentEntity;
             }, function() {
+                refresh();
+            });
+
+            function refresh() {
                 if ($scope.parentEntity) {
                     list.loadByParentKey($scope.parentType, $scope.parentEntity.id);
                 } else {
                     list.loadByParentKey($scope.parentType, 0); //Clear list
                 }
-            });
+            }
 
             var savePending = function() {
 
@@ -120,20 +125,26 @@ angular.module('appApp').directive('cqaDetail', function() {
 
             };
 
-            $scope.$on('SaveCQALines', function() {
-                var MetricYearKey = $scope.parentEntity.id;
-                if (!$scope.parentEntity || !$scope.parentEntity.id) {
-                    alertify.message('Nothing to save.');
-                } else {
-                    savePending();
-                }
-            });
+            // $scope.$on('SaveCQALines', function() {
+            //     var MetricYearKey = $scope.parentEntity.id;
+            //     if (!$scope.parentEntity || !$scope.parentEntity.id) {
+            //         alertify.message('Nothing to save.');
+            //     } else {
+            //         savePending();
+            //     }
+            // });
 
 
 
-            $scope.openUpdate = function() {
+            $scope.openUpdateCQALine = function(item) {
+                $scope.$parent.CQALineToBeSaved = angular.copy(item);
                 angular.element('#modal-CQALine').modal('show');
             };
+
+            $scope.$on('RefreshCQADetail', function() {
+                refresh();
+            });
+
         }
     };
 });

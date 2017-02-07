@@ -84,7 +84,7 @@ angular.module('appApp').directive('ngSelectize', function($timeout) {
 
             function load() {
                 loading = true;
-                scope.service.loadEntities().then(function(data) {
+                scope.service.loadEntities(true).then(function(data) {
                     scope.options = data.Result;
                     refresh();
                 });

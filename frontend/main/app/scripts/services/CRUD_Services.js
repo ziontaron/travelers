@@ -10,6 +10,26 @@
 
 angular.module('CRUDServices', [])
 
+.service('utilsService', function($filter) {
+
+    var service = {};
+
+    service.toJavascriptDate = function(sISO_8601_Date) {
+        return sISO_8601_Date ? moment(sISO_8601_Date, moment.ISO_8601).toDate() : null;
+    };
+
+    service.toServerDate = function(oDate) {
+        var momentDate = moment(oDate);
+        if (momentDate.isValid()) {
+            momentDate.local();
+            return momentDate.format();
+        }
+        return null;
+    };
+
+    return service;
+})
+
 .service('userService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
@@ -82,19 +102,22 @@ angular.module('CRUDServices', [])
 
     return crudInstance;
 
-}).service('CQALineService', function(crudFactory) {
+}).service('CQALineService', function(crudFactory, utilsService) {
     var crudInstance = new crudFactory({
         entityName: 'CQALine',
 
         catalogs: [],
 
         adapter: function(theEntity) {
+            theEntity.ConvertedDueDate = utilsService.toJavascriptDate(theEntity.DueDate);
+            theEntity.ConvertedClosedDate = utilsService.toJavascriptDate(theEntity.ClosedDate);
             return theEntity;
         },
 
-        adapterIn: function(theEntity) {},
-
-        adapterOut: function(theEntity, self) {},
+        adapterOut: function(theEntity, self) {
+            theEntity.DueDate = utilsService.toServerDate(theEntity.ConvertedDueDate);
+            theEntity.ClosedDate = utilsService.toServerDate(theEntity.ConvertedClosedDate);
+        },
 
         dependencies: []
     });
