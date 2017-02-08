@@ -26,7 +26,7 @@ namespace BusinessSpecificLogic.Logic
         {
             foreach (var item in entities)
             {
-                item.Customer = customerRepository.GetByID(item.CustomerKey);
+                item.Customer = customerRepository.GetByID(item.CustomerKey ?? -1);
             }   
         }
 
@@ -48,7 +48,6 @@ namespace BusinessSpecificLogic.Logic
             entity.NotificationDate = DateTime.Now;
             entity.CQANumberKey = 2;
             entity.PartNumberKey = 1;
-            entity.CustomerKey = 1;
         }
 
 

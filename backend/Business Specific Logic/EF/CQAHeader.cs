@@ -19,7 +19,7 @@ namespace BusinessSpecificLogic.EF
         [Key]
         public int CQAHeaderKey { get; set; }
 
-        public int CustomerKey { get; set; }
+        public int? CustomerKey { get; set; }
 
         public int CQANumberKey { get; set; }
 

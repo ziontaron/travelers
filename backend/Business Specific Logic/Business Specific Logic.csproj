@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201612132243483_AddingUserAndTrack.Designer.cs">
       <DependentUpon>201612132243483_AddingUserAndTrack.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702072331555_OptionalCustomerForCQAHeader.cs" />
+    <Compile Include="Migrations\201702072331555_OptionalCustomerForCQAHeader.Designer.cs">
+      <DependentUpon>201702072331555_OptionalCustomerForCQAHeader.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612132243483_AddingUserAndTrack.resx">
       <DependentUpon>201612132243483_AddingUserAndTrack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702072331555_OptionalCustomerForCQAHeader.resx">
+      <DependentUpon>201702072331555_OptionalCustomerForCQAHeader.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

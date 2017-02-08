@@ -87,7 +87,7 @@ angular.module('inspiracode.baseControllers', [])
                     $activityIndicator.startAnimating();
                     _baseService.createEntity().then(function(oNewEntity) {
                         _baseService.save(oNewEntity).then(function(data) {
-                            var theCreatedEntity = angular.copy(data.Result);
+                            var theCreatedEntity = angular.copy(data);
                             scope.baseList.push(theCreatedEntity);
                             _afterCreateCallBack(theCreatedEntity);
                             $activityIndicator.stopAnimating();

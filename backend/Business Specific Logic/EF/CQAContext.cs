@@ -13,6 +13,8 @@ namespace BusinessSpecificLogic.EF
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
+
+            Database.Log = Console.Write;
         }
 
         public virtual DbSet<cat_ConcernType> cat_ConcernType { get; set; }
@@ -52,13 +54,7 @@ namespace BusinessSpecificLogic.EF
                 .HasMany(e => e.CQAHeaders)
                 .WithRequired(e => e.CQANumber)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Customer>()
-                .HasMany(e => e.CQAHeaders)
-                .WithRequired(e => e.Customer)
-                .WillCascadeOnDelete(false);
-
-
+            
             #region Reusable
             modelBuilder.Entity<User>()
                 .Property(e => e.Identicon64)

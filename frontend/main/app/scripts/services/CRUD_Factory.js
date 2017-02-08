@@ -185,10 +185,7 @@ angular.module('inspiracode.crudFactory', [])
                     return this._arrAllRecords[i];
                 }
             }
-            return {
-                id: -1,
-                value: ''
-            };
+            return null;
         };
     };
 
