@@ -1,4 +1,6 @@
-﻿namespace Reusable
+﻿using System;
+
+namespace Reusable
 {
     public class CommonResponse
     {
@@ -6,6 +8,7 @@
         public string ResponseDescription { get; set; }
         public object Result { get; set; }
         public object AdditionalData { get; set; }
+        public string ErrorType { get; set; }
 
         public CommonResponse()
         {
@@ -14,11 +17,28 @@
             Result = null;
         }
 
+        public CommonResponse Error(KnownError knownError)
+        {
+            ErrorThrown = true;
+            ResponseDescription = knownError.Message;
+            Result = knownError;
+            if (knownError.Type == KnownError.TypeError.INCIDENT)
+            {
+                ErrorType = "INCIDENT";
+            }
+            else
+            {
+                ErrorType = "MESSAGE";
+            }
+            return this;
+        }
+
         public CommonResponse Error(string sError, object result)
         {
             ErrorThrown = true;
             ResponseDescription = sError;
             Result = result;
+            ErrorType = "MESSAGE";
             return this;
         }
 
@@ -26,6 +46,7 @@
         {
             ErrorThrown = true;
             ResponseDescription = sError;
+            ErrorType = "MESSAGE";
             return this;
         }
 
@@ -54,11 +75,34 @@
         }
     }
 
-    class ValidationResult
+    public class ValidationResult
     {
         public long EntityId { get; set; }
         public string EntityKind { get; set; }
         public string FriendlyIdentifier { get; set; }
         public string Description { get; set; }
     }
+
+    public class KnownError : Exception
+    {
+        public KnownError(string message) : base(message)
+        {
+            Type = TypeError.MESSAGE;
+        }
+
+        public KnownError(string message, TypeError type) : base(message)
+        {
+            Type = type;
+        }
+
+        public enum TypeError
+        {
+            MESSAGE, //Just popup an error message
+            INCIDENT //Needs front-end specific handling
+        }
+
+        public TypeError Type { get; set; }
+
+    }
+
 }

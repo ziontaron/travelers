@@ -14,7 +14,7 @@ namespace BusinessSpecificLogic.EF
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
 
-            Database.Log = Console.Write;
+            //Database.Log = Console.Write;
         }
 
         public virtual DbSet<cat_ConcernType> cat_ConcernType { get; set; }
@@ -26,6 +26,11 @@ namespace BusinessSpecificLogic.EF
         public virtual DbSet<CQALine> CQALines { get; set; }
         public virtual DbSet<CQANumber> CQANumbers { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+
+        #region From Reusable Modules
+        public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

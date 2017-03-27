@@ -30,10 +30,14 @@ namespace Reusable
 
         [Required]
         [StringLength(20)]
+        [Index(IsUnique = true)]
         public string UserName { get; set; }
 
         [StringLength(50)]
         public string Role { get; set; }
+
+        [StringLength(50)]
+        public string AuthorizatorPassword { get; set; }
 
         [StringLength(256)]
         public string Email { get; set; }
@@ -72,5 +76,12 @@ namespace Reusable
         public virtual ICollection<Track> Tracks4 { get; set; }
 
         public override int id { get { return UserKey; } }
+
+        [NotMapped]
+        public string Password { get; set; }
+
+        [NotMapped]
+        public string ConfirmPassword { get; set; }
+
     }
 }

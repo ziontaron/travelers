@@ -11,10 +11,6 @@ namespace BusinessSpecificLogic.Logic
         public catResultLogic(DbContext context, IRepository<cat_Result> repository) : base(context, repository)
         {
         }
-
-        protected override void loadNavigationProperties(DbContext context, params cat_Result[] entities)
-        {
-        }
     }
 
 }

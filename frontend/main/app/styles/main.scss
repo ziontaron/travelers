@@ -1,12 +1,11 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
 @import "selectize.bootstrap3";
 @import "alertify";
 @import "alertify-theme";
-@import "theme-flatly";
+@import "reusable-styles";
 @import "selectize.bootstrap3.theme-flatly";
 @import "attachments-flatly";
 

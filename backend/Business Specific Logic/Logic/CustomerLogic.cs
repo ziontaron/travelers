@@ -11,10 +11,6 @@ namespace BusinessSpecificLogic.Logic
         public CustomerLogic(DbContext context, IRepository<Customer> repository) : base(context, repository)
         {
         }
-
-        protected override void loadNavigationProperties(DbContext context, params Customer[] entities)
-        {
-        }
     }
 
 }

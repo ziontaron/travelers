@@ -22,7 +22,7 @@ namespace BusinessSpecificLogic.Logic
             this.customerRepository = customerRepository;
         }
 
-        protected override void loadNavigationProperties(DbContext context, params CQAHeader[] entities)
+        protected override void loadNavigationProperties(params CQAHeader[] entities)
         {
             foreach (var item in entities)
             {

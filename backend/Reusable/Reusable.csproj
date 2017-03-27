@@ -60,7 +60,8 @@
     <Compile Include="Reusable\Entities\Gridster.cs" />
     <Compile Include="Reusable\IBaseLogic.cs" />
     <Compile Include="Reusable\ICatalogContainer.cs" />
-    <Compile Include="Reusable\Logic\UserLogic.cs" />
+    <Compile Include="Reusable\IRecursiveEntity.cs" />
+    <Compile Include="Reusable\LoggedUser.cs" />
     <Compile Include="Reusable\Repository.cs" />
     <Compile Include="Reusable\CommonResponse.cs" />
     <Compile Include="Reusable\IEntity.cs" />

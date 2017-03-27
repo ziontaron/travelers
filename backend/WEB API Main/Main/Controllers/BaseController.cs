@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Reusable;
-using ReusableWebAPI.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,6 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.Web.Script.Serialization;
 
 namespace ReusableWebAPI.Controllers
 {
@@ -22,10 +20,7 @@ namespace ReusableWebAPI.Controllers
         public BaseController(IBaseLogic<Entity> logic)
         {
             _logic = logic;
-
-            //LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-            //_logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = 2;
+            _logic.loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
         }
 
         protected bool isValidJSValue(string value)
@@ -68,6 +63,31 @@ namespace ReusableWebAPI.Controllers
         virtual public CommonResponse Get(int id)
         {
             return _logic.GetByID(id);
+        }
+
+        // GET: api/Base/5
+        [HttpGet Route("getSingleWhere/{prop}/{value}")]
+        virtual public CommonResponse GetSingleWhere(string prop, string value)
+        {
+            CommonResponse response = new CommonResponse();
+            List<Expression<Func<Entity, bool>>> wheres = new List<Expression<Func<Entity, bool>>>();
+
+            try
+            {
+                ParameterExpression entityParameter = Expression.Parameter(typeof(Entity), "entityParameter");
+                Expression childProperty = Expression.PropertyOrField(entityParameter, prop);
+
+                Expression comparison = Expression.Equal(childProperty, Expression.Constant(value));
+
+                Expression<Func<Entity, bool>> lambda = Expression.Lambda<Func<Entity, bool>>(comparison, entityParameter);
+
+                wheres.Add(lambda);
+            }
+            catch (Exception ex)
+            {
+                return response.Error(ex.ToString());
+            }
+            return _logic.GetSingleWhere(wheres.ToArray());
         }
 
         // GET: api/Base
@@ -119,6 +139,24 @@ namespace ReusableWebAPI.Controllers
             }
         }
 
+        // POST: api/Base
+        [HttpPost Route("SetProperty/{sProperty}/{newValue}")]
+        virtual public CommonResponse SetProperty(string sProperty, string newValue, [FromBody]string value)
+        {
+            CommonResponse response = new CommonResponse();
+
+            Entity entity;
+            try
+            {
+                entity = JsonConvert.DeserializeObject<Entity>(value);
+                return _logic.SetPropertyValue(entity, sProperty, newValue);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
+
         [HttpPost Route("Create")]
         virtual public CommonResponse Create()
         {
@@ -133,9 +171,9 @@ namespace ReusableWebAPI.Controllers
 
             try
             {
-                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                entity = jsonSerializer.Deserialize<Entity>(value);
-                //entity = JsonConvert.DeserializeObject<Entity>(value);
+                //JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                //entity = jsonSerializer.Deserialize<Entity>(value);
+                entity = JsonConvert.DeserializeObject<Entity>(value);
 
                 return _logic.Update(entity);
             }
@@ -145,10 +183,27 @@ namespace ReusableWebAPI.Controllers
             }
         }
 
-        // DELETE: api/Base/5
+        // DELETE: api/Base/
         virtual public CommonResponse Delete(int id)
         {
             return _logic.Remove(id);
+        }
+
+        [HttpPost Route("RemoveEntity")]
+        virtual public CommonResponse Delete([FromBody]string value)
+        {
+            CommonResponse response = new CommonResponse();
+            Entity entity;
+
+            try
+            {
+                entity = JsonConvert.DeserializeObject<Entity>(value);
+                return _logic.Remove(entity);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
         }
 
         [HttpGet Route("GetAvailableForEntity/{sEntityType}/{id}")]
@@ -214,7 +269,6 @@ namespace ReusableWebAPI.Controllers
             }
         }
 
-
         [HttpGet, Route("GetPage/{perPage}/{page}")]
         virtual public CommonResponse GetPage(int perPage, int page)
         {
@@ -246,7 +300,7 @@ namespace ReusableWebAPI.Controllers
 
                     ParameterExpression entityParameter = Expression.Parameter(typeof(Entity), "entityParameter");
                     Expression childProperty = Expression.PropertyOrField(entityParameter, filterParentField);
-                    
+
                     Expression comparison = Expression.Equal(childProperty, Expression.Constant(int.Parse(filterParentKey)));
 
                     Expression<Func<Entity, bool>> lambda = Expression.Lambda<Func<Entity, bool>>(comparison, entityParameter);
@@ -269,9 +323,19 @@ namespace ReusableWebAPI.Controllers
                     string queryParamValue = HttpContext.Current.Request.QueryString[queryParam];
                     if (isValidParam(queryParam) && isValidJSValue(queryParamValue))
                     {
-                        Expression<Func<Entity, bool>> where = entityFiltered =>
-                            typeof(Entity).GetProperty(queryParam.Substring(6)).GetValue(entityFiltered, null).ToString() == queryParamValue;
-                        wheres.Add(where);
+                        string sPropertyName = queryParam.Substring(6);
+
+                        PropertyInfo oProp = typeof(Entity).GetProperty(sPropertyName);
+                        Type tProp = oProp.PropertyType;
+
+                        ParameterExpression entityParameter = Expression.Parameter(typeof(Entity), "entityParameter");
+                        Expression childProperty = Expression.PropertyOrField(entityParameter, sPropertyName);
+
+                        Expression comparison = Expression.Equal(childProperty, Expression.Constant(Convert.ChangeType(queryParamValue, tProp)));
+
+                        Expression<Func<Entity, bool>> lambda = Expression.Lambda<Func<Entity, bool>>(comparison, entityParameter);
+
+                        wheres.Add(lambda);
                     }
                 }
             }
@@ -284,5 +348,40 @@ namespace ReusableWebAPI.Controllers
         }
 
         protected Expression<Func<Entity, object>> orderBy = null;
+
+
+        [HttpPost Route("Finalize")]
+        virtual public CommonResponse Finalize([FromBody]string value)
+        {
+            CommonResponse response = new CommonResponse();
+            Entity entity;
+
+            try
+            {
+                entity = JsonConvert.DeserializeObject<Entity>(value);
+                return _logic.Finalize(entity);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
+
+        [HttpPost Route("Unfinalize")]
+        virtual public CommonResponse Unfinalize([FromBody]string value)
+        {
+            CommonResponse response = new CommonResponse();
+            Entity entity;
+
+            try
+            {
+                entity = JsonConvert.DeserializeObject<Entity>(value);
+                return _logic.Unfinalize(entity);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
     }
 }

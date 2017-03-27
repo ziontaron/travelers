@@ -19,18 +19,21 @@ angular.module('appApp').controller('LoginCtrl', function($scope, $location, aut
         password: ""
     };
 
-    $scope.message = "";
+    $scope.ErrorMessage = null;
 
     $scope.login = function() {
+        $scope.ErrorMessage = null;
         $activityIndicator.startAnimating();
-        $scope.message = '';
         authService.login($scope.loginData).then(function(response) {
                 $location.path('/');
                 $activityIndicator.stopAnimating();
             },
             function(err) {
                 $activityIndicator.stopAnimating();
-                $scope.message = err.error_description;
+                if (err == 'invalid_grant') {
+                    err = 'Usuario o contraseña incorrecta.';
+                }
+                $scope.ErrorMessage = err;
             });
     };
 });

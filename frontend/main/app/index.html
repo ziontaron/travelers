@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html ng-app="appApp" ng-controller="MainCtrl">
 
 <head>
     <meta charset="utf-8">
@@ -16,11 +16,13 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="styles/theme-default.css">
+    <link rel="stylesheet" type="text/css" ng-if="theme" ng-href="styles/{{theme.url}}.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 </head>
 
-<body ng-app="appApp" ng-controller="MainCtrl">
+<body>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -50,6 +52,14 @@
                             </ul>
                         </li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right" ng-if="true">
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{theme.name}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="aTheme in bootstraps"><a href="" ng-click="setTheme($index)">{{aTheme.name}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -73,7 +83,6 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -83,19 +92,23 @@
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/ngActivityIndicator/ngActivityIndicator.js"></script>
     <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/sifter/sifter.js"></script>
     <script src="bower_components/microplugin/src/microplugin.js"></script>
     <script src="bower_components/selectize/dist/js/selectize.js"></script>
     <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/vendor/alertify.js"></script>
+    <script src="scripts/vendor/alertify-defaults.js"></script>
+    <script src="scripts/app.js"></script>
     <script src="scripts/services/CRUD_Factory.js"></script>
     <script src="scripts/services/CRUD_Services.js"></script>
-    <script src="scripts/reusable/BaseControllers.js"></script>
-    <script src="scripts/reusable/commonDirectives.js"></script>
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
+    <script src="scripts/services/formController.js"></script>
+    <script src="scripts/services/listController.js"></script>
+    <script src="scripts/directives/ngselectize.js"></script>
+    <script src="scripts/directives/commonDirectives.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/about.js"></script>
     <script src="scripts/controllers/login.js"></script>

@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using static Reusable.BaseEntity;
 
@@ -12,7 +13,7 @@ namespace Reusable
 {
     public abstract class BaseLogic<Entity> : IBaseLogic<Entity> where Entity : BaseEntity, new()
     {
-        public int? byUserId { get; set; }
+        public LoggedUser loggedUser { get; set; }
 
         protected DbContext context;
         protected IRepository<Entity> repository;
@@ -21,10 +22,10 @@ namespace Reusable
         {
             this.context = context;
             this.repository = repository;
-            //this.byUserId = byUserId;
+            //this.byUserId = loggedUser.UserID;
         }
 
-        protected abstract void loadNavigationProperties(DbContext context, params Entity[] entities);
+        protected virtual void loadNavigationProperties(params Entity[] entities) { }
 
         protected static EntityState GetEntityState(EF_EntityState state)
         {
@@ -45,7 +46,10 @@ namespace Reusable
 
         protected virtual void onAfterSaving(DbContext context, Entity entity, BaseEntity parent = null) { }
         protected virtual void onBeforeSaving(Entity entity, BaseEntity parent = null) { }
+        protected virtual void onBeforeRemoving(Entity entity, BaseEntity parent = null) { }
         protected virtual void onCreate(Entity entity) { }
+        protected virtual void onFinalize(Entity entity) { }
+        protected virtual void onUnfinalize(Entity entity) { }
 
         public virtual CommonResponse Add(Entity entity)
         {
@@ -57,14 +61,19 @@ namespace Reusable
                     try
                     {
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
-
-                        repository.byUserId = byUserId;
+                        repository.byUserId = loggedUser.UserID;
 
                         onBeforeSaving(entity);
+
                         repository.Add(entity);
                         onAfterSaving(context, entity);
 
                         transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
                     }
                     catch (DbEntityValidationException ex)
                     {
@@ -86,6 +95,10 @@ namespace Reusable
                     }
                 }
             }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
             catch (Exception e)
             {
                 return response.Error("ERROR: " + e.ToString());
@@ -95,7 +108,7 @@ namespace Reusable
         }
 
         public virtual List<Expression<Func<Entity, object>>> NavigationPropertiesWhenGetAll { get { return new List<Expression<Func<Entity, object>>>(); } }
-        
+
         public virtual CommonResponse GetAll()
         {
             CommonResponse response = new CommonResponse();
@@ -104,7 +117,7 @@ namespace Reusable
             {
                 //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
-                repository.byUserId = byUserId;
+                repository.byUserId = loggedUser.UserID;
                 entities = repository.GetAll(NavigationPropertiesWhenGetAll.ToArray());
             }
             catch (Exception e)
@@ -125,9 +138,9 @@ namespace Reusable
                 Entity entity = repository.GetByID(ID);
                 if (entity != null)
                 {
-                    repository.byUserId = byUserId;
+                    repository.byUserId = loggedUser.UserID;
                     entities.Add(entity);
-                    loadNavigationProperties(context, entities.ToArray());
+                    loadNavigationProperties(entities.ToArray());
                     return response.Success(entity);
                 }
                 else
@@ -149,7 +162,7 @@ namespace Reusable
             public int total_filtered_items { get; set; }
         }
 
-        public virtual CommonResponse GetPage(int perPage, int page, string filterGeneral, Expression<Func<Entity, object>> orderby,  params Expression<Func<Entity, bool>>[] wheres)
+        public virtual CommonResponse GetPage(int perPage, int page, string filterGeneral, Expression<Func<Entity, object>> orderby, params Expression<Func<Entity, bool>>[] wheres)
         {
             CommonResponse response = new CommonResponse();
             FilterResponse filterResponse = new FilterResponse();
@@ -157,7 +170,7 @@ namespace Reusable
             IEnumerable<Entity> entities;
             try
             {
-                repository.byUserId = byUserId;
+                repository.byUserId = loggedUser.UserID;
 
                 #region Apply Database Filtering
 
@@ -176,9 +189,13 @@ namespace Reusable
                 if (!string.IsNullOrWhiteSpace(filterGeneral))
                 {
                     string[] arrFilterGeneral = filterGeneral.ToLower().Split(' ');
-                    entities = entities.Where(e => e.GeneralSearchFields.Any(field =>
+
+                    var searchableProps = typeof(Entity).GetProperties().Where(prop => new[] { "String" }.Contains(prop.PropertyType.Name));
+
+                    entities = entities.Where(e => searchableProps.Any(prop =>
                                                         arrFilterGeneral.All(keyword =>
-                                                            field.ToLower().Contains(keyword))));
+                                                            ((string)prop.GetValue(e, null) ?? "").ToString().ToLower()
+                                                            .Contains(keyword))));
                 }
 
                 #endregion
@@ -188,7 +205,7 @@ namespace Reusable
                 #region Pagination
 
                 var result = entities.Skip((page - 1) * perPage).Take(perPage).ToList();
-                loadNavigationProperties(context, result.ToArray());
+                loadNavigationProperties(result.ToArray());
                 #endregion
 
                 return response.Success(result, filterResponse);
@@ -197,6 +214,87 @@ namespace Reusable
             {
                 return response.Error("ERROR: " + e.ToString());
             }
+        }
+
+        public virtual CommonResponse GetSingleWhere(params Expression<Func<Entity, bool>>[] wheres)
+        {
+            CommonResponse response = new CommonResponse();
+            FilterResponse filterResponse = new FilterResponse();
+
+            Entity entity;
+            try
+            {
+                repository.byUserId = loggedUser.UserID;
+
+                entity = repository.GetSingle(wheres);
+                if (entity != null)
+                {
+                    loadNavigationProperties(entity);
+                }
+
+                return response.Success(entity);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
+
+        public virtual CommonResponse GetListWhere(Expression<Func<Entity, object>> orderby, params Expression<Func<Entity, bool>>[] wheres)
+        {
+            CommonResponse response = new CommonResponse();
+            IEnumerable<Entity> entities;
+            try
+            {
+                repository.byUserId = loggedUser.UserID;
+                entities = repository.GetList(orderby, wheres);
+                loadNavigationProperties(entities.ToArray());
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+
+            return response.Success(entities);
+        }
+
+        public virtual CommonResponse Remove(Entity entity)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+                        onBeforeRemoving(entity);
+                        repository.Delete(entity);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(entity, repository.EntityName + " removed successfully.");
         }
 
         public virtual CommonResponse Remove(int id)
@@ -209,10 +307,15 @@ namespace Reusable
                     try
                     {
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
-                        repository.byUserId = byUserId;
+                        repository.byUserId = loggedUser.UserID;
                         repository.Delete(id);
 
                         transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
                     }
                     catch (Exception e)
                     {
@@ -221,6 +324,10 @@ namespace Reusable
                     }
                 }
 
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
             }
             catch (Exception e)
             {
@@ -238,7 +345,7 @@ namespace Reusable
                 {
                     try
                     {
-                        repository.byUserId = byUserId;
+                        repository.byUserId = loggedUser.UserID;
                         repository.Activate(id);
 
                         transaction.Commit();
@@ -267,13 +374,32 @@ namespace Reusable
                 {
                     try
                     {
-                        //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
+                        repository.byUserId = loggedUser.UserID;
 
-                        repository.byUserId = byUserId;
+                        onBeforeSaving(entity);
+
                         repository.Update(entity);
                         onAfterSaving(context, entity);
 
                         transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        // Retrieve the error messages as a list of strings.
+                        var errorMessages = ex.EntityValidationErrors
+                                .SelectMany(x => x.ValidationErrors)
+                                .Select(x => x.ErrorMessage);
+
+                        // Join the list to a single string.
+                        var fullErrorMessage = string.Join("; ", errorMessages);
+
+                        transaction.Rollback();
+                        return response.Error(fullErrorMessage);
                     }
                     catch (Exception e)
                     {
@@ -282,6 +408,10 @@ namespace Reusable
                     }
                 }
 
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
             }
             catch (Exception e)
             {
@@ -322,11 +452,16 @@ namespace Reusable
                         //    return response.Error("Non-existent Parent Entity.");
                         //}
 
-                        repository.byUserId = byUserId;
+                        repository.byUserId = loggedUser.UserID;
                         ParentType parent = repository.AddToParent<ParentType>(parentID, entity);
                         onAfterSaving(context, entity, parent);
 
                         transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
                     }
                     catch (Exception e)
                     {
@@ -335,6 +470,53 @@ namespace Reusable
                     }
                 }
 
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+
+            return response.Success(entity);
+        }
+
+        public virtual CommonResponse SetPropertyValue(Entity entity, string sProperty, string value)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+
+                        Entity result = repository.SetPropertyValue(entity.id, sProperty, value);
+
+                        onAfterSaving(context, entity);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
             }
             catch (Exception e)
             {
@@ -354,9 +536,9 @@ namespace Reusable
 
                 //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
-                repository.byUserId = byUserId;
+                repository.byUserId = loggedUser.UserID;
                 entities = repository.GetListByParent<ParentType>(parentID);
-                loadNavigationProperties(context, entities.ToArray());
+                loadNavigationProperties(entities.ToArray());
                 //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
                 //MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { typeof(ParentType) });
                 //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
@@ -378,9 +560,9 @@ namespace Reusable
             try
             {
 
-                repository.byUserId = byUserId;
+                repository.byUserId = loggedUser.UserID;
                 entity = repository.GetSingleByParent<ParentType>(parentID);
-                loadNavigationProperties(context, entity);
+                loadNavigationProperties(entity);
                 //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
                 //MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { typeof(ParentType) });
                 //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
@@ -400,10 +582,10 @@ namespace Reusable
             IEnumerable<Entity> availableEntities;
             try
             {
-                repository.byUserId = byUserId;
+                repository.byUserId = loggedUser.UserID;
 
                 IRepository<ForEntity> oRepository = new Repository<ForEntity>(context);
-                oRepository.byUserId = byUserId;
+                oRepository.byUserId = loggedUser.UserID;
 
 
                 ForEntity forEntity = oRepository.GetByID(id);
@@ -418,7 +600,7 @@ namespace Reusable
 
                 availableEntities = allEntities.Where(e => !childrenInForEntity.Any(o => o.id == e.id));
 
-                loadNavigationProperties(context, availableEntities.ToArray());
+                loadNavigationProperties(availableEntities.ToArray());
             }
             catch (Exception e)
             {
@@ -437,10 +619,15 @@ namespace Reusable
                 {
                     try
                     {
-                        repository.byUserId = byUserId;
+                        repository.byUserId = loggedUser.UserID;
                         repository.RemoveFromParent<Parent>(parentID, entity);
 
                         transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
                     }
                     catch (Exception e)
                     {
@@ -448,6 +635,10 @@ namespace Reusable
                         return response.Error("ERROR: " + e.ToString());
                     }
                 }
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
             }
             catch (Exception e)
             {
@@ -479,6 +670,272 @@ namespace Reusable
                 return response.Error("ERROR: " + e.ToString());
             }
             return response.Success();
+        }
+
+        public void FillRecursively<Parent>(IRecursiveEntity entity) where Parent : BaseEntity
+        {
+            repository.byUserId = loggedUser.UserID;
+            if (entity != null)
+            {
+                IList<Entity> entities = repository.GetListByParent<Parent>(entity.id);
+                //loadNavigationProperties(context, entities.ToArray());
+                entity.nodes = new List<IRecursiveEntity>();
+                foreach (IRecursiveEntity item in entities)
+                {
+                    entity.nodes.Add(item);
+                    FillRecursively<Parent>(item);
+                }
+            }
+        }
+
+        public List<Entity> NestedToSingleList(IRecursiveEntity entity, List<Entity> result)
+        {
+            repository.byUserId = loggedUser.UserID;
+            if (result == null) { result = new List<Entity>(); }
+            if (entity != null)
+            {
+                foreach (var item in entity.nodes)
+                {
+                    result.Add((Entity)item);
+                    NestedToSingleList(item, result);
+                }
+            }
+            return result;
+        }
+
+        public virtual CommonResponse Lock(int id)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+                        repository.Lock(id);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(id);
+        }
+
+        public virtual CommonResponse Lock(Entity entity)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+                        repository.Lock(entity);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(entity);
+        }
+
+        public virtual CommonResponse Unlock(int id)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+                        repository.Unlock(id);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(id);
+        }
+
+        public virtual CommonResponse Unlock(Entity entity)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+                        repository.Unlock(entity);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(entity);
+        }
+
+
+        public virtual CommonResponse Finalize(Entity entity)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+
+                        onFinalize(entity);
+
+                        repository.Finalize(entity);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(entity);
+        }
+
+        public virtual CommonResponse Unfinalize(Entity entity)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = loggedUser.UserID;
+
+                        onUnfinalize(entity);
+
+                        repository.Unfinalize(entity);
+
+                        transaction.Commit();
+                    }
+                    catch (KnownError error)
+                    {
+                        transaction.Rollback();
+                        return response.Error(error);
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return response.Error("ERROR: " + e.ToString());
+                    }
+                }
+
+            }
+            catch (KnownError error)
+            {
+                return response.Error(error);
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+            return response.Success(entity);
         }
 
     }

@@ -11,10 +11,6 @@ namespace BusinessSpecificLogic.Logic
         public catConcernTypeLogic(DbContext context, IRepository<cat_ConcernType> repository) : base(context, repository)
         {
         }
-
-        protected override void loadNavigationProperties(DbContext context, params cat_ConcernType[] entities)
-        {
-        }
     }
 
 }

@@ -182,38 +182,34 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
     };
 }).directive('modal', function() {
     return {
-        template: `<div class="modal fade" id="{{modalId}}">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title">{{title}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div ng-transclude></div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" ng-click="saveModal()">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`,
+         template: '<div class="modal fade" tabindex="-1" id="{{modalId}}">'
+                         + '<div class="modal-dialog">'
+                             + '<div class="modal-content">'
+                                 + '<div class="modal-header">'
+                                     + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+                                     + '<h4 class="modal-title">{{title}}</h4>'
+                                 + '</div>'
+                                 + '<div class="modal-body">'
+                                     + '<div ng-transclude></div>'
+                                 + '</div>'
+                                 + '<div class="modal-footer" ng-if="okLabel">'
+                                     + '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'
+                                     + '<button type="button" class="btn btn-primary" ng-click="ok_click()">{{okLabel}}</button>'
+                                 + '</div>'
+                             + '</div>'
+                         + '</div>'
+                     + '</div>',
         restrict: 'E',
         transclude: true,
         replace: false,
         scope: {
             title: '@',
             modalId: '@',
-            entity: '=',
-            service: '=',
-            afterSave: '&'
+            okLabel: '@'
         },
         controller: function($scope) {
-            $scope.saveModal = function() {
-                $scope.service.save($scope.entity).then(function(data) {
-                    $scope.afterSave({ entitySaved: data });
-                });
+            $scope.ok_click = function() {
+                $scope.$broadcast('modal_ok');
             };
         }
     };

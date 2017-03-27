@@ -22,7 +22,6 @@ module.exports = function(config) {
       // bower:js
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
-      'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
@@ -32,6 +31,7 @@ module.exports = function(config) {
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/ngActivityIndicator/ngActivityIndicator.js',
       'bower_components/angularUtils-pagination/dirPagination.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/sifter/sifter.js',
       'bower_components/microplugin/src/microplugin.js',
       'bower_components/selectize/dist/js/selectize.js',

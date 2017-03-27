@@ -14,9 +14,6 @@ namespace Reusable
         [NotMapped]
         public EF_EntityState EF_State { get; set; }
 
-        [NotMapped]
-        virtual public string[] GeneralSearchFields { get { return new string[] { }; } }
-
         public enum EF_EntityState
         {
             Unchanged,

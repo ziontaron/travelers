@@ -9,5 +9,9 @@ namespace Reusable
         public Track InfoTrack { get; set; }
 
         virtual public bool sys_active { get; set; }
+
+        virtual public bool is_locked { get; set; }
+
+        virtual public string document_status { get; set; }
     }
 }

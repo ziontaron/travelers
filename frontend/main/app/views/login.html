@@ -17,8 +17,6 @@
         </button>
         <br>
         <br>
-        <div data-ng-hide="message == ''" class="alert alert-danger" style="word-break: break-word;">
-            {{message}}
-        </div>
+<pre data-ng-show="ErrorMessage" class="alert alert-danger" style="word-break: break-word;">{{ErrorMessage | json:4}}</pre>
     </form>
 </div>

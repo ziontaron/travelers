@@ -64,6 +64,10 @@ module.exports = function(grunt) {
                     '.tmp/styles/{,*/}*.css',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
+            },
+            reusable: {
+                files: ['../reusable/**'],
+                tasks: ['copy:reusable']
             }
         },
 
@@ -437,9 +441,9 @@ module.exports = function(grunt) {
             },
             reusable: {
                 expand: true,
-                cwd: '../Reusable',
-                dest: '<%= yeoman.app %>/scripts/reusable/',
-                src: ['{,*/}*.js', '*.html', '{,*/}*.css']
+                cwd: '../reusable',
+                dest: '<%= yeoman.app %>/',
+                src: ['**']
             }
         },
 
@@ -509,7 +513,7 @@ module.exports = function(grunt) {
         'ngAnnotate',
         'copy:reusable',
         'copy:dist',
-        'cdnify',
+        // 'cdnify',
         'cssmin',
         'uglify',
         'filerev',

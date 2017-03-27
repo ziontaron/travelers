@@ -13,7 +13,8 @@ angular.module('appApp').factory('authService', function($http, $q, localStorage
 
     var _authentication = {
         isAuth: false,
-        userName: ""
+        userName: "",
+        role: null
     };
 
     var _saveRegistration = function(registration) {
@@ -38,29 +39,44 @@ angular.module('appApp').factory('authService', function($http, $q, localStorage
             }
         }).then(function(response) {
 
-            localStorageService.set('authorizationData', {
-                token: response.access_token,
-                userName: loginData.userName
-            });
+            var backendResponse = response.data;
 
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
+            var token = backendResponse.access_token;
+            var userName = loginData.userName;
+
+            localStorageService.set('authorizationData', {
+                token: token,
+                userName: userName
+            });
 
             userService.loadAll().then(function(data) {
                 $rootScope.currentUser = userService.getByUserName(loginData.userName);
-                deferred.resolve(response);
+
+                _authentication.isAuth = true;
+                _authentication.userName = $rootScope.currentUser ? $rootScope.currentUser.Value : ''
+                _authentication.role = $rootScope.currentUser.Role;
+
+                localStorageService.set('authorizationData', {
+                    token: token,
+                    userName: userName,
+                    role: $rootScope.currentUser.Role
+                });
+
+                deferred.resolve(response.data);
+
+            }, function(data) {
+                deferred.reject(data);
+                _logOut();
             });
 
 
         }, function(err, status) {
             _logOut();
             if (!err) {
-                err = {
-                    error_description: 'Error. Server is not available.'
-                };
+                err = 'Error. Servidor no disponible.';
             } else {
-                if (err.error) {
-                    err.error_description = err.error;
+                if (err && err.data && err.data.error) {
+                    err = err.data.error;
                 }
             }
             deferred.reject(err);
@@ -76,6 +92,9 @@ angular.module('appApp').factory('authService', function($http, $q, localStorage
 
         _authentication.isAuth = false;
         _authentication.userName = "";
+        _authentication.role = null;
+
+        $rootScope.currentUser = null;
 
         $location.path('/login');
 
@@ -86,9 +105,10 @@ angular.module('appApp').factory('authService', function($http, $q, localStorage
         var authData = localStorageService.get('authorizationData');
         if (authData) {
             _authentication.isAuth = true;
-            _authentication.userName = authData.userName;
             userService.loadAll().then(function(data) {
                 $rootScope.currentUser = userService.getByUserName(authData.userName);
+                _authentication.userName = $rootScope.currentUser ? $rootScope.currentUser.Value : ''
+                _authentication.role = $rootScope.currentUser.Role;
             });
         }
 

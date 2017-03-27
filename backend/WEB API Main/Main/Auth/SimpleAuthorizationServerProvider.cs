@@ -3,6 +3,8 @@ using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using Reusable;
 using BusinessSpecificLogic;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Reusable.Auth;
 
 namespace ReusableWebAPI.Auth
 {
@@ -22,16 +24,16 @@ namespace ReusableWebAPI.Auth
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            //using (AuthRepository _repo = new AuthRepository())
-            //{
-            //    IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+            using (AuthRepository _repo = new AuthRepository())
+            {
+                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
 
-            //    if (user == null)
-            //    {
-            //        context.SetError("invalid_grant", "The user name or password is incorrect.");
-            //        return;
-            //    }
-            //}
+                if (user == null)
+                {
+                    context.SetError("invalid_grant", "El usuario o la contraseña son incorrectos.");
+                    return;
+                }
+            }
 
 
             using (var mainContext = new MainContext())
@@ -47,23 +49,13 @@ namespace ReusableWebAPI.Auth
                 }
 
                 User theUser = (User)response.Result;
-                if (theUser != null)
-                {
-                    var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
-                    identity.AddClaim(new Claim("role", theUser.Role));
-                    identity.AddClaim(new Claim("userID", theUser.id.ToString()));
-                    identity.AddClaim(new Claim("userName", theUser.UserName.ToString()));
+                var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+                identity.AddClaim(new Claim("role", theUser.Role));
+                identity.AddClaim(new Claim("userID", theUser.id.ToString()));
+                identity.AddClaim(new Claim("userName", theUser.UserName.ToString()));
 
-                    context.Validated(identity);
-                }
-                else
-                {
-                    context.SetError("User name or Password incorrect.");
-                    return;
-                }
-
-                
+                context.Validated(identity);
             }
         }
     }
