@@ -188,6 +188,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Auth\SimpleAuthorizationServerProvider.cs" />
+    <Compile Include="Controllers\FSCustomerController.cs" />
     <Compile Include="Controllers\ReadOnlyBaseController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CQALineController.cs" />
@@ -195,8 +196,6 @@
     <Compile Include="Controllers\catConcernTypeController.cs" />
     <Compile Include="Controllers\catStatusController.cs" />
     <Compile Include="Controllers\catResultController.cs" />
-    <Compile Include="Controllers\CustomerController.cs" />
-    <Compile Include="Controllers\FSCustomerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

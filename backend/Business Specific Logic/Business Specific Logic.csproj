@@ -56,6 +56,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,10 +76,8 @@
     <Compile Include="EF\CQAHeader.cs" />
     <Compile Include="EF\CQALine.cs" />
     <Compile Include="EF\CQANumber.cs" />
-    <Compile Include="EF\Customer.cs" />
     <Compile Include="Entities\CQANumber.cs" />
     <Compile Include="Entities\cat_PartNumber.cs" />
-    <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\CQALine.cs" />
     <Compile Include="Entities\CQAHeader.cs" />
     <Compile Include="Entities\cat_Status.cs" />
@@ -93,7 +92,6 @@
     <Compile Include="Logic\catStatusLogic.cs" />
     <Compile Include="Logic\CQALineLogic.cs" />
     <Compile Include="Logic\UserLogic.cs" />
-    <Compile Include="Logic\CustomerLogic.cs" />
     <Compile Include="Logic\CQALogic.cs" />
     <Compile Include="MainContext.cs" />
     <Compile Include="Migrations\201612132233409_Initial.cs" />
@@ -170,7 +168,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="FS\Customer\Customers.sql" />
+    <Content Include="FS\Customer\Customers.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -25,7 +25,6 @@ namespace BusinessSpecificLogic.EF
         public virtual DbSet<CQAHeader> CQAHeaders { get; set; }
         public virtual DbSet<CQALine> CQALines { get; set; }
         public virtual DbSet<CQANumber> CQANumbers { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
 
         #region From Reusable Modules
         public virtual DbSet<Track> Tracks { get; set; }

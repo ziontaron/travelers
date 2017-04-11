@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Linq;
+using BusinessSpecificLogic.FS.Customer;
 
 namespace BusinessSpecificLogic.Logic
 {
@@ -15,10 +16,10 @@ namespace BusinessSpecificLogic.Logic
 
     public class CQAHeaderLogic : BaseLogic<CQAHeader>, ICQAHeaderLogic
     {
-        private readonly IRepository<Customer> customerRepository;
+        private readonly IReadOnlyRepository<FSCustomer> customerRepository;
 
         public CQAHeaderLogic(DbContext context, IRepository<CQAHeader> repository,
-            IRepository<Customer> customerRepository) : base(context, repository)
+            IReadOnlyRepository<FSCustomer> customerRepository) : base(context, repository)
         {
             this.customerRepository = customerRepository;
         }
@@ -30,7 +31,7 @@ namespace BusinessSpecificLogic.Logic
             {
                 item.Customer = customerRepository.GetByID(item.CustomerKey ?? -1);
                 item.CQANumber = ctx.CQANumbers.Where(n => n.CQANumberKey == item.CQANumberKey).FirstOrDefault();
-            }   
+            }
         }
 
         public override List<Expression<Func<CQAHeader, object>>> NavigationPropertiesWhenGetAll
@@ -96,7 +97,7 @@ namespace BusinessSpecificLogic.Logic
 
         private class Catalogs : ICatalogContainer
         {
-            public IList<Customer> Customer { get; set; }
+            public IList<FSCustomer> Customer { get; set; }
         }
         #endregion
 

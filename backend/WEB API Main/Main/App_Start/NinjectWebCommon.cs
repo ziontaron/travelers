@@ -15,6 +15,8 @@ namespace ReusableWebAPI.App_Start
     using ReusableWebAPI.Controllers;
     using Reusable;
     using BusinessSpecificLogic.Logic;
+    using BusinessSpecificLogic.FS.Customer;
+    using BusinessSpecificLogic.FS;
 
     public static class NinjectWebCommon 
     {
@@ -75,11 +77,12 @@ namespace ReusableWebAPI.App_Start
             //START SPECIFIC APP BINDINGS:
             kernel.Bind<ICQAHeaderLogic>().To<CQAHeaderLogic>();
             kernel.Bind<ICQALineLogic>().To<CQALineLogic>();
-            kernel.Bind<ICustomerLogic>().To<CustomerLogic>();
             kernel.Bind<ICatStatusLogic>().To<catStatusLogic>();
             kernel.Bind<ICatResultLogic>().To<catResultLogic>();
             kernel.Bind<ICatConcernTypeLogic>().To<catConcernTypeLogic>();
 
+            kernel.Bind<IFSCustomerLogic>().To<FSCustomerLogic>().WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
+            kernel.Bind<IReadOnlyRepository<FSCustomer>>().To(typeof(ReadOnlyRepository<FSCustomer>)).WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
             //END SPECIFIC APP BINDINGS
 
             kernel.Bind<IUserLogic>().To<UserLogic>();
