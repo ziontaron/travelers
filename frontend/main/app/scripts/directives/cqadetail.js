@@ -14,7 +14,6 @@ angular.module('appApp').directive('cqaDetail', function() {
             parentEntity: '=',
             parentType: '@'
         },
-        link: function postLink(scope, element, attrs) {},
         controller: function($scope, listController, CQALineService, $q, $activityIndicator) {
 
             var list = new listController({
@@ -23,7 +22,22 @@ angular.module('appApp').directive('cqaDetail', function() {
                 scope: $scope,
                 afterLoad: function(data) {
                     _adapt($scope.baseList);
-                    // table.loadData($scope.baseList);
+                },
+                onOpenItem: function(oItem) {
+
+                    $('#modal-CQALine').off('shown.bs.modal').on('shown.bs.modal', function(e) {
+                        $scope.$apply(function() {
+                            //on show modal
+                            $scope.$broadcast('load_cqaLine_form', oItem);
+                            $('#modal-CQALine').find('input').filter(':input:visible:first').focus();
+                        });
+                    }).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
+                        $scope.$apply(function() {
+                            //on hide modal'
+                            refresh();
+                        });
+                    }).modal('show');
+
                 }
             });
 
@@ -46,7 +60,7 @@ angular.module('appApp').directive('cqaDetail', function() {
             var insertItemForAdd = function(items, change) {
                 if (!items.length || (items[0] && items[0].id > -1)) {
                     // items.unshift({});
-                    
+
                     if (change) {
                         // table.selectCellByProp(1, change[1]); TODO
                     }
@@ -133,13 +147,6 @@ angular.module('appApp').directive('cqaDetail', function() {
             //         savePending();
             //     }
             // });
-
-
-
-            $scope.openUpdateCQALine = function(item) {
-                $scope.$parent.CQALineToBeSaved = angular.copy(item);
-                angular.element('#modal-CQALine').modal('show');
-            };
 
             $scope.$on('RefreshCQADetail', function() {
                 refresh();

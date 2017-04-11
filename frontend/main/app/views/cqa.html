@@ -1,10 +1,11 @@
 <form class="form-horizontal" role="form" novalidate>
     <div class="form-group">
-        <div class="col-sm-3 well">
-            <h4 class="text-center">CQA Number</h4>
-            <h4 class="text-center">12345{{::baseEntity.CQANumber.GeneratedNumber}}</h4>
-            <h4 class="text-center">PTR Number</h4>
-            <h4 class="text-center">12345{{::baseEntity.CQANumber.GeneratedNumber}}</h4>
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <h5 class="text-center"><span class="label label-default">CQA Number</span></h5>
+                <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
+                <h5 class="text-center"><span class="label label-default">PTR Number</span></h5>
+                <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p></div>
         </div>
         <div class="col-sm-5 col-sm-offset-4 text-right">
             <label>CQA Response</label>
@@ -16,7 +17,7 @@
     <div class="form-group">
         <div class="col-sm-4">
             <label>Customer</label>
-            <select placeholder="Customer" ng-model="baseEntity.CustomerKey" ng-options="item.id as item.Value for item in theCustomers"></select>
+            <ng-selectize the-model="baseEntity.CustomerKey" service="CustomerService" placeholder="Customer" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
         <div class="col-sm-5">
             <label>Notification Date</label>
@@ -51,7 +52,7 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Concern Type</label>
-            <select placeholder="Concern Type" ng-model="baseEntity.ConcernTypeKey" ng-options="item.id as item.Value for item in theConcernTypes"></select>
+            <ng-selectize the-model="baseEntity.ConcernTypeKey" service="catConcernTypeService" placeholder="Concern Type" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
         <div class="col-sm-5">
             <label>Concern Description</label>
@@ -65,11 +66,11 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Result</label>
-            <select placeholder="Result" ng-model="baseEntity.ResultKey" ng-options="item.id as item.Value for item in theResults"></select>
+            <ng-selectize the-model="baseEntity.ResultKey" service="catResultService" placeholder="Result" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
         <div class="col-sm-3">
             <label>Status</label>
-            <select placeholder="Status" ng-model="baseEntity.StatusKey" ng-options="item.id as item.Value for item in theStatus"></select>
+            <ng-selectize the-model="baseEntity.StatusKey" service="catStatusService" placeholder="Status" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
             <p class="form-control-static">{{::baseEntity.cat_Status}}</p>
         </div>
     </div>
@@ -99,6 +100,3 @@
         <!-- /.navbar-collapse -->
     </div>
 </nav>
-<modal title="CQA Line" modal-id="modal-CQALine" entity="CQALineToBeSaved" service="CQALineService" after-save="afterSaveCQALine(entitySaved)">
-    <cqa-line entity="CQALineToBeSaved"></cqa-line>
-</modal>

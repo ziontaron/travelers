@@ -28,19 +28,20 @@ angular.module('appApp').controller('CqaCtrl', function($scope, formController, 
     $scope.catConcernTypeService = catConcernTypeService;
     $scope.catStatusService = catStatusService;
 
-    $scope.CQALineService = CQALineService;
-
+    
     $scope.addCQALine = function() {
-        CQALineService.createEntity().then(function(oNewEntity) {
-            $scope.CQALineToBeSaved = oNewEntity;
-            $scope.CQALineToBeSaved.CQAHeaderKey = $scope.baseEntity.id;
-            angular.element('#modal-CQALine').modal('show');
-        });
-    };
-
-    $scope.afterSaveCQALine = function(entitySaved) {
-        angular.element('#modal-CQALine').modal('hide');
-        $scope.$broadcast('RefreshCQADetail');
+        $('#modal-CQALine').off('shown.bs.modal').on('shown.bs.modal', function(e) {
+            $scope.$apply(function() {
+                //on show modal
+                $scope.$broadcast('create_cqaLine', $scope.baseEntity);
+                $('#modal-CQALine').find('input').filter(':input:visible:first').focus();
+            });
+        }).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
+            $scope.$apply(function() {
+                //on hide modal'
+                $scope.$broadcast('RefreshCQADetail');
+            });
+        }).modal('show');
     };
 
 });

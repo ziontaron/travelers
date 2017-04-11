@@ -53,7 +53,7 @@ angular.module('inspiracode.baseControllers').factory('listController', function
         scope.isLoading = true;
         scope.removeItem = function(oEntity) {
             alertify.confirm(
-                '¿Está seguro que quiere eliminar: ' + oMainConfig.entityName + '?',
+                'Do you really want to delete a: ' + oMainConfig.entityName + '?',
                 function() {
                     scope.$apply(function() {
                         $activityIndicator.startAnimating();
@@ -80,7 +80,7 @@ angular.module('inspiracode.baseControllers').factory('listController', function
         scope.deleteSelected = function() {
             if (scope.selectedCount > 0) {
                 alertify.confirm(
-                    '¿Está seguro que quiere eliminar todos los registros seleccionados?',
+                    'Do you really want to remove all selected items?',
                     function() {
                         scope.$apply(function() {
                             _baseService.removeSelected(scope.baseList).then(function(data) {
