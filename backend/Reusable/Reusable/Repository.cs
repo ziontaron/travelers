@@ -55,7 +55,7 @@ namespace Reusable
                     document.InfoTrack.Date_CreatedOn = DateTime.Now;
                     document.InfoTrack.Entity_ID = document.id;
                     document.InfoTrack.Entity_Kind = document.AAA_EntityName;
-                    document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
+                    document.InfoTrack.User_CreatedByKey = byUserId;
 
                     context.Entry(document.InfoTrack).State = EntityState.Added;
                     context.SaveChanges();
@@ -206,6 +206,11 @@ namespace Reusable
         {
             if (entity != null)
             {
+                foreach (var item in context.ChangeTracker.Entries())
+                {
+                    context.Entry(item.Entity).State = EntityState.Detached;
+                }
+
                 /*DOCUMENT*/
                 if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
                 {
@@ -433,7 +438,7 @@ namespace Reusable
                             document.InfoTrack.Date_CreatedOn = DateTime.Now;
                             document.InfoTrack.Entity_ID = document.id;
                             document.InfoTrack.Entity_Kind = document.AAA_EntityName;
-                            document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
+                            document.InfoTrack.User_CreatedByKey = byUserId;
 
                             context.Entry(document.InfoTrack).State = EntityState.Added;
                         }
@@ -484,7 +489,7 @@ namespace Reusable
                             document.InfoTrack.Date_CreatedOn = DateTime.Now;
                             document.InfoTrack.Entity_ID = document.id;
                             document.InfoTrack.Entity_Kind = document.AAA_EntityName;
-                            document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
+                            document.InfoTrack.User_CreatedByKey = byUserId;
 
                             context.Entry(document.InfoTrack).State = EntityState.Added;
                         }
@@ -973,6 +978,18 @@ namespace Reusable
             {
                 if (entity is BaseDocument)
                 {
+
+                    T originalFromDB = context.Set<T>().Find(entity.id);
+                    if (originalFromDB == null || (originalFromDB as BaseDocument).sys_active == false)
+                    {
+                        throw new KnownError("Non-Existent Entity");
+                    }
+
+                    if ((originalFromDB as BaseDocument).document_status == "FINALIZED")
+                    {
+                        throw new KnownError("Record was already Finalized.");
+                    }
+
                     foreach (DbEntityEntry<BaseEntity> entry in context.ChangeTracker.Entries<BaseEntity>())
                     {
                         context.Entry(entry.Entity).State = EntityState.Detached;

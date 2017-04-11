@@ -44,8 +44,16 @@ namespace Reusable
             }
         }
 
-        protected virtual void onAfterSaving(DbContext context, Entity entity, BaseEntity parent = null) { }
-        protected virtual void onBeforeSaving(Entity entity, BaseEntity parent = null) { }
+       
+        protected enum OPERATION_MODE
+        {
+            NONE,
+            ADD,
+            UPDATE
+        };
+
+        protected virtual void onAfterSaving(DbContext context, Entity entity, BaseEntity parent = null, OPERATION_MODE mode = OPERATION_MODE.NONE) { }
+        protected virtual void onBeforeSaving(Entity entity, BaseEntity parent = null, OPERATION_MODE mode = OPERATION_MODE.NONE) { }
         protected virtual void onBeforeRemoving(Entity entity, BaseEntity parent = null) { }
         protected virtual void onCreate(Entity entity) { }
         protected virtual void onFinalize(Entity entity) { }
@@ -63,10 +71,10 @@ namespace Reusable
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
                         repository.byUserId = loggedUser.UserID;
 
-                        onBeforeSaving(entity);
+                        onBeforeSaving(entity, null, OPERATION_MODE.ADD);
 
                         repository.Add(entity);
-                        onAfterSaving(context, entity);
+                        onAfterSaving(context, entity, null, OPERATION_MODE.ADD);
 
                         transaction.Commit();
                     }
@@ -376,10 +384,10 @@ namespace Reusable
                     {
                         repository.byUserId = loggedUser.UserID;
 
-                        onBeforeSaving(entity);
+                        onBeforeSaving(entity, null, OPERATION_MODE.UPDATE);
 
                         repository.Update(entity);
-                        onAfterSaving(context, entity);
+                        onAfterSaving(context, entity, null, OPERATION_MODE.UPDATE);
 
                         transaction.Commit();
                     }
@@ -454,7 +462,7 @@ namespace Reusable
 
                         repository.byUserId = loggedUser.UserID;
                         ParentType parent = repository.AddToParent<ParentType>(parentID, entity);
-                        onAfterSaving(context, entity, parent);
+                        onAfterSaving(context, entity, parent, OPERATION_MODE.ADD);
 
                         transaction.Commit();
                     }
@@ -497,7 +505,7 @@ namespace Reusable
 
                         Entity result = repository.SetPropertyValue(entity.id, sProperty, value);
 
-                        onAfterSaving(context, entity);
+                        onAfterSaving(context, entity, null, OPERATION_MODE.UPDATE);
 
                         transaction.Commit();
                     }

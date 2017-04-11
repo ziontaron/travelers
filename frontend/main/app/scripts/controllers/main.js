@@ -7,8 +7,8 @@
  * # MainCtrl
  * Controller of the appApp
  */
-angular.module('appApp').controller('MainCtrl', function($scope, appConfig, localStorageService, $rootScope, CQAHeaderService) {
-    
+angular.module('appApp').controller('MainCtrl', function($scope, localStorageService, $rootScope) {
+
     $scope.bootstraps = [
         { name: 'Default', url: 'theme-default' },
         { name: 'Cerulean', url: 'theme-cerulean' },
@@ -43,24 +43,4 @@ angular.module('appApp').controller('MainCtrl', function($scope, appConfig, loca
         $scope.setTheme(0);
     }
 
-
-    $scope.appName = appConfig.APP_NAME;
-
-
-    $scope.test = function() {
-        CQAHeaderService.createEntity().then(function(data) {
-            $scope.data = data;
-        });
-    };
-
-    $scope.fillFromServer = function() {
-
-        CQAHeaderService.loadEntities().then(function(data) {
-            $scope.dataInServer = data;
-        });
-    };
-
-    $scope.save = function() {
-        CQAHeaderService.save($scope.data);
-    };
 });

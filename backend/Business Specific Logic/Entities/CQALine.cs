@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessSpecificLogic.EF
 {
-    public partial class CQALine :BaseDocument
+    public partial class CQALine : BaseDocument
     {
         public CQALine()
         {

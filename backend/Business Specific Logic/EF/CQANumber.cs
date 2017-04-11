@@ -12,7 +12,6 @@ namespace BusinessSpecificLogic.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CQANumber()
         {
-            CQAHeaders = new HashSet<CQAHeader>();
         }
 
         [Key]
@@ -21,6 +20,7 @@ namespace BusinessSpecificLogic.EF
         public DateTime CreatedDate { get; set; }
 
         [Required]
+        [Index(IsUnique = true)]
         [StringLength(11)]
         public string GeneratedNumber { get; set; }
 
@@ -34,8 +34,5 @@ namespace BusinessSpecificLogic.EF
         public int Sequence { get; set; }
 
         public string TaskDescriptionRevisionReason { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CQAHeader> CQAHeaders { get; set; }
     }
 }

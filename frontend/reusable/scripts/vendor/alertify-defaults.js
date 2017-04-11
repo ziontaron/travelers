@@ -23,7 +23,7 @@ alertify.defaults = {
 	// language resources
 	glossary : {
 		// dialogs default title
-		title : 'ScanPack',
+		title : 'CQA',
 		// ok button text
 		ok : 'Aceptar',
 		// cancel button text

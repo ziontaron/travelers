@@ -25,7 +25,7 @@ namespace BusinessSpecificLogic.EF
 
         public DateTime NotificationDate { get; set; }
 
-        public int PartNumberKey { get; set; }
+        public int? PartNumberKey { get; set; }
 
         public bool? ReoccurringIssue { get; set; }
 

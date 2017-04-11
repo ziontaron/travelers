@@ -459,7 +459,7 @@ angular.module('inspiracode.crudFactory', [])
 
                 // New Entity
                 if (theEntity.id < 1) {
-                    $http.post(appConfig.API_URL + mainEntity.entityName + theParameters, '=' + escape(JSON.stringify(theEntity)))
+                    $http.post(appConfig.API_URL + mainEntity.entityName + theParameters, '=' + encodeURIComponent(JSON.stringify(theEntity)))
                         .then(function(response) {
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
@@ -498,7 +498,7 @@ angular.module('inspiracode.crudFactory', [])
 
 
                 } else { // Update Entity
-                    $http.put(appConfig.API_URL + mainEntity.entityName + '/' + theEntity.id + theParameters, '=' + escape(JSON.stringify(theEntity)))
+                    $http.put(appConfig.API_URL + mainEntity.entityName + '/' + theEntity.id + theParameters, '=' + encodeURIComponent(JSON.stringify(theEntity)))
                         .then(function(response) {
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
@@ -580,6 +580,57 @@ angular.module('inspiracode.crudFactory', [])
             }
 
             $http.delete(appConfig.API_URL + mainEntity.entityName + '/' + theEntity.id + theParameters)
+                .then(function(response) {
+                    if (typeof response.data === 'object') {
+                        var backendResponse = response.data;
+                        if (!backendResponse.ErrorThrown) {
+                            for (var i = 0; i < _arrAllRecords.length; i++) {
+                                if (_arrAllRecords[i].id == theEntity.id) {
+                                    _arrAllRecords.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            if (angular.isArray(theArrayBelonging)) {
+                                for (var i = 0; i < theArrayBelonging.length; i++) {
+                                    if (theArrayBelonging[i].id == theEntity.id) {
+                                        theArrayBelonging.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                            }
+                            $timeout(function() {
+                                alertify.success(backendResponse.ResponseDescription);
+                            }, 100);
+                            deferred.resolve(response.data);
+                        } else {
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
+                            log.debug(response);
+                            deferred.reject(response.data);
+                        }
+                    } else {
+                        // invalid response
+                        alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response.data);
+                    }
+                }, function(response) {
+                    // something went wrong
+                    alertify.alert('Error: ' + response.statusText).set('modal', true);
+                    log.debug(response);
+                    deferred.reject(response.data);
+                });
+
+            return deferred.promise;
+        };
+
+        var _removeEntity = function(theEntity, theArrayBelonging, theParameters) {
+            var deferred = $q.defer();
+            if (theParameters === undefined || theParameters == null) {
+                theParameters = '';
+            }
+            _adapterOut(theEntity, _self);
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/RemoveEntity' + theParameters, '=' + encodeURIComponent(JSON.stringify(theEntity)))
                 .then(function(response) {
                     if (typeof response.data === 'object') {
                         var backendResponse = response.data;
@@ -722,6 +773,12 @@ angular.module('inspiracode.crudFactory', [])
                         }
                     },
                     function(data) {
+                        //Unauthorized:
+                        if (data && data.status == 401) {
+                            deferred.reject('Not authorized.');
+                            return;
+                        }
+
                         // something went wrong
                         alertify.alert('An error has occurried, see console for more details.').set('modal', true);
                         log.debug(data);
@@ -883,7 +940,7 @@ angular.module('inspiracode.crudFactory', [])
         var _customPost = function(sCustomMethod, oData) {
             var deferred = $q.defer();
 
-            $http.post(appConfig.API_URL + mainEntity.entityName + '/' + sCustomMethod, '=' + escape(JSON.stringify(oData)))
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/' + sCustomMethod, '=' + encodeURIComponent(JSON.stringify(oData)))
                 .then(function(response) {
                     if (typeof response.data === 'object') {
                         var backendResponse = response.data;
@@ -911,10 +968,14 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
-        var _customGet = function(sCustomMethod) {
+        var _customGet = function(sCustomMethod, qParams) {
             var deferred = $q.defer();
 
-            $http.get(appConfig.API_URL + mainEntity.entityName + '/' + sCustomMethod)
+            if (qParams === undefined || qParams == null) {
+                qParams = '?';
+            }
+
+            $http.get(appConfig.API_URL + mainEntity.entityName + '/' + sCustomMethod + qParams + '&noCache=' + Number(new Date()))
                 .then(function(response) {
                     if (typeof response.data === 'object') {
                         var backendResponse = response.data;
@@ -1005,47 +1066,6 @@ angular.module('inspiracode.crudFactory', [])
             // return true;
         };
 
-        var _finalize = function(theEntity) {
-            var deferred = $q.defer();
-
-            $http.post(appConfig.API_URL + mainEntity.entityName + '/finalize?entity_id=' + theEntity.id)
-                .then(function(response) {
-                    if (typeof response.data === 'object') {
-                        var backendResponse = response.data;
-                        if (backendResponse.ErrorThrown) {
-                            log.debug(backendResponse);
-                            deferred.reject(backendResponse);
-                        } else {
-                            theEntity.Entity_Status = 'FINALIZED';
-                            theEntity.Date_EditedOn = new Date();
-                            theEntity.isEntityFinalized = true;
-
-                            var originalEntity = _getById(theEntity.id);
-                            if (originalEntity) {
-                                originalEntity.Entity_Status = 'FINALIZED';
-                                originalEntity.Date_EditedOn = new Date();
-                                originalEntity.isEntityFinalized = true;
-                            }
-                            $timeout(function() {
-                                alertify.success(backendResponse.ResponseDescription);
-                            });
-                            deferred.resolve(backendResponse.Result);
-                        }
-                    } else {
-                        // invalid response
-                        alertify.alert('An error has occurred, see console for more details.').set('modal', true);
-                        log.debug(response);
-                        deferred.reject(response);
-                    }
-                }, function(response) {
-                    // something went wrong
-                    alertify.alert('An error has occurred, see console for more details.').set('modal', true);
-                    log.debug(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        };
-
         var _createEntity = function() {
             var deferred = $q.defer();
 
@@ -1080,7 +1100,7 @@ angular.module('inspiracode.crudFactory', [])
 
             if (mainEntity.validate(theEntity)) {
 
-                $http.post(appConfig.API_URL + mainEntity.entityName + '/AddToParent/' + parentType + '/' + parentId, '=' + escape(JSON.stringify(theEntity)))
+                $http.post(appConfig.API_URL + mainEntity.entityName + '/AddToParent/' + parentType + '/' + parentId, '=' + encodeURIComponent(JSON.stringify(theEntity)))
                     .then(function(response) {
                         if (typeof response.data === 'object') {
                             var backendResponse = response.data;
@@ -1213,6 +1233,234 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
+        var _getSingleWhere = function(property, value) {
+            var deferred = $q.defer();
+            if (property && value) {
+                $http.get(appConfig.API_URL + mainEntity.entityName + '/GetSingleWhere/' + property + '/' + value + '?noCache=' + Number(new Date()))
+                    .then(
+                        /*success*/
+                        function(response) {
+                            var backendResponse = response.data;
+                            if (backendResponse.ErrorThrown) {
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
+                                deferred.reject(response);
+                            } else {
+
+                                if (backendResponse.Result != null) {
+                                    _populateCatalogValues(_adapter(backendResponse.Result, _self));
+                                    deferred.resolve(backendResponse.Result);
+                                } else {
+                                    deferred.resolve(null);
+                                }
+                            }
+                        },
+                        /*error*/
+                        function(response) {
+                            alertify.alert('Ha ocurrido un error, ver consola para más detalles.').set('modal', true);
+                            log.debug(response);
+                            deferred.reject(response);
+                        });
+
+            } else {
+                deferred.resolve(null);
+            }
+
+            return deferred.promise;
+        };
+
+        var _finalize = function(theEntity, theArrayBelonging, theParameters) {
+            var deferred = $q.defer();
+            if (theParameters === undefined || theParameters == null) {
+                theParameters = '';
+            }
+
+            _adapterOut(theEntity, _self);
+
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/Finalize' + theParameters, '=' + encodeURIComponent(JSON.stringify(theEntity)))
+                .then(function(response) {
+                    if (typeof response.data === 'object') {
+                        var backendResponse = response.data;
+                        if (!backendResponse.ErrorThrown) {
+
+                            var entityFromServer = backendResponse.Result;
+                            mainEntity.adapterIn(entityFromServer);
+                            _populateCatalogValues(_adapter(entityFromServer, _self));
+
+                            //Actual entity
+                            if (!angular.equals(entityFromServer, theEntity)) {
+                                angular.copy(entityFromServer, theEntity);
+                            }
+
+                            //cache:
+                            var oOriginalEntity = _getById(entityFromServer.id);
+                            if (oOriginalEntity) { //Already exists, lets updated it if they are different.
+                                if (!angular.equals(entityFromServer, oOriginalEntity)) {
+                                    angular.copy(entityFromServer, oOriginalEntity);
+                                }
+                            } else { //First time loaded, lets add it.
+                                _arrAllRecords.push(entityFromServer);
+                            }
+
+                            $timeout(function() {
+                                alertify.success(backendResponse.ResponseDescription);
+                            }, 100);
+                            deferred.resolve(entityFromServer);
+                        } else {
+
+                            log.debug(response);
+                            if (backendResponse.ErrorType == 'INCIDENT') {
+                                deferred.reject(backendResponse);
+                            } else {
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
+                                deferred.reject(backendResponse);
+                            }
+                        }
+                    } else {
+                        // invalid response
+                        alertify.alert('Ha ocurrido un error, ver consola para más detalles.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response.data);
+                    }
+                }, function(response) {
+                    // something went wrong
+                    alertify.alert('Error: ' + response.statusText).set('modal', true);
+                    log.debug(response);
+                    deferred.reject(response.data);
+                });
+
+            return deferred.promise;
+        };
+
+        var _unfinalize = function(theEntity, theArrayBelonging, theParameters) {
+            var deferred = $q.defer();
+            if (theParameters === undefined || theParameters == null) {
+                theParameters = '';
+            }
+
+            _adapterOut(theEntity, _self);
+
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/Unfinalize' + theParameters, '=' + encodeURIComponent(JSON.stringify(theEntity)))
+                .then(function(response) {
+                    if (typeof response.data === 'object') {
+                        var backendResponse = response.data;
+                        if (!backendResponse.ErrorThrown) {
+
+                            var entityFromServer = backendResponse.Result;
+                            mainEntity.adapterIn(entityFromServer);
+                            _populateCatalogValues(_adapter(entityFromServer, _self));
+
+                            //Actual entity
+                            if (!angular.equals(entityFromServer, theEntity)) {
+                                angular.copy(entityFromServer, theEntity);
+                            }
+
+                            //cache:
+                            var oOriginalEntity = _getById(entityFromServer.id);
+                            if (oOriginalEntity) { //Already exists, lets updated it if they are different.
+                                if (!angular.equals(entityFromServer, oOriginalEntity)) {
+                                    angular.copy(entityFromServer, oOriginalEntity);
+                                }
+                            } else { //First time loaded, lets add it.
+                                _arrAllRecords.push(entityFromServer);
+                            }
+
+                            $timeout(function() {
+                                alertify.success(backendResponse.ResponseDescription);
+                            }, 100);
+                            deferred.resolve(entityFromServer);
+                        } else {
+
+                            log.debug(response);
+                            if (backendResponse.ErrorType == 'INCIDENT') {
+                                deferred.reject(backendResponse);
+                            } else {
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
+                                deferred.reject(backendResponse);
+                            }
+                        }
+                    } else {
+                        // invalid response
+                        alertify.alert('Ha ocurrido un error, ver consola para más detalles.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response.data);
+                    }
+                }, function(response) {
+                    // something went wrong
+                    alertify.alert('Error: ' + response.statusText).set('modal', true);
+                    log.debug(response);
+                    deferred.reject(response.data);
+                });
+
+            return deferred.promise;
+        };
+
+        var _setProperty = function(theEntity, sProperty, oNewValue, theArrayBelonging, theParameters) {
+            var deferred = $q.defer();
+            if (theParameters === undefined || theParameters == null) {
+                theParameters = '';
+            }
+
+            _adapterOut(theEntity, _self);
+
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/SetProperty/' + sProperty + '/' + oNewValue + theParameters, '=' + encodeURIComponent(JSON.stringify(theEntity)))
+                .then(function(response) {
+                    if (typeof response.data === 'object') {
+                        var backendResponse = response.data;
+                        if (!backendResponse.ErrorThrown) {
+
+                            var entityFromServer = backendResponse.Result;
+                            mainEntity.adapterIn(entityFromServer);
+                            _populateCatalogValues(_adapter(entityFromServer, _self));
+
+                            //Actual entity
+                            if (!angular.equals(entityFromServer, theEntity)) {
+                                angular.copy(entityFromServer, theEntity);
+                            }
+
+                            //cache:
+                            var oOriginalEntity = _getById(entityFromServer.id);
+                            if (oOriginalEntity) { //Already exists, lets updated it if they are different.
+                                if (!angular.equals(entityFromServer, oOriginalEntity)) {
+                                    angular.copy(entityFromServer, oOriginalEntity);
+                                }
+                            } else { //First time loaded, lets add it.
+                                _arrAllRecords.push(entityFromServer);
+                            }
+
+                            $timeout(function() {
+                                alertify.success(backendResponse.ResponseDescription);
+                            }, 100);
+                            deferred.resolve(entityFromServer);
+                        } else {
+
+                            log.debug(response);
+                            if (backendResponse.ErrorType == 'INCIDENT') {
+                                deferred.reject(backendResponse);
+                            } else {
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
+                                deferred.reject(backendResponse);
+                            }
+                        }
+                    } else {
+                        // invalid response
+                        alertify.alert('Ha ocurrido un error, ver consola para más detalles.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response.data);
+                    }
+                }, function(response) {
+                    // something went wrong
+                    alertify.alert('Error: ' + response.statusText).set('modal', true);
+                    log.debug(response);
+                    deferred.reject(response.data);
+                });
+
+            return deferred.promise;
+        };
+
         var _getRawAll = function() {
             return _arrAllRecords;
         };
@@ -1256,7 +1504,6 @@ angular.module('inspiracode.crudFactory', [])
             removeBatch: _removeBatch, //Removes a batch of Entities.
             customGet: _customGet, //Request a custom name method via Post.            
             take: _take, //Set a user responsible for an Entity.
-            finalize: _finalize, //Entity is validated with bFinalize=true paramter, then status is changed to Completed, and entity is locked out.
 
             //After Implementation with Generic Repository and Entity Framework:
             customPost: _customPost, //Request a custom name method via Post.
@@ -1264,7 +1511,12 @@ angular.module('inspiracode.crudFactory', [])
             addToParent: _addToParent, //Saves an entity and attaches to parent specified.
             getFilteredPage: _getPage, //Get Page List based on Page Number, Items Per Page, and Query parameters for more filters.
             getSingleByParent: _getSingleByParent, //Get single by parent
-            getAllByParent: _getAllByParent //Get all by parent
+            getAllByParent: _getAllByParent, //Get all by parent
+            getSingleWhere: _getSingleWhere, //Get single by property
+            removeEntity: _removeEntity, //Remove entity by giving object instead of id
+            finalize: _finalize, //Entity Finalization , entity is locked out and status changes to 'Finalized';
+            unfinalize: _unfinalize, //Entity Finalization , entity is locked out and status changes to 'Finalized';
+            setProperty: _setProperty, //Entity Finalization , entity is locked out and status changes to 'Finalized';
         };
         _arrDependenciesAndThis.push(oAPI);
         var _self = oAPI;

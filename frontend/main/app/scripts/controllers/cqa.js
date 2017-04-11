@@ -7,7 +7,7 @@
  * # CqaCtrl
  * Controller of the appApp
  */
-angular.module('appApp').controller('CqaCtrl', function($scope, formController, CQAHeaderService, CustomerService, catResultService, catStatusService, catConcernTypeService, CQALineService) {
+angular.module('appApp').controller('CqaCtrl', function($scope, formController, CQAHeaderService, CustomerService, catResultService, catStatusService, catConcernTypeService, CQALineService, $routeParams) {
 
     $scope.screenTitle = 'CQA Form';
 
@@ -21,7 +21,7 @@ angular.module('appApp').controller('CqaCtrl', function($scope, formController, 
         afterLoad: function() {}
     });
 
-    ctrl.load();
+    ctrl.load($routeParams.id);
 
     $scope.CustomerService = CustomerService;
     $scope.catResultService = catResultService;

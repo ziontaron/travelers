@@ -7,7 +7,7 @@
  * # CqalistCtrl
  * Controller of the appApp
  */
-angular.module('appApp').controller('CqalistCtrl', function($scope, listController, CQAHeaderService, $activityIndicator, $window, $location) {
+angular.module('appApp').controller('CqalistCtrl', function($scope, listController, CQAHeaderService, $location) {
 
     $scope.screenTitle = 'CQA List';
 
@@ -15,19 +15,19 @@ angular.module('appApp').controller('CqalistCtrl', function($scope, listControll
         scope: $scope,
         entityName: 'CQAHeader',
         baseService: CQAHeaderService,
-        afterCreate: function(oResult) {
-            go('/cqa?id=' + oResult.id);
+        afterCreate: function(oInstance) {
+            $scope.saveItem(oInstance).then(function(oEntity) {
+                go('/cqa?id=' + oEntity.id);
+            });
         },
         afterLoad: function() {
             $scope.filterLabel = "Total CQAs Current View: " + $scope.filterOptions.itemsCount;
         },
-        filters: ['User'],
-        filterStorageName: 'CQAList_filter'
+        onOpenItem: function(oItem) {
+            go('/cqa?id=' + oItem.id);
+        },
+        filters: ['User']
     });
-
-    $scope.openCQA = function(oEntity) {
-        go('/cqa?id=' + oEntity.id);
-    };
 
     var go = function(path) {
         if (path != $location.url()) {

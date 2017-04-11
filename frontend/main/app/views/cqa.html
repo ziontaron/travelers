@@ -2,9 +2,9 @@
     <div class="form-group">
         <div class="col-sm-3 well">
             <h4 class="text-center">CQA Number</h4>
-            <h4 class="text-center">12345{{::baseEntity.CQANumber}}</h4>
+            <h4 class="text-center">12345{{::baseEntity.CQANumber.GeneratedNumber}}</h4>
             <h4 class="text-center">PTR Number</h4>
-            <h4 class="text-center">12345{{::baseEntity.CQANumber}}</h4>
+            <h4 class="text-center">12345{{::baseEntity.CQANumber.GeneratedNumber}}</h4>
         </div>
         <div class="col-sm-5 col-sm-offset-4 text-right">
             <label>CQA Response</label>
@@ -16,7 +16,7 @@
     <div class="form-group">
         <div class="col-sm-4">
             <label>Customer</label>
-            <ng-selectize placeholder="Customer" value-field="id" label-field="CustomerName" the-model="baseEntity.CustomerKey" service="CustomerService"></ng-selectize>
+            <select placeholder="Customer" ng-model="baseEntity.CustomerKey" ng-options="item.id as item.Value for item in theCustomers"></select>
         </div>
         <div class="col-sm-5">
             <label>Notification Date</label>
@@ -51,7 +51,7 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Concern Type</label>
-            <ng-selectize placeholder="Concern Type" value-field="id" label-field="Value" the-model="baseEntity.ConcernTypeKey" service="catConcernTypeService"></ng-selectize>
+            <select placeholder="Concern Type" ng-model="baseEntity.ConcernTypeKey" ng-options="item.id as item.Value for item in theConcernTypes"></select>
         </div>
         <div class="col-sm-5">
             <label>Concern Description</label>
@@ -65,13 +65,11 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Result</label>
-            <ng-selectize placeholder="Result" value-field="id" label-field="Value" the-model="baseEntity.ResultKey" service="catResultService"></ng-selectize>
-            <!-- <ng-selectize placeholder="Result" value-field="id" label-field="Value" options="[{id:1,Value:'Result One'},{id:2,Value:'Result Two'}]" ng-model="baseEntity.cat_Result"></ng-selectize> -->
+            <select placeholder="Result" ng-model="baseEntity.ResultKey" ng-options="item.id as item.Value for item in theResults"></select>
         </div>
         <div class="col-sm-3">
             <label>Status</label>
-            <ng-selectize placeholder="Status" value-field="id" label-field="Value" the-model="baseEntity.StatusKey" service="catStatusService"></ng-selectize>
-            <!-- <ng-selectize placeholder="Status" value-field="id" label-field="Value" options="[{id:1,Value:'Status One'},{id:2,Value:'Status Two'}]" ng-model="baseEntity.cat_Status"></ng-selectize> -->
+            <select placeholder="Status" ng-model="baseEntity.StatusKey" ng-options="item.id as item.Value for item in theStatus"></select>
             <p class="form-control-static">{{::baseEntity.cat_Status}}</p>
         </div>
     </div>

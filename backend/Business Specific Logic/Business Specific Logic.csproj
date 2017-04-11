@@ -109,6 +109,18 @@
     <Compile Include="Migrations\201703272108109_StandarizingReusable.Designer.cs">
       <DependentUpon>201703272108109_StandarizingReusable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704102355332_UserIsDocument.cs" />
+    <Compile Include="Migrations\201704102355332_UserIsDocument.Designer.cs">
+      <DependentUpon>201704102355332_UserIsDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704111628294_CQANumberUnique.cs" />
+    <Compile Include="Migrations\201704111628294_CQANumberUnique.Designer.cs">
+      <DependentUpon>201704111628294_CQANumberUnique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704111639203_RemovingCQAHeaderFromCQANumber.cs" />
+    <Compile Include="Migrations\201704111639203_RemovingCQAHeaderFromCQANumber.Designer.cs">
+      <DependentUpon>201704111639203_RemovingCQAHeaderFromCQANumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.cs" />
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.Designer.cs">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
@@ -129,6 +141,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703272108109_StandarizingReusable.resx">
       <DependentUpon>201703272108109_StandarizingReusable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704102355332_UserIsDocument.resx">
+      <DependentUpon>201704102355332_UserIsDocument.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704111628294_CQANumberUnique.resx">
+      <DependentUpon>201704111628294_CQANumberUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704111639203_RemovingCQAHeaderFromCQANumber.resx">
+      <DependentUpon>201704111639203_RemovingCQAHeaderFromCQANumber.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.resx">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>

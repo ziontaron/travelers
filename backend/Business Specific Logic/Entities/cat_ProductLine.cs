@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessSpecificLogic.EF
 {
-    public partial class cat_ProductLine :BaseEntity
+    public partial class cat_ProductLine : BaseEntity
     {
         public override int id
         {

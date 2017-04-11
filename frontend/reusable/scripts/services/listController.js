@@ -119,9 +119,10 @@ angular.module('inspiracode.baseControllers').factory('listController', function
         };
         scope.saveItem = function(oItem) {
             $activityIndicator.startAnimating();
-            _baseService.save(oItem).then(function(data) {
+            return _baseService.save(oItem).then(function(data) {
                 scope.selectedCount = _getSelectedCount();
                 $activityIndicator.stopAnimating();
+                return data;
             });
         };
         scope.on_input_change = function(oItem) {

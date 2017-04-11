@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessSpecificLogic.EF
 {
-    public partial class CQAHeader :BaseDocument
+    public partial class CQAHeader : BaseDocument
     {
         public override int id
         {

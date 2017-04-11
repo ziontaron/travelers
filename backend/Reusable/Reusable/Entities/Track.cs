@@ -16,7 +16,7 @@ namespace Reusable
         [StringLength(50)]
         public string Entity_Kind { get; set; }
 
-        public int User_CreatedByKey { get; set; }
+        public int? User_CreatedByKey { get; set; }
 
         public DateTime Date_CreatedOn { get; set; }
 

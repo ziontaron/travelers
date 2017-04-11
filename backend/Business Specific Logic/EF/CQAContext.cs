@@ -36,7 +36,7 @@ namespace BusinessSpecificLogic.EF
         {
             modelBuilder.Entity<cat_PartNumber>()
                 .HasMany(e => e.CQAHeaders)
-                .WithRequired(e => e.cat_PartNumber)
+                .WithOptional(e => e.cat_PartNumber)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CQAHeader>()
@@ -54,11 +54,6 @@ namespace BusinessSpecificLogic.EF
             modelBuilder.Entity<CQANumber>()
                 .Property(e => e.TaskDescriptionRevisionReason)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<CQANumber>()
-                .HasMany(e => e.CQAHeaders)
-                .WithRequired(e => e.CQANumber)
-                .WillCascadeOnDelete(false);
             
             #region Reusable
             modelBuilder.Entity<User>()
@@ -97,7 +92,7 @@ namespace BusinessSpecificLogic.EF
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Tracks4)
-                .WithRequired(e => e.User_CreatedBy)
+                .WithOptional(e => e.User_CreatedBy)
                 .HasForeignKey(e => e.User_CreatedByKey);
 
             #endregion

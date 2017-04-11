@@ -27,7 +27,7 @@ namespace Reusable
             entity.Role = "Usuario";
         }
 
-        protected override void onBeforeSaving(User entity, BaseEntity parent = null)
+        protected override void onBeforeSaving(User entity, BaseEntity parent = null, OPERATION_MODE mode = OPERATION_MODE.NONE)
         {
             if (string.IsNullOrWhiteSpace(entity.Value))
             {
@@ -35,7 +35,7 @@ namespace Reusable
             }
 
             //Is a regular User:
-            if (entity.Role != "Supervisor")
+            if (entity.Role == "Usuario")
             {
                 if (string.IsNullOrWhiteSpace(entity.UserName))
                 {
@@ -52,14 +52,14 @@ namespace Reusable
 
                 entity.Role = "Usuario";
             }
-            //Is a supervisor
+            //Is a supervisor or Administrator
             else
             {
                 if (string.IsNullOrWhiteSpace(entity.UserName))
                 {
                     throw new KnownError("[Usuario] es un campo requerido.");
                 }
-                if (entity.id == 0)
+                if (entity.id == 0 || (entity.id > 0 && entity.ChangePassword))
                 {
                     if (string.IsNullOrWhiteSpace(entity.Password) || string.IsNullOrWhiteSpace(entity.ConfirmPassword))
                     {
@@ -109,7 +109,7 @@ namespace Reusable
                     var result = _userManager.Update(user);
                     if (result == null || !result.Succeeded)
                     {
-                        throw new KnownError("Ha ocurrido un error al intentar editar el usuario.");
+                        throw new KnownError("Ha ocurrido un error al intentar editar el usuario:\n" + result.Errors.First());
                     }
                 }
             }
@@ -213,6 +213,8 @@ namespace Reusable
         {
             using (var authContext = new AuthContext())
             {
+                #region Instead of Delete User, lets just disable it.
+                
                 UserManager<IdentityUser> _userManager;
                 _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(authContext));
 
@@ -222,11 +224,18 @@ namespace Reusable
                     throw new KnownError("Error. No se ha encontrado usuario a eliminar (Tabla: ASPNetUsers).");
                 }
 
-                var result = _userManager.Delete(user);
+                var result = _userManager.SetLockoutEnabled(user.Id, true);
                 if (result == null || !result.Succeeded)
                 {
                     throw new KnownError("Ha ocurrido un error al intentar eliminar el usuario.");
                 }
+
+                result = _userManager.SetLockoutEndDate(user.Id, DateTime.Now.AddYears(10));
+                if (result == null || !result.Succeeded)
+                {
+                    throw new KnownError("Ha ocurrido un error al intentar eliminar el usuario.");
+                }
+                #endregion
             }
         }
     }

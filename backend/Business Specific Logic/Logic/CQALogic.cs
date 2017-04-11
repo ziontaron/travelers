@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace BusinessSpecificLogic.Logic
 {
@@ -24,9 +25,11 @@ namespace BusinessSpecificLogic.Logic
 
         protected override void loadNavigationProperties(params CQAHeader[] entities)
         {
+            var ctx = context as CQAContext;
             foreach (var item in entities)
             {
                 item.Customer = customerRepository.GetByID(item.CustomerKey ?? -1);
+                item.CQANumber = ctx.CQANumbers.Where(n => n.CQANumberKey == item.CQANumberKey).FirstOrDefault();
             }   
         }
 
@@ -41,13 +44,44 @@ namespace BusinessSpecificLogic.Logic
             }
         }
 
-
         protected override void onCreate(CQAHeader entity)
         {
             base.onCreate(entity);
             entity.NotificationDate = DateTime.Now;
-            entity.CQANumberKey = 2;
-            entity.PartNumberKey = 1;
+        }
+
+        protected override void onBeforeSaving(CQAHeader entity, BaseEntity parent = null, OPERATION_MODE mode = OPERATION_MODE.NONE)
+        {
+            if (mode == OPERATION_MODE.ADD)
+            {
+                var ctx = context as CQAContext;
+
+                DateTime date = DateTime.Now;
+
+                int sequence = 0;
+                var last = ctx.CQANumbers.Where(n => n.CreatedDate.Year == date.Year
+                && n.CreatedDate.Month == date.Month && n.CreatedDate.Day == date.Day).OrderBy(n => n.Sequence).FirstOrDefault();
+
+                if (last != null)
+                {
+                    sequence = last.Sequence + 1;
+                }
+
+                string generated = date.Year.ToString().Substring(2) + date.Month.ToString("D2") + date.Day.ToString("D2") + sequence.ToString("D3");
+
+
+                CQANumber cqaNumber = ctx.CQANumbers.Add(new CQANumber()
+                {
+                    CreatedDate = date,
+                    Sequence = sequence,
+                    GeneratedNumber = generated,
+                    Revision = "A"
+                });
+
+                ctx.SaveChanges();
+
+                entity.CQANumberKey = cqaNumber.CQANumberKey;
+            }
         }
 
 
@@ -66,12 +100,6 @@ namespace BusinessSpecificLogic.Logic
         }
         #endregion
 
-
-
-
-
     }
-
-    
 
 }

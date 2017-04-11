@@ -46,11 +46,6 @@ angular.module('appApp', [
             controller: 'LoginCtrl',
             controllerAs: 'loginn' //cannot have same name as view            
         })
-        .when('/signup', {
-            templateUrl: 'views/signup.html',
-            controller: 'SignupCtrl',
-            controllerAs: 'signup'
-        })
         .when('/CQAList', {
             templateUrl: 'views/cqalist.html',
             controller: 'CqalistCtrl',
@@ -68,7 +63,6 @@ angular.module('appApp', [
     $activityIndicatorProvider.setActivityIndicatorStyle('CircledWhite');
     alertify.set('notifier', 'position', 'top-left');
     alertify.set('notifier', 'delay', 2);
-
 
     $httpProvider.interceptors.push('authInterceptorService');
 

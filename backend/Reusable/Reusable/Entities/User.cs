@@ -6,7 +6,7 @@ namespace Reusable
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("User")]
-    public partial class User : BaseEntity
+    public partial class User : BaseDocument
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
@@ -48,8 +48,6 @@ namespace Reusable
         [StringLength(50)]
         public string Phone2 { get; set; }
 
-        public bool sys_active { get; set; }
-
         public byte[] Identicon { get; set; }
 
         public string Identicon64 { get; set; }
@@ -82,6 +80,9 @@ namespace Reusable
 
         [NotMapped]
         public string ConfirmPassword { get; set; }
+
+        [NotMapped]
+        public bool ChangePassword { get; set; }
 
     }
 }

@@ -24,6 +24,7 @@ angular.module('appApp').factory('authInterceptorService', function($q, $locatio
 
     var _responseError = function(rejection) {
         if (rejection.status === 401) {
+            localStorageService.remove('authorizationData');
             $location.path('/login');
         }
         return $q.reject(rejection);

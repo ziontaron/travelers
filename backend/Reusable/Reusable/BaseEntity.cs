@@ -9,7 +9,8 @@ namespace Reusable
         public abstract int id { get; }
 
         [NotMapped]
-        public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }
+        public string AAA_EntityName { get { return GetType().Name; } }
+        //public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }
 
         [NotMapped]
         public EF_EntityState EF_State { get; set; }
