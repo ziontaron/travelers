@@ -85,6 +85,9 @@
     <Compile Include="Entities\cat_Result.cs" />
     <Compile Include="Entities\cat_ProductLine.cs" />
     <Compile Include="Entities\cat_ConcernType.cs" />
+    <Compile Include="FS\Customer\FSCustomer.cs" />
+    <Compile Include="FS\Customer\FSCustomerLogic.cs" />
+    <Compile Include="FS\FSContext.cs" />
     <Compile Include="Logic\catConcernTypeLogic.cs" />
     <Compile Include="Logic\catResultLogic.cs" />
     <Compile Include="Logic\catStatusLogic.cs" />
@@ -164,6 +167,10 @@
       <Project>{03d4d782-b0e0-4919-b416-3df36f1d413f}</Project>
       <Name>Reusable</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="FS\Customer\Customers.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

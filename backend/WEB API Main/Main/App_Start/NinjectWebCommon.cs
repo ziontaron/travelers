@@ -68,6 +68,8 @@ namespace ReusableWebAPI.App_Start
         {
             kernel.Bind(typeof(DbContext)).To(typeof(MainContext)).InRequestScope();
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
+            kernel.Bind(typeof(IReadOnlyRepository<>)).To(typeof(ReadOnlyRepository<>)).InRequestScope();
+            kernel.Bind(typeof(ReadOnlyBaseLogic<>)).ToSelf().InRequestScope();
             kernel.Bind(typeof(BaseLogic<>)).ToSelf().InRequestScope();
 
             //START SPECIFIC APP BINDINGS:
@@ -82,6 +84,7 @@ namespace ReusableWebAPI.App_Start
 
             kernel.Bind<IUserLogic>().To<UserLogic>();
             kernel.Bind(typeof(BaseController<>)).ToSelf().InRequestScope();
+            kernel.Bind(typeof(ReadOnlyBaseController<>)).ToSelf().InRequestScope();
         }        
     }
 }

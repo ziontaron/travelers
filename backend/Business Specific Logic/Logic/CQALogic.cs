@@ -60,7 +60,7 @@ namespace BusinessSpecificLogic.Logic
 
                 int sequence = 0;
                 var last = ctx.CQANumbers.Where(n => n.CreatedDate.Year == date.Year
-                && n.CreatedDate.Month == date.Month && n.CreatedDate.Day == date.Day).OrderBy(n => n.Sequence).FirstOrDefault();
+                && n.CreatedDate.Month == date.Month && n.CreatedDate.Day == date.Day).OrderByDescending(n => n.Sequence).FirstOrDefault();
 
                 if (last != null)
                 {

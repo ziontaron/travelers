@@ -5,7 +5,8 @@
                 <h5 class="text-center"><span class="label label-default">CQA Number</span></h5>
                 <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
                 <h5 class="text-center"><span class="label label-default">PTR Number</span></h5>
-                <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p></div>
+                <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
+            </div>
         </div>
         <div class="col-sm-5 col-sm-offset-4 text-right">
             <label>CQA Response</label>
@@ -31,20 +32,23 @@
     <div class="well well-sm">
         <div class="form-group">
             <div class="col-xs-12">
-                <button class="btn btn-primary btn-sm">Search</button>
+                <button class="btn btn-primary btn-xs">Search</button>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-3">
                 <label>Part Number</label>
+                <p class="form-control-static">Part Number</p>
                 <!-- <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize> -->
             </div>
             <div class="col-sm-6">
                 <label>Part Description</label>
+                <p class="form-control-static">Part Description</p>
                 <!-- <input type="text" class="form-control" ng-model="baseEntity.cat_PartNumber.PartDescription"> -->
             </div>
             <div class="col-sm-3">
                 <label>Product Line</label>
+                <p class="form-control-static">Product Line</p>
                 <!-- <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize> -->
             </div>
         </div>
@@ -79,7 +83,7 @@
 <br>
 <br>
 <br>
-<nav class="navbar navbar-default navbar navbar-fixed-bottom navbar-inverse" role="navigation">
+<nav class="navbar navbar-default navbar navbar-fixed-bottom" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -93,8 +97,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <form class="navbar-form navbar-right">
-                <button type="submit" class="btn btn-primary" ng-click="addCQALine()">Add CQA Line</button>
-                <button type="submit" class="btn btn-primary" ng-click="save(baseEntity);">Save</button>
+                <button type="submit" class="btn btn-default btn-sm" ng-click="addCQALine()">Add CQA Line</button>
+                <button type="submit" class="btn btn-default btn-sm" ng-click="save(baseEntity);">Save</button>
             </form>
         </div>
         <!-- /.navbar-collapse -->
