@@ -128,7 +128,8 @@ angular.module('appApp').directive('ngSelectize', function($timeout) {
             function loadSelected(values) {
                 selectize.clear();
                 if (values != undefined) {
-                    var arrValues = values.split(',');
+                    var sValues = '' + values;
+                    var arrValues = sValues.split(',');
                     arrValues.forEach(function(value) {
                         var item = scope.options.find(function(option) {
                             return option[scope.valueField] == value;

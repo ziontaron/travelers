@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Linq;
 using BusinessSpecificLogic.FS.Customer;
+using BusinessSpecificLogic.FS;
 
 namespace BusinessSpecificLogic.Logic
 {
@@ -16,10 +17,10 @@ namespace BusinessSpecificLogic.Logic
 
     public class CQAHeaderLogic : BaseLogic<CQAHeader>, ICQAHeaderLogic
     {
-        private readonly IReadOnlyRepository<FSCustomer> customerRepository;
+        private readonly FSReadOnlyRepository<FSCustomer> customerRepository;
 
         public CQAHeaderLogic(DbContext context, IRepository<CQAHeader> repository,
-            IReadOnlyRepository<FSCustomer> customerRepository) : base(context, repository)
+            FSReadOnlyRepository<FSCustomer> customerRepository) : base(context, repository)
         {
             this.customerRepository = customerRepository;
         }

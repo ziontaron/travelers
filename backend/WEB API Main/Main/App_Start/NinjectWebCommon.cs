@@ -82,7 +82,7 @@ namespace ReusableWebAPI.App_Start
             kernel.Bind<ICatConcernTypeLogic>().To<catConcernTypeLogic>();
 
             kernel.Bind<IFSCustomerLogic>().To<FSCustomerLogic>().WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
-            kernel.Bind<IReadOnlyRepository<FSCustomer>>().To(typeof(ReadOnlyRepository<FSCustomer>)).WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
+            kernel.Bind<IReadOnlyRepository<FSCustomer>>().To(typeof(FSReadOnlyRepository<FSCustomer>));
             //END SPECIFIC APP BINDINGS
 
             kernel.Bind<IUserLogic>().To<UserLogic>();

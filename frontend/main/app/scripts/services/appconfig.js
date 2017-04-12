@@ -9,6 +9,6 @@
  */
 angular.module('appApp').constant('appConfig', {
     API_URL: 'http://localhost:57063/api/',
-    // API_URL: '',
+    // API_URL: 'http://apps.capsonic.com/CQA_Backend/api/',
     APP_NAME: 'CQA'
 });

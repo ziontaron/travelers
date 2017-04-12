@@ -130,7 +130,7 @@ angular.module('CRUDServices', [])
 }).service('CustomerService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: 'Customer',
+        entityName: 'FSCustomer',
 
         catalogs: [],
 

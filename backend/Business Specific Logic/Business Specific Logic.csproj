@@ -46,6 +46,10 @@
       <HintPath>..\WEB API Main\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\WEB API Main\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NIdenticon, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\WEB API Main\packages\NIdenticon.1.2.1.0\lib\net35-client\NIdenticon.dll</HintPath>
       <Private>True</Private>
@@ -87,6 +91,8 @@
     <Compile Include="FS\Customer\FSCustomer.cs" />
     <Compile Include="FS\Customer\FSCustomerLogic.cs" />
     <Compile Include="FS\FSContext.cs" />
+    <Compile Include="FS\FSEntity.cs" />
+    <Compile Include="FS\FSReadOnlyRepository.cs" />
     <Compile Include="Logic\catConcernTypeLogic.cs" />
     <Compile Include="Logic\catResultLogic.cs" />
     <Compile Include="Logic\catStatusLogic.cs" />
@@ -122,6 +128,10 @@
     <Compile Include="Migrations\201704111639203_RemovingCQAHeaderFromCQANumber.Designer.cs">
       <DependentUpon>201704111639203_RemovingCQAHeaderFromCQANumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704121835127_ReplaceCustomerByFSCustomer.cs" />
+    <Compile Include="Migrations\201704121835127_ReplaceCustomerByFSCustomer.Designer.cs">
+      <DependentUpon>201704121835127_ReplaceCustomerByFSCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.cs" />
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.Designer.cs">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
@@ -152,6 +162,9 @@
     <EmbeddedResource Include="Migrations\201704111639203_RemovingCQAHeaderFromCQANumber.resx">
       <DependentUpon>201704111639203_RemovingCQAHeaderFromCQANumber.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704121835127_ReplaceCustomerByFSCustomer.resx">
+      <DependentUpon>201704121835127_ReplaceCustomerByFSCustomer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.resx">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,11 +180,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="FS\Customer\Customers.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
