@@ -32,7 +32,7 @@
     <div class="well well-sm">
         <div class="form-group">
             <div class="col-xs-12">
-                <button class="btn btn-primary btn-xs">Search</button>
+                <button class="btn btn-primary btn-xs" ng-click="selectPart();">Search</button>
             </div>
         </div>
         <div class="form-group">
@@ -104,3 +104,6 @@
         <!-- /.navbar-collapse -->
     </div>
 </nav>
+<modal title="FS Parts" modal-id="modal-parts" max-width="80%">
+    <parts></parts>
+</modal>

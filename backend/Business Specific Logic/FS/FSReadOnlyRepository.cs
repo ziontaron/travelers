@@ -1,6 +1,8 @@
-﻿using Reusable;
+﻿using LinqKit;
+using Reusable;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -28,7 +30,27 @@ namespace BusinessSpecificLogic.FS
 
         public IEnumerable<T> GetList(Expression<Func<T, object>> orderBy, params Expression<Func<T, bool>>[] wheres)
         {
-            throw new NotImplementedException();
+            var dataset = context.Database.SqlQuery<T>(new T().sqlGetAll);
+
+            var predicate = PredicateBuilder.New<T>(true);
+
+            foreach (var where in wheres)
+            {
+                predicate = predicate.And(where);
+            }
+
+            IEnumerable<T> list;
+            IQueryable<T> dbQuery = dataset.AsQueryable();
+
+            list = dbQuery.AsExpandable()
+            .AsNoTracking()
+            .Where(predicate);
+            if (orderBy != null)
+            {
+                list = list.AsQueryable().OrderBy(orderBy);
+            }
+
+            return list;
         }
 
         public T GetByID(int id)

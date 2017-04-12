@@ -189,6 +189,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Auth\SimpleAuthorizationServerProvider.cs" />
+    <Compile Include="Controllers\FSItemController.cs" />
     <Compile Include="Controllers\FSCustomerController.cs" />
     <Compile Include="Controllers\ReadOnlyBaseController.cs" />
     <Compile Include="Controllers\BaseController.cs" />

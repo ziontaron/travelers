@@ -203,4 +203,23 @@ angular.module('CRUDServices', [])
     });
 
     return crudInstance;
+}).service('FSItemService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        //Entity Name = WebService/API to call:
+        entityName: 'FSItem',
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {},
+
+        dependencies: []
+    });
+
+    return crudInstance;
 });

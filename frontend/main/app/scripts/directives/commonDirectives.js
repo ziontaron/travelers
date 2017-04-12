@@ -183,7 +183,7 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
 }).directive('modal', function() {
     return {
          template: '<div class="modal fade" tabindex="-1" id="{{modalId}}">'
-                         + '<div class="modal-dialog">'
+                         + '<div class="modal-dialog" style="width:initial;" ng-style="{\'max-width\':maxWidth}">'
                              + '<div class="modal-content">'
                                  + '<div class="modal-header">'
                                      + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
@@ -205,7 +205,8 @@ angular.module('CommonDirectives').directive('hideWhenLoading', function() {
         scope: {
             title: '@',
             modalId: '@',
-            okLabel: '@'
+            okLabel: '@',
+            maxWidth: '@'
         },
         controller: function($scope) {
             $scope.ok_click = function() {
