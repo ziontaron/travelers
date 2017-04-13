@@ -18,11 +18,14 @@ namespace BusinessSpecificLogic.Logic
     public class CQAHeaderLogic : BaseLogic<CQAHeader>, ICQAHeaderLogic
     {
         private readonly FSReadOnlyRepository<FSCustomer> customerRepository;
+        private readonly FSReadOnlyRepository<FSItem> itemRepository;
 
         public CQAHeaderLogic(DbContext context, IRepository<CQAHeader> repository,
-            FSReadOnlyRepository<FSCustomer> customerRepository) : base(context, repository)
+            FSReadOnlyRepository<FSCustomer> customerRepository,
+            FSReadOnlyRepository<FSItem> itemRepository) : base(context, repository)
         {
             this.customerRepository = customerRepository;
+            this.itemRepository = itemRepository;
         }
 
         protected override void loadNavigationProperties(params CQAHeader[] entities)
@@ -31,6 +34,7 @@ namespace BusinessSpecificLogic.Logic
             foreach (var item in entities)
             {
                 item.Customer = customerRepository.GetByID(item.CustomerKey ?? -1);
+                item.FSItem = itemRepository.GetByID(item.PartNumberKey ?? -1);
                 item.CQANumber = ctx.CQANumbers.Where(n => n.CQANumberKey == item.CQANumberKey).FirstOrDefault();
             }
         }
@@ -54,6 +58,11 @@ namespace BusinessSpecificLogic.Logic
 
         protected override void onBeforeSaving(CQAHeader entity, BaseEntity parent = null, OPERATION_MODE mode = OPERATION_MODE.NONE)
         {
+            if (entity.FSItem != null)
+            {
+                entity.PartNumberKey = entity.FSItem.id;
+            }
+
             if (mode == OPERATION_MODE.ADD)
             {
                 var ctx = context as CQAContext;
@@ -83,7 +92,7 @@ namespace BusinessSpecificLogic.Logic
                 ctx.SaveChanges();
 
                 entity.CQANumberKey = cqaNumber.CQANumberKey;
-            }
+            }            
         }
 
 

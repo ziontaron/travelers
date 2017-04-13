@@ -21,5 +21,8 @@ namespace BusinessSpecificLogic.EF
 
         [NotMapped]
         public FSCustomer Customer { get; set; }
+
+        [NotMapped]
+        public FSItem FSItem { get; set; }
     }
 }

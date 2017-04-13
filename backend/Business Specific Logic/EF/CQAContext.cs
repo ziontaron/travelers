@@ -18,7 +18,6 @@ namespace BusinessSpecificLogic.EF
         }
 
         public virtual DbSet<cat_ConcernType> cat_ConcernType { get; set; }
-        public virtual DbSet<cat_PartNumber> cat_PartNumber { get; set; }
         public virtual DbSet<cat_ProductLine> cat_ProductLine { get; set; }
         public virtual DbSet<cat_Result> cat_Result { get; set; }
         public virtual DbSet<cat_Status> cat_Status { get; set; }
@@ -33,11 +32,6 @@ namespace BusinessSpecificLogic.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<cat_PartNumber>()
-                .HasMany(e => e.CQAHeaders)
-                .WithOptional(e => e.cat_PartNumber)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<CQAHeader>()
                 .Property(e => e.ConcertDescription)
                 .IsUnicode(false);

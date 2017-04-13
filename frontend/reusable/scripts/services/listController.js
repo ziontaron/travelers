@@ -276,7 +276,7 @@ angular.module('inspiracode.baseControllers').factory('listController', function
 
                 for (var i = 0; i < scope.baseList.length; i++) {
                     var current = scope.baseList[i];
-                    current.itemNumber = (scope.filterOptions.page - 1) * scope.filterOptions.perPage + i + 1;
+                    current.itemIndex = (scope.filterOptions.page - 1) * scope.filterOptions.perPage + i + 1;
                 }
                 _afterLoad();
                 scope.isLoading = false;

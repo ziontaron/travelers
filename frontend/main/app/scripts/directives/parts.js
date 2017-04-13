@@ -33,7 +33,8 @@ angular.module('appApp').directive('parts', function() {
             });
 
             $scope.selectItem = function(item) {
-                alert(JSON.stringify(item));
+                forCQAHeader.FSItem = angular.copy(item);
+                $('#modal-parts').modal('hide');
                 // FSItemService.addToParent('CQAHeader', forCQAHeader.id, item).then(function(response) {
                 //     $('#modal-areas').modal('hide');
                 // });

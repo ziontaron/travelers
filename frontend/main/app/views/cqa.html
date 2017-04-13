@@ -1,10 +1,11 @@
+<!-- <pre>{{baseEntity | json:4}}</pre> -->
 <form class="form-horizontal" role="form" novalidate>
     <div class="form-group">
         <div class="col-sm-3">
             <div class="panel panel-default">
-                <h5 class="text-center"><span class="label label-default">CQA Number</span></h5>
+                <h5 class="text-center"><span class="label label-default"  style="width:130px;display: inline-block;">CQA Number</span></h5>
                 <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
-                <h5 class="text-center"><span class="label label-default">PTR Number</span></h5>
+                <h5 class="text-center"><span class="label label-default"  style="width:130px;display: inline-block;">Customer Number</span></h5>
                 <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
             </div>
         </div>
@@ -38,18 +39,15 @@
         <div class="form-group">
             <div class="col-sm-3">
                 <label>Part Number</label>
-                <p class="form-control-static">Part Number</p>
-                <!-- <ng-selectize placeholder="Part Number" value-field="id" label-field="Value" options="[{id:1,Value:'Part One'},{id:2,Value:'Part Two'}]" ng-model="baseEntity.cat_PartNumber"></ng-selectize> -->
+                <p class="form-control-static">{{baseEntity.FSItem.ItemNumber}}</p>
             </div>
             <div class="col-sm-6">
                 <label>Part Description</label>
-                <p class="form-control-static">Part Description</p>
-                <!-- <input type="text" class="form-control" ng-model="baseEntity.cat_PartNumber.PartDescription"> -->
+                <p class="form-control-static">{{baseEntity.FSItem.ItemDescription}}</p>
             </div>
             <div class="col-sm-3">
                 <label>Product Line</label>
-                <p class="form-control-static">Product Line</p>
-                <!-- <ng-selectize placeholder="Product Line" value-field="id" label-field="Value" options="[{id:1,Value:'Product Line One'},{id:2,Value:'Line Two'}]" ng-model="baseEntity.cat_ProductLine"></ng-selectize> -->
+                <p class="form-control-static">{{baseEntity.FSItem.ItemRef1 + ' ' + baseEntity.FSItem.ITEM_REF1_DESC}}</p>
             </div>
         </div>
     </div>

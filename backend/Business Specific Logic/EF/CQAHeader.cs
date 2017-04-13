@@ -46,8 +46,6 @@ namespace BusinessSpecificLogic.EF
 
         public virtual cat_ConcernType cat_ConcernType { get; set; }
 
-        public virtual cat_PartNumber cat_PartNumber { get; set; }
-
         public virtual cat_ProductLine cat_ProductLine { get; set; }
 
         public virtual cat_Result cat_Result { get; set; }

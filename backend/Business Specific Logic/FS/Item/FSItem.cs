@@ -43,7 +43,6 @@ namespace BusinessSpecificLogic.FS.Customer
 	                        ,_NoLock_FS_Item.ItemDescription
 	                        ,_NoLock_FS_Item.ItemReference1
 	                        ,_CAP_Class_Ref.ITEM_REF1_DESC
-	                        ,_NoLock_FS_Customer.CustomerKey
 	                        ,_NoLock_FS_Item.ItemKey
                         FROM _NoLock_FS_Customer
                         INNER JOIN _NoLock_FS_COHeader ON _NoLock_FS_Customer.CustomerKey = _NoLock_FS_COHeader.CustomerKey

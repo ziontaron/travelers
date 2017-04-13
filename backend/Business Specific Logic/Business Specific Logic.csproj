@@ -76,7 +76,6 @@
     <Compile Include="Auth\AuthRepository.cs" />
     <Compile Include="Auth\AuthContext.cs" />
     <Compile Include="EF\cat_ConcernType.cs" />
-    <Compile Include="EF\cat_PartNumber.cs" />
     <Compile Include="EF\cat_ProductLine.cs" />
     <Compile Include="EF\cat_Result.cs" />
     <Compile Include="EF\cat_Status.cs" />
@@ -85,7 +84,6 @@
     <Compile Include="EF\CQALine.cs" />
     <Compile Include="EF\CQANumber.cs" />
     <Compile Include="Entities\CQANumber.cs" />
-    <Compile Include="Entities\cat_PartNumber.cs" />
     <Compile Include="Entities\CQALine.cs" />
     <Compile Include="Entities\CQAHeader.cs" />
     <Compile Include="Entities\cat_Status.cs" />
@@ -138,6 +136,10 @@
     <Compile Include="Migrations\201704121835127_ReplaceCustomerByFSCustomer.Designer.cs">
       <DependentUpon>201704121835127_ReplaceCustomerByFSCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704122350512_RemovingCatParts.cs" />
+    <Compile Include="Migrations\201704122350512_RemovingCatParts.Designer.cs">
+      <DependentUpon>201704122350512_RemovingCatParts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.cs" />
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.Designer.cs">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
@@ -170,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704121835127_ReplaceCustomerByFSCustomer.resx">
       <DependentUpon>201704121835127_ReplaceCustomerByFSCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704122350512_RemovingCatParts.resx">
+      <DependentUpon>201704122350512_RemovingCatParts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.resx">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
