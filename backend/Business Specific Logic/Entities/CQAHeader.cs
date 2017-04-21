@@ -19,5 +19,15 @@ namespace BusinessSpecificLogic.EF
 
         [NotMapped]
         public FSItem FSItem { get; set; }
+
+        [NotMapped]
+        public string ConcernValue { get; set; }
+
+        [NotMapped]
+        public string ResultValue { get; set; }
+
+        [NotMapped]
+        public string StatusValue { get; set; }
+
     }
 }

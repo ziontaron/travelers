@@ -36,6 +36,12 @@ namespace BusinessSpecificLogic.Logic
                 item.Customer = customerRepository.GetByID(item.CustomerKey ?? -1);
                 item.FSItem = itemRepository.GetByID(item.PartNumberKey ?? -1);
                 item.CQANumber = ctx.CQANumbers.Where(n => n.CQANumberKey == item.CQANumberKey).FirstOrDefault();
+                var concern = ctx.cat_ConcernType.Where(e => e.ConcernTypeKey == item.ConcernTypeKey).FirstOrDefault();
+                var result = ctx.cat_Result.Where(e => e.ResultKey == item.ResultKey).FirstOrDefault();
+                var status = ctx.cat_Status.Where(e => e.StatusKey== item.StatusKey).FirstOrDefault();
+                item.ConcernValue = concern != null ? concern.Value + " - " + item.ConcertDescription : item.ConcertDescription;
+                item.ResultValue = result != null ? result.Value : "";
+                item.StatusValue = status != null ? status.Value : "";
             }
         }
 

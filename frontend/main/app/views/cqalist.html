@@ -51,29 +51,29 @@
                     <div class="row">
                         <div class="col-sm-5">
                             <label>Part</label>
-                            <p class="form-control-static">{{::item.cat_PartNumber}} {{::item.cat_PartNumber}}</p>
+                            <p class="form-control-static">{{::item.FSItem.ItemNumber}} {{::item.FSItem.ItemDescription}}</p>
                         </div>
                         <div class="col-sm-3">
                             <label>Product Line</label>
-                            <p class="form-control-static">{{::item.cat_ProductLine}}</p>
+                            <p class="form-control-static">{{::item.FSItem.ItemRef1 + ' ' + item.FSItem.ITEM_REF1_DESC}}</p>
                         </div>
                         <div class="col-sm-4">
                             <label>Reoccurring Issue</label>
-                            <p class="form-control-static">{{::item.ReoccurringIssue}}</p>
+                            <p class="form-control-static">{{::item.ReoccurringIssue ? 'Yes' : 'No'}}</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
                             <label>Concern</label>
-                            <p class="form-control-static">{{::item.cat_ConcernType}} {{::item.cat_ConcernType}}</p>
+                            <p class="form-control-static">{{::item.ConcernValue}}</p>
                         </div>
                         <div class="col-sm-2">
                             <label>Result</label>
-                            <p class="form-control-static">{{::item.cat_Result}}</p>
+                            <p class="form-control-static">{{::item.ResultValue}}</p>
                         </div>
                         <div class="col-sm-2">
                             <label>Status</label>
-                            <p class="form-control-static">{{::item.cat_Status}}</p>
+                            <p class="form-control-static">{{::item.StatusValue}}</p>
                         </div>
                         <div class="col-sm-4">
                             <label>Number of concerned parts</label>
