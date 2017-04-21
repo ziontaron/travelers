@@ -140,6 +140,10 @@
     <Compile Include="Migrations\201704122350512_RemovingCatParts.Designer.cs">
       <DependentUpon>201704122350512_RemovingCatParts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704201730376_CQALineAttachments.cs" />
+    <Compile Include="Migrations\201704201730376_CQALineAttachments.Designer.cs">
+      <DependentUpon>201704201730376_CQALineAttachments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.cs" />
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.Designer.cs">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
@@ -175,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704122350512_RemovingCatParts.resx">
       <DependentUpon>201704122350512_RemovingCatParts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704201730376_CQALineAttachments.resx">
+      <DependentUpon>201704201730376_CQALineAttachments.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.resx">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>

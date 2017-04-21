@@ -26,7 +26,7 @@
     <div class="form-group">
         <div class="col-xs-12">
             <label>Attachments</label>
-            <attachments-box owner-entity="assembly" kind="BOMAttachments" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_attachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>
+            <attachments-box owner-entity="baseEntity" kind="CQALineAttachments" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_attachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>
         </div>
     </div>
 </form>

@@ -1,18 +1,18 @@
 ﻿using Reusable;
-using System;
+using Reusable.Attachments;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessSpecificLogic.EF
 {
-    public partial class CQALine : BaseDocument
+    public partial class CQALine : BaseDocument, IAttachment
     {
         public CQALine()
         {
             sys_active = true;
         }
+
+        public string AttachmentsFolder { get; set; }
+        public List<Attachment> Attachments { get; set; }
 
         public override int id
         {
