@@ -1,12 +1,11 @@
-<!-- <pre>{{baseEntity | json:4}}</pre> -->
-<form class="form-horizontal" role="form" novalidate>
+<form class="form-horizontal" role="form" novalidate style="margin-top: 20px;">
     <div class="form-group">
         <div class="col-sm-3">
             <div class="panel panel-default">
-                <h5 class="text-center"><span class="label label-default"  style="width:130px;display: inline-block;">CQA Number</span></h5>
-                <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
-                <h5 class="text-center"><span class="label label-default"  style="width:130px;display: inline-block;">Customer Number</span></h5>
-                <p class="text-center">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
+                <h5 class="text-center"><span class="label label-default" style="width:90%;display: inline-block;">CQA Number</span></h5>
+                <p class="text-center" style="min-height:16px;height:16px;">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
+                <h5 class="text-center"><span class="label label-default"  style="width:90%;display: inline-block;">Customer Number</span></h5>
+                <input type="text" class="form-control text-center" ng-model="baseEntity.CustomerNumber" style="width:90%;margin:auto;margin-bottom: 10px;">
             </div>
         </div>
         <div class="col-sm-5 col-sm-offset-4 text-right">
@@ -56,11 +55,11 @@
             <label>Concern Type</label>
             <ng-selectize the-model="baseEntity.ConcernTypeKey" service="catConcernTypeService" placeholder="Concern Type" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-6">
             <label>Concern Description</label>
             <input type="text" class="form-control" ng-model="baseEntity.ConcertDescription">
         </div>
-        <div class="col-sm-4 text-right">
+        <div class="col-sm-3 text-right">
             <label>Number of concerned parts</label>
             <input type="text" class="form-control text-right" ng-model="baseEntity.NumberConcernedParts">
         </div>
@@ -73,7 +72,6 @@
         <div class="col-sm-3">
             <label>Status</label>
             <ng-selectize the-model="baseEntity.StatusKey" service="catStatusService" placeholder="Status" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
-            <p class="form-control-static">{{::baseEntity.cat_Status}}</p>
         </div>
     </div>
 </form>

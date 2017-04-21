@@ -14,6 +14,8 @@ namespace BusinessSpecificLogic.EF
             }
         }
 
+        public string CustomerNumber { get; set; }
+
         [NotMapped]
         public FSCustomer Customer { get; set; }
 
