@@ -26,7 +26,11 @@ angular.module('appApp').controller('CqalistCtrl', function($scope, listControll
         onOpenItem: function(oItem) {
             go('/cqa?id=' + oItem.id);
         },
-        filters: ['User']
+        filters: {
+            'CustomerKey': 'Customer',
+            'StatusKey': 'Status',
+            'UserKey': 'User'
+        }
     });
 
     var go = function(path) {

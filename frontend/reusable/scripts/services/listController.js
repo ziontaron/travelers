@@ -42,7 +42,7 @@ angular.module('inspiracode.baseControllers').factory('listController', function
 
 
         var _filterStorageName = _baseService.entityName + $location.path();
-        var _filters = oMainConfig.filters || [];
+        var _filters = oMainConfig.filters || {};
         var _perPage = oMainConfig.perPage || 10;
         //END CONFIG/////////////////////////////////////
 
@@ -200,21 +200,24 @@ angular.module('inspiracode.baseControllers').factory('listController', function
 
         var _fillCatalogs = function() {
             //for filters:
-            _filters.forEach(function(filter) {
+            for (var prop in _filters) {
+                if (_filters.hasOwnProperty(prop)) {
 
-                var theCatalog = 'the' + capitalizeFirstLetter(filter);
-                if (theCatalog.slice(-1) != 's') {
-                    theCatalog += 's';
-                }
-                if (_baseService.catalogs[filter]) {
-                    scope[theCatalog] = _baseService.catalogs[filter].getAll();
-                    scope[theCatalog].unshift({
-                        id: null,
-                        Value: 'All'
-                    });
-                }
+                    var theCatalog = 'the' + capitalizeFirstLetter(_filters[prop]);
+                    if (theCatalog.slice(-1) != 's') {
+                        theCatalog += 's';
+                    }
+                    if (_baseService.catalogs[_filters[prop]]) {
+                        scope[theCatalog] = _baseService.catalogs[_filters[prop]].getAll();
+                        scope[theCatalog].unshift({
+                            id: null,
+                            Value: 'All'
+                        });
+                    }
 
-            });
+                }
+            }
+            
         };
 
         function capitalizeFirstLetter(sWord) {
@@ -253,7 +256,7 @@ angular.module('inspiracode.baseControllers').factory('listController', function
                 }
             }
 
-            result += _staticQParams;
+            result += _staticQParams || '';
 
             return result;
         };
@@ -291,9 +294,11 @@ angular.module('inspiracode.baseControllers').factory('listController', function
                 itemsCount: 0
             };
 
-            _filters.forEach(function(filter) {
-                scope.filterOptions['filter' + capitalizeFirstLetter(filter)] = null;
-            });
+            for (var prop in _filters) {
+                if (_filters.hasOwnProperty(prop)) {
+                    scope.filterOptions[prop] = null;
+                }
+            }
 
             _persistFilter();
             // _updateList();

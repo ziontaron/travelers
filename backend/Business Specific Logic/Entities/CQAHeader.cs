@@ -31,5 +31,11 @@ namespace BusinessSpecificLogic.EF
         [NotMapped]
         public string StatusValue { get; set; }
 
+        [NotMapped]
+        public string CustomerValue { get; set; }
+
+        [NotMapped]
+        public int? UserKey { get; set; }
+
     }
 }

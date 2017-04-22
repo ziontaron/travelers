@@ -110,7 +110,7 @@ namespace Reusable
                 #region Apply Database Filtering
 
                 entities = repository.GetList(orderby, wheres);
-
+                loadNavigationProperties(entities.ToArray());
                 #endregion
 
                 #region Apply Roles Filtering

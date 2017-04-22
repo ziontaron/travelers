@@ -91,64 +91,48 @@
     <br>
     <br>
 </list-view>
-<nav class="navbar navbar-default navbar-fixed-bottom myToolbar">
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
     <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
+        <div class="navbar-header" style="width:100%;">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-list">
                 <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <p class="navbar-brand form-control-static">{{::screenTitle}}</p>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse-list">
             <form class="navbar-form navbar-left" role="search">
-                <!-- <input class="text-center form-control" type="text" ng-model-options="{debounce: 200}" ng-model="search.InquiryNumber" placeholder="SIF Search" style="max-width:100px;font-size:10px;">
-                <input class="text-center form-control" type="text" ng-model-options="{debounce: 200}" ng-model="search.Revision" placeholder="Revision Search" style="max-width:100px;font-size:10px;"> -->
-                <input type="text" ng-model-options="{debounce: 200}" class="text-center form-control" placeholder="General Search" ng-change="on_filter_changed();" ng-model="filterOptions.filterGeneral" style="max-width:180px;font-size:10px;">
+                <div class="form-group">
+                    <input type="text" ng-model-options="{debounce: 200}" class="text-center form-control" placeholder="General Search" ng-change="refresh();" ng-model="filterOptions.filterGeneral" style="max-width:180px;">
+                </div>
             </form>
-            <p class="navbar-text navbar-left" style="margin-top: 20px;">{{filterLabel}}</p>
-            <ul class="nav navbar-nav navbar-right" style="margin-left:20px; font-size:10px;">
+            <p class="navbar-text navbar-left">{{filterLabel}}</p>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="create();">New</button>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters();">Clear Filters</button>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
                 <li>
                     <div class="filterContainer">
-                        <label style="width:100px;margin: 0;">Progress</label>
-                        <select style="height:20px;padding:0;font-size: 12px;width:100px;" class="form-control" ng-model="filterOptions.filterProgress" ng-options="item.id as item.Value for item in theProgress" ng-change="on_filter_changed();">
+                        <label style="color: #ffffff;width:100px;margin: 0;">Status</label>
+                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.StatusKey" ng-options="item.id as item.Value for item in theStatus" ng-change="refresh();">
                         </select>
                     </div>
                 </li>
                 <li>
                     <div class="filterContainer">
-                        <label style="width:100px;margin: 0;">Status</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.filterStatus" ng-options="item.id as item.Value for item in theStatus" ng-change="on_filter_changed();">
+                        <label style="color: #ffffff;width:150px;margin: 0;">Customer</label>
+                        <select style="height:20px;padding:0;font-size:12px;width:150px;" class="form-control" ng-model="filterOptions.CustomerKey" ng-options="item.id as item.Value for item in theCustomers" ng-change="refresh();">
                         </select>
                     </div>
                 </li>
                 <li>
                     <div class="filterContainer">
-                        <label style="width:100px;margin: 0;">Customer</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.filterCustomer" ng-options="item.id as item.Value for item in theCustomers" ng-change="on_filter_changed();">
+                        <label style="color: #ffffff;width:150px;margin: 0;">User</label>
+                        <select style="height:20px;padding:0;font-size:12px;width:150px;" class="form-control" ng-model="filterOptions.UserKey" ng-options="item.id as item.Value group by item.Role for item in theUsers" ng-change="refresh();">
                         </select>
                     </div>
-                </li>
-                <li>
-                    <div class="filterContainer">
-                        <label style="width:100px;margin: 0;">User</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.filterUser" ng-options="item.id as item.Value group by item.Role for item in theUsers" ng-change="on_filter_changed();">
-                        </select>
-                    </div>
-                </li>
-                <li style="padding:0 2px;">
-                    <button type="button" class="btn btn-default navbar-btn" ng-click="create();" style="font-size:11px;">New</button>
-                </li>
-                <li style="display:none;">
-                    <a href="" ng-click="selectedToFamily();">Make Family <span class="badge">{{selectedCount}}</span></a>
-                </li>
-                <li style="padding:0 2px;">
-                    <button type="button" class="btn btn-default navbar-btn" ng-click="clearFilters();" style="font-size:11px;">Clear Filters</button>
                 </li>
             </ul>
         </div>
-        <!-- /.navbar-collapse -->
     </div>
-    <!-- /.container-fluid -->
 </nav>

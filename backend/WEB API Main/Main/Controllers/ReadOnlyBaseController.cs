@@ -1,6 +1,7 @@
 ﻿using Reusable;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,7 +13,7 @@ using System.Web.Http.Cors;
 namespace ReusableWebAPI.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public abstract class ReadOnlyBaseController<Entity> : ApiController where Entity : class
+    public abstract class ReadOnlyBaseController<Entity> : ApiController where Entity : BaseEntity
     {
         protected IReadOnlyBaseLogic<Entity> _logic;
 
@@ -176,18 +177,34 @@ namespace ReusableWebAPI.Controllers
                     string queryParamValue = HttpContext.Current.Request.QueryString[queryParam];
                     if (isValidParam(queryParam) && isValidJSValue(queryParamValue))
                     {
-                        string sPropertyName = queryParam.Substring(6);
+                        string sPropertyName = queryParam;//.Substring(6);
 
                         PropertyInfo oProp = typeof(Entity).GetProperty(sPropertyName);
                         Type tProp = oProp.PropertyType;
+                        //Nullable properties have to be treated differently, since we 
+                        //  use their underlying property to set the value in the object
+                        if (tProp.IsGenericType
+                            && tProp.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+                        {
+                            //Get the underlying type property instead of the nullable generic
+                            tProp = new NullableConverter(oProp.PropertyType).UnderlyingType;
+                        }
 
                         ParameterExpression entityParameter = Expression.Parameter(typeof(Entity), "entityParameter");
                         Expression childProperty = Expression.PropertyOrField(entityParameter, sPropertyName);
 
-                        Expression comparison = Expression.Equal(childProperty, Expression.Constant(Convert.ChangeType(queryParamValue, tProp)));
+
+                        var value = Expression.Constant(Convert.ChangeType(queryParamValue, tProp));
+
+                        // let's perform the conversion only if we really need it
+                        var converted = value.Type != childProperty.Type
+                            ? Expression.Convert(value, childProperty.Type)
+                            : (Expression)value;
+
+                        Expression comparison = Expression.Equal(childProperty, converted);
 
                         Expression<Func<Entity, bool>> lambda = Expression.Lambda<Func<Entity, bool>>(comparison, entityParameter);
-
+                        
                         wheres.Add(lambda);
                     }
                 }

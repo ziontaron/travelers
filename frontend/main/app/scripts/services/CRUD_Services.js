@@ -84,7 +84,7 @@ angular.module('CRUDServices', [])
         //Entity Name = WebService/API to call:
         entityName: 'CQAHeader',
 
-        catalogs: ['Customer'],
+        catalogs: ['Customer', 'User', 'Status'],
 
         adapter: function(theEntity) {
             theEntity.ConvertedNotificationDate = theEntity.NotificationDate ? moment(theEntity.NotificationDate, moment.ISO_8601).toDate() : null;
