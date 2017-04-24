@@ -29,7 +29,7 @@ angular.module('appApp').controller('CqalistCtrl', function($scope, listControll
         filters: {
             'CustomerKey': 'Customer',
             'StatusKey': 'Status',
-            'UserKey': 'User'
+            'filterUser': 'User'
         }
     });
 

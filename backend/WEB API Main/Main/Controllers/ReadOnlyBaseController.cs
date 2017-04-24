@@ -44,7 +44,8 @@ namespace ReusableWebAPI.Controllers
                 "noCache",
                 "totalItems",
                 "parentKey",
-                "parentField"
+                "parentField",
+                "filterUser"
             }.Contains(param))
                 return false;
 
@@ -127,6 +128,7 @@ namespace ReusableWebAPI.Controllers
         virtual public CommonResponse GetPage(int perPage, int page)
         {
             CommonResponse response = new CommonResponse();
+            List<Expression<Func<Entity, bool>>> db_wheres = new List<Expression<Func<Entity, bool>>>();
             List<Expression<Func<Entity, bool>>> wheres = new List<Expression<Func<Entity, bool>>>();
 
             string filterGeneral = HttpContext.Current.Request["filterGeneral"];
@@ -145,6 +147,19 @@ namespace ReusableWebAPI.Controllers
             if (!isValidJSValue(filterParentKey))
             {
                 filterParentKey = "";
+            }
+
+            string filterUser = HttpContext.Current.Request["filterUser"];
+            if (!isValidJSValue(filterUser))
+            {
+                filterUser = "";
+            }
+            else
+            {
+                if (typeof(Entity).IsSubclassOf(typeof(BaseDocument)))
+                {
+                    wheres.Add(e => (e as BaseDocument).InfoTrack.User_AssignedToKey == int.Parse(filterUser));
+                }
             }
 
             try
@@ -169,7 +184,7 @@ namespace ReusableWebAPI.Controllers
                     //Expression<Func<Entity, bool>> where = entityFiltered =>
                     //        typeof(Entity).GetProperty(filterParentField).GetValue(entityFiltered, null).ToString() == filterParentKey;
 
-                    wheres.Add(lambda);
+                    db_wheres.Add(lambda);
                 }
 
                 foreach (var queryParam in HttpContext.Current.Request.QueryString.AllKeys)
@@ -204,8 +219,8 @@ namespace ReusableWebAPI.Controllers
                         Expression comparison = Expression.Equal(childProperty, converted);
 
                         Expression<Func<Entity, bool>> lambda = Expression.Lambda<Func<Entity, bool>>(comparison, entityParameter);
-                        
-                        wheres.Add(lambda);
+
+                        db_wheres.Add(lambda);
                     }
                 }
             }
@@ -214,7 +229,7 @@ namespace ReusableWebAPI.Controllers
                 return response.Error(ex.ToString());
             }
 
-            return _logic.GetPage(perPage, page, filterGeneral, orderBy, wheres.ToArray());
+            return _logic.GetPage(perPage, page, filterGeneral, wheres.ToArray(), orderBy, db_wheres.ToArray());
         }
 
         protected Expression<Func<Entity, object>> orderBy = null;

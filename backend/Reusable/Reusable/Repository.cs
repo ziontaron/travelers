@@ -49,6 +49,7 @@ namespace Reusable
                     document.InfoTrack.Entity_ID = document.id;
                     document.InfoTrack.Entity_Kind = document.AAA_EntityName;
                     document.InfoTrack.User_CreatedByKey = byUserId;
+                    document.InfoTrack.User_AssignedToKey = byUserId;
 
                     context.Entry(document.InfoTrack).State = EntityState.Added;
                     context.SaveChanges();
@@ -224,6 +225,7 @@ namespace Reusable
                             document.InfoTrack.Entity_ID = document.id;
                             document.InfoTrack.Entity_Kind = document.AAA_EntityName;
                             document.InfoTrack.User_CreatedByKey = byUserId;
+                            document.InfoTrack.User_AssignedToKey = byUserId;
 
                             context.Entry(document.InfoTrack).State = EntityState.Added;
                         }
@@ -275,6 +277,7 @@ namespace Reusable
                             document.InfoTrack.Entity_ID = document.id;
                             document.InfoTrack.Entity_Kind = document.AAA_EntityName;
                             document.InfoTrack.User_CreatedByKey = byUserId;
+                            document.InfoTrack.User_AssignedToKey = byUserId;
 
                             context.Entry(document.InfoTrack).State = EntityState.Added;
                         }
@@ -507,6 +510,11 @@ namespace Reusable
             {
                 if (entity is BaseDocument)
                 {
+                    if (context.Entry(entity).State == EntityState.Detached)
+                    {
+                        entity = context.Set<T>().Find(entity.id);
+                    }
+
                     var document = entity as BaseDocument;
 
                     document.sys_active = false;

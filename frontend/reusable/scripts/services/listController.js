@@ -209,15 +209,18 @@ angular.module('inspiracode.baseControllers').factory('listController', function
                     }
                     if (_baseService.catalogs[_filters[prop]]) {
                         scope[theCatalog] = _baseService.catalogs[_filters[prop]].getAll();
-                        scope[theCatalog].unshift({
-                            id: null,
-                            Value: 'All'
-                        });
+                        if (scope[theCatalog].length > 0) {
+                            if (scope[theCatalog][0].Value != 'All') {
+                                scope[theCatalog].unshift({
+                                    id: null,
+                                    Value: 'All'
+                                });
+                            }
+                        }
                     }
-
                 }
             }
-            
+
         };
 
         function capitalizeFirstLetter(sWord) {
@@ -291,7 +294,8 @@ angular.module('inspiracode.baseControllers').factory('listController', function
             scope.filterOptions = {
                 perPage: _perPage,
                 page: 1,
-                itemsCount: 0
+                itemsCount: 0,
+                filterUser: null
             };
 
             for (var prop in _filters) {

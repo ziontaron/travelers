@@ -30,7 +30,7 @@
                             <br>
                             <div class="panel panel-default">
                                 <h5 class="text-center"><span class="label label-default"  style="width:90%;display: inline-block;">CQA Number</span></h5>
-                                <p class="text-center">{{::item.CQANumber.GeneratedNumber}}</p>
+                                <p class="text-center">{{::item.CQANumberValue}}</p>
                                 <h5 class="text-center"><span class="label label-default"  style="width:90%;display: inline-block;">Customer Number</span></h5>
                                 <p class="text-center">{{::item.CustomerNumber}}</p>
                             </div>
@@ -111,24 +111,24 @@
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li style="margin-left: 5px;">
                     <div class="filterContainer">
                         <label style="color: #ffffff;width:100px;margin: 0;">Status</label>
                         <select style="height:20px;padding:0;font-size:12px;width:100px;" class="form-control" ng-model="filterOptions.StatusKey" ng-options="item.id as item.Value for item in theStatus" ng-change="refresh();">
                         </select>
                     </div>
                 </li>
-                <li>
+                <li style="margin-left: 5px;">
                     <div class="filterContainer">
                         <label style="color: #ffffff;width:150px;margin: 0;">Customer</label>
                         <select style="height:20px;padding:0;font-size:12px;width:150px;" class="form-control" ng-model="filterOptions.CustomerKey" ng-options="item.id as item.Value for item in theCustomers" ng-change="refresh();">
                         </select>
                     </div>
                 </li>
-                <li>
+                <li style="margin-left: 5px;">
                     <div class="filterContainer">
                         <label style="color: #ffffff;width:150px;margin: 0;">User</label>
-                        <select style="height:20px;padding:0;font-size:12px;width:150px;" class="form-control" ng-model="filterOptions.UserKey" ng-options="item.id as item.Value group by item.Role for item in theUsers" ng-change="refresh();">
+                        <select style="height:20px;padding:0;font-size:12px;width:150px;" class="form-control" ng-model="filterOptions.filterUser" ng-options="item.id as item.Value group by item.Role for item in theUsers" ng-change="refresh();">
                         </select>
                     </div>
                 </li>

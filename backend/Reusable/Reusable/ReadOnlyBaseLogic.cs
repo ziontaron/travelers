@@ -97,19 +97,20 @@ namespace Reusable
             public int total_filtered_items { get; set; }
         }
 
-        public virtual CommonResponse GetPage(int perPage, int page, string filterGeneral, Expression<Func<Entity, object>> orderby, params Expression<Func<Entity, bool>>[] wheres)
+        public virtual CommonResponse GetPage(int perPage, int page, string filterGeneral, Expression<Func<Entity, bool>>[] wheres, Expression<Func<Entity, object>> orderby, params Expression<Func<Entity, bool>>[] database_wheres)
         {
             CommonResponse response = new CommonResponse();
             FilterResponse filterResponse = new FilterResponse();
 
-            IEnumerable<Entity> entities;
+            IEnumerable<Entity> entities; //Entities comming from DB
+            IQueryable<Entity> resultset; //To filter properties not in DB
             try
             {
                 repository.byUserId = loggedUser.UserID;
 
                 #region Apply Database Filtering
 
-                entities = repository.GetList(orderby, wheres);
+                entities = repository.GetList(orderby, database_wheres);
                 loadNavigationProperties(entities.ToArray());
                 #endregion
 
@@ -117,7 +118,16 @@ namespace Reusable
 
                 #endregion
 
-                filterResponse.total_items = entities.Count();
+                #region Applying Non-Database Properties Filtering
+                resultset = entities.AsQueryable();
+                foreach (var where in wheres)
+                {
+                    resultset = resultset.Where(where);
+                }
+
+                #endregion
+
+                filterResponse.total_items = resultset.Count();
 
                 #region Apply General Search Filter
 
@@ -127,7 +137,7 @@ namespace Reusable
 
                     var searchableProps = typeof(Entity).GetProperties().Where(prop => new[] { "String" }.Contains(prop.PropertyType.Name));
 
-                    entities = entities.Where(e => searchableProps.Any(prop =>
+                    resultset = resultset.Where(e => searchableProps.Any(prop =>
                                                         arrFilterGeneral.All(keyword =>
                                                             ((string)prop.GetValue(e, null) ?? "").ToString().ToLower()
                                                             .Contains(keyword))));
@@ -135,12 +145,11 @@ namespace Reusable
 
                 #endregion
 
-                filterResponse.total_filtered_items = entities.Count();
+                filterResponse.total_filtered_items = resultset.Count();
 
                 #region Pagination
 
-                var result = entities.Skip((page - 1) * perPage).Take(perPage).ToList();
-                loadNavigationProperties(result.ToArray());
+                var result = resultset.Skip((page - 1) * perPage).Take(perPage).ToList();
                 #endregion
 
                 return response.Success(result, filterResponse);

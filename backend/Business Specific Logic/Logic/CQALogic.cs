@@ -50,8 +50,7 @@ namespace BusinessSpecificLogic.Logic
                 item.ConcernValue = concern != null ? concern.Value + " - " + item.ConcertDescription : item.ConcertDescription;
                 item.ResultValue = result != null ? result.Value : "";
                 item.StatusValue = status != null ? status.Value : "";
-
-                item.UserKey = item.InfoTrack.User_AssignedToKey;                
+                item.CQANumberValue = item.CQANumber.GeneratedNumber;  
             }
         }
 
@@ -81,6 +80,7 @@ namespace BusinessSpecificLogic.Logic
 
             if (mode == OPERATION_MODE.ADD)
             {
+                #region CQA Number Generation
                 var ctx = context as CQAContext;
 
                 DateTime date = DateTime.Now;
@@ -108,7 +108,8 @@ namespace BusinessSpecificLogic.Logic
                 ctx.SaveChanges();
 
                 entity.CQANumberKey = cqaNumber.CQANumberKey;
-            }            
+                #endregion
+            }
         }
 
 

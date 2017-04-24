@@ -35,7 +35,7 @@ namespace BusinessSpecificLogic.EF
         public string CustomerValue { get; set; }
 
         [NotMapped]
-        public int? UserKey { get; set; }
+        public string CQANumberValue { get; set; }
 
     }
 }
