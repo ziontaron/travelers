@@ -59,4 +59,21 @@ angular.module('appApp').controller('CqaCtrl', function($scope, formController, 
         }).modal('show');
     };
 
+    $scope.openSendEmail = function() {
+        $('#modal-email').off('shown.bs.modal').on('shown.bs.modal', function(e) {
+            $scope.$apply(function() {
+                //on show modal
+                // $scope.$broadcast('load_parts', $scope.baseEntity);
+                $('#modal-email').find('input').filter(':input:visible:first').focus();
+            });
+        }).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
+            $scope.$apply(function() {
+                //on hide modal'
+                // $scope.$broadcast('unload_parts');
+            });
+        }).modal('show');
+    };
+
+    $scope.emailTitle = "Send Email";
+
 });

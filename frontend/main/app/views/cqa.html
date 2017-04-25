@@ -8,17 +8,20 @@
                 <input type="text" class="form-control text-center" ng-model="baseEntity.CustomerNumber" style="width:90%;margin:auto;margin-bottom: 10px;">
             </div>
         </div>
-        <div class="col-sm-5 col-sm-offset-4 text-right">
+        <div class="col-sm-3 col-sm-offset-6 text-right">
             <label>CQA Response</label>
-            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
+            <input type="button" class="btn btn-xs btn-info btn-block" value="Send Email" ng-click="openSendEmail();">
+            <br>
+            <!-- <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" /> -->
             <label>First Response</label>
-            <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" />
+            <input type="button" class="btn btn-xs btn-info btn-block" value="Send Email" ng-click="openSendEmail();">
+            <!-- <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" /> -->
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-5">
             <label>Customer</label>
-            <ng-selectize the-model="baseEntity.CustomerKey" service="CustomerService" placeholder="Customer" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
+            <ng-selectize the-model="baseEntity.CustomerKey" service="CustomerService" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
         <div class="col-sm-5">
             <label>Notification Date</label>
@@ -53,7 +56,7 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Concern Type</label>
-            <ng-selectize the-model="baseEntity.ConcernTypeKey" service="catConcernTypeService" placeholder="Concern Type" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
+            <ng-selectize the-model="baseEntity.ConcernTypeKey" service="catConcernTypeService" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
         <div class="col-sm-6">
             <label>Concern Description</label>
@@ -67,11 +70,11 @@
     <div class="form-group">
         <div class="col-sm-3">
             <label>Result</label>
-            <ng-selectize the-model="baseEntity.ResultKey" service="catResultService" placeholder="Result" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
+            <ng-selectize the-model="baseEntity.ResultKey" service="catResultService" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
         <div class="col-sm-3">
             <label>Status</label>
-            <ng-selectize the-model="baseEntity.StatusKey" service="catStatusService" placeholder="Status" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
+            <ng-selectize the-model="baseEntity.StatusKey" service="catStatusService" label-field="Value" value-field="id" allow-create="false"></ng-selectize>
         </div>
     </div>
 </form>
@@ -102,4 +105,7 @@
 </nav>
 <modal title="FS Parts" modal-id="modal-parts" max-width="80%">
     <parts></parts>
+</modal>
+<modal title="{{emailTitle}}" modal-id="modal-email" max-width="80%" ok-label="Send Email">
+    <send-email></send-email>
 </modal>
