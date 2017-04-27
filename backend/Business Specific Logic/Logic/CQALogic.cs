@@ -42,6 +42,11 @@ namespace BusinessSpecificLogic.Logic
                 item.Customer = customerRepository.GetByID(item.CustomerKey ?? -1);
                 item.CustomerValue = item.Customer != null ? item.Customer.Value : "";
                 item.FSItem = itemRepository.GetByID(item.PartNumberKey ?? -1);
+                if (item.FSItem != null)
+                {
+                    item.FSItem_PartValue = item.FSItem.ItemNumber + " " + item.FSItem.ItemDescription;
+                    item.FSItem_ProductLine = item.FSItem.ItemReference1 + " " + item.FSItem.ITEM_REF1_DESC;
+                }
                 item.CQANumber = ctx.CQANumbers.Where(n => n.CQANumberKey == item.CQANumberKey).FirstOrDefault();
 
                 var concern = ctx.cat_ConcernType.Where(e => e.ConcernTypeKey == item.ConcernTypeKey).FirstOrDefault();

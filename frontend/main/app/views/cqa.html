@@ -3,18 +3,18 @@
         <div class="col-sm-3">
             <div class="panel panel-default">
                 <h5 class="text-center"><span class="label label-default" style="width:90%;display: inline-block;">CQA Number</span></h5>
-                <p class="text-center" style="min-height:16px;height:16px;">{{::baseEntity.CQANumber.GeneratedNumber}}</p>
+                <p class="text-center" style="min-height:16px;height:16px;">{{::baseEntity.CQANumberValue}}</p>
                 <h5 class="text-center"><span class="label label-default"  style="width:90%;display: inline-block;">Customer Number</span></h5>
                 <input type="text" class="form-control text-center" ng-model="baseEntity.CustomerNumber" style="width:90%;margin:auto;margin-bottom: 10px;">
             </div>
         </div>
-        <div class="col-sm-3 col-sm-offset-6 text-right">
-            <label>CQA Response</label>
-            <input type="button" class="btn btn-xs btn-info btn-block" value="Send Email" ng-click="openSendEmail();">
+        <div class="col-sm-9 text-right">
+            <label style="width:100%;">CQA Response</label>
+            <input type="button" style="max-width: 180px;float:right;" class="btn btn-xs btn-info btn-block" value="Send Email" ng-click="openSendEmail();">
             <br>
             <!-- <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" /> -->
-            <label>First Response</label>
-            <input type="button" class="btn btn-xs btn-info btn-block" value="Send Email" ng-click="openSendEmail();">
+            <label style="width:100%;">First Response</label>
+            <input type="button" style="max-width: 180px;float:right;" class="btn btn-xs btn-info btn-block" value="Send Email" ng-click="openSendEmail();">
             <!-- <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedNotificationDate" /> -->
         </div>
     </div>
@@ -49,7 +49,7 @@
             </div>
             <div class="col-sm-3">
                 <label>Product Line</label>
-                <p class="form-control-static">{{baseEntity.FSItem.ItemRef1 + ' ' + baseEntity.FSItem.ITEM_REF1_DESC}}</p>
+                <p class="form-control-static">{{baseEntity.FSItem.ItemReference1 + ' ' + baseEntity.FSItem.ITEM_REF1_DESC}}</p>
             </div>
         </div>
     </div>
