@@ -231,7 +231,7 @@ namespace Reusable
             return list;
         }
 
-       public virtual T GetSingleByParent<P>(int parentID) where P : class
+        public virtual T GetSingleByParent<P>(int parentID) where P : class
         {
             T entity = null;
 
@@ -269,6 +269,6 @@ namespace Reusable
 
             return entity;
         }
-        
+
     }
 }

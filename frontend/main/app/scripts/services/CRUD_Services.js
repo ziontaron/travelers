@@ -78,6 +78,11 @@ angular.module('CRUDServices', [])
         return result;
     };
 
+
+    crudInstance.sendTestEmail = function(oUser) {
+        return crudInstance.customPost('SendTestEmail', oUser);
+    };
+
     return crudInstance;
 }).service('CQAHeaderService', function(crudFactory) {
     var crudInstance = new crudFactory({

@@ -31,49 +31,49 @@ namespace Reusable
         {
             if (string.IsNullOrWhiteSpace(entity.Value))
             {
-                throw new KnownError("[Nombre para mostrar] es un campo requerido");
+                throw new KnownError("[User Name] is a required field.");
             }
 
             //Is a regular User:
-            if (entity.Role == "Usuario")
+            if (entity.Role == "User")
             {
                 if (string.IsNullOrWhiteSpace(entity.UserName))
                 {
-                    throw new KnownError("[Gafete] es un campo requerido.");
+                    throw new KnownError("[User Name] is a required field.");
                 }
 
                 if (entity.UserName.Length < 6)
                 {
-                    throw new KnownError("El gafete debe contener al menos 6 caracteres.");
+                    throw new KnownError("[User Name] has to have at least 6 characters.");
                 }
 
                 entity.Password = entity.UserName;
                 entity.ConfirmPassword = entity.UserName;
 
-                entity.Role = "Usuario";
+                entity.Role = "User";
             }
             //Is a supervisor or Administrator
             else
             {
                 if (string.IsNullOrWhiteSpace(entity.UserName))
                 {
-                    throw new KnownError("[Usuario] es un campo requerido.");
+                    throw new KnownError("[User Name] is a required field.");
                 }
                 if (entity.id == 0 || (entity.id > 0 && entity.ChangePassword))
                 {
                     if (string.IsNullOrWhiteSpace(entity.Password) || string.IsNullOrWhiteSpace(entity.ConfirmPassword))
                     {
-                        throw new KnownError("[Contraseña] y [Confirme Contraseña] son campos requeridos.");
+                        throw new KnownError("[Password] and [Confirm Password] are required fields.");
                     }
 
                     if (entity.Password != entity.ConfirmPassword)
                     {
-                        throw new KnownError("No coinciden [Contraseña] con su confirmación");
+                        throw new KnownError("[Password] does not match with its confirmation.");
                     }
 
                     if (entity.Password.Length < 6)
                     {
-                        throw new KnownError("La contraseña debe contener al menos 6 caracteres.");
+                        throw new KnownError("[User Name] has to have at least 6 characters.");
                     }
 
                     entity.AuthorizatorPassword = entity.Password;
@@ -86,7 +86,7 @@ namespace Reusable
                 User originalUser = repository.GetByID(entity.id);
                 if (originalUser == null)
                 {
-                    throw new KnownError("Error. No se ha encontrado el usuario a editar (Tabla: Users).");
+                    throw new KnownError("Error. User to be updated not found (Table: Users).");
                 }
                 using (var authContext = new AuthContext())
                 {
@@ -96,7 +96,7 @@ namespace Reusable
                     IdentityUser user = authContext.Users.FirstOrDefault(u => u.UserName == originalUser.UserName);
                     if (user == null)
                     {
-                        throw new KnownError("Error. No se ha encontrado usuario a editar (Tabla: ASPNetUsers).");
+                        throw new KnownError("Error. User to be updated not found (Table: ASPNetUsers).");
                     }
 
                     user.UserName = entity.UserName;
@@ -109,7 +109,7 @@ namespace Reusable
                     var result = _userManager.Update(user);
                     if (result == null || !result.Succeeded)
                     {
-                        throw new KnownError("Ha ocurrido un error al intentar editar el usuario:\n" + result.Errors.First());
+                        throw new KnownError("An error has occurried when trying to update a user:\n" + result.Errors.First());
                     }
                 }
             }
@@ -132,7 +132,7 @@ namespace Reusable
                         string sError = result.Errors.First();
                         if (sError.EndsWith("is already taken."))
                         {
-                            throw new KnownError("Usuario " + entity.UserName + " ya esta tomado.");
+                            throw new KnownError("Usuario is already taken.");
                         }
                         else
                         {
@@ -170,6 +170,13 @@ namespace Reusable
             //{
             //    throw new KnownError("Ha ocurrido un error al intentar crear el usuario");
             //}
+
+            entity.EmailServer = "secure.emailsrvr.com";
+            entity.EmailPort = "587";
+
+            //TODO: Hash Password
+            entity.EmailPassword = entity.EmailPassword;
+
         }
         private byte[] ConvertBitMapToByteArray(Bitmap bitmap)
         {
@@ -221,19 +228,19 @@ namespace Reusable
                 IdentityUser user = authContext.Users.FirstOrDefault(u => u.UserName == entity.UserName);
                 if (user == null)
                 {
-                    throw new KnownError("Error. No se ha encontrado usuario a eliminar (Tabla: ASPNetUsers).");
+                    throw new KnownError("Error. User to be deleted not found (Table: ASPNetUsers).");
                 }
 
                 var result = _userManager.SetLockoutEnabled(user.Id, true);
                 if (result == null || !result.Succeeded)
                 {
-                    throw new KnownError("Ha ocurrido un error al intentar eliminar el usuario.");
+                    throw new KnownError("An error has occurried when trying to delete a user.");
                 }
 
                 result = _userManager.SetLockoutEndDate(user.Id, DateTime.Now.AddYears(10));
                 if (result == null || !result.Succeeded)
                 {
-                    throw new KnownError("Ha ocurrido un error al intentar eliminar el usuario.");
+                    throw new KnownError("An error has occurried when trying to delete a user.");
                 }
                 #endregion
             }

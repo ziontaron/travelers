@@ -84,5 +84,11 @@ namespace Reusable
         [NotMapped]
         public bool ChangePassword { get; set; }
 
+
+        public string EmailPassword { get; set; }
+
+        public string EmailServer { get; set; }
+
+        public string EmailPort { get; set; }
     }
 }

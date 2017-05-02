@@ -148,6 +148,10 @@
     <Compile Include="Migrations\201704211833389_CustomerNumber.Designer.cs">
       <DependentUpon>201704211833389_CustomerNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704282209271_EmailConfig.cs" />
+    <Compile Include="Migrations\201704282209271_EmailConfig.Designer.cs">
+      <DependentUpon>201704282209271_EmailConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.cs" />
     <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.Designer.cs">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
@@ -189,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704211833389_CustomerNumber.resx">
       <DependentUpon>201704211833389_CustomerNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704282209271_EmailConfig.resx">
+      <DependentUpon>201704282209271_EmailConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.resx">
       <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
