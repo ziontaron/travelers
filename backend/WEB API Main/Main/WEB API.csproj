@@ -191,14 +191,8 @@
     <Compile Include="Auth\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\FSItemController.cs" />
-    <Compile Include="Controllers\FSCustomerController.cs" />
     <Compile Include="Controllers\ReadOnlyBaseController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CQALineController.cs" />
-    <Compile Include="Controllers\CQAController.cs" />
-    <Compile Include="Controllers\catConcernTypeController.cs" />
-    <Compile Include="Controllers\catStatusController.cs" />
-    <Compile Include="Controllers\catResultController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

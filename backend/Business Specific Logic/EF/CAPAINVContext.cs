@@ -6,24 +6,22 @@ namespace BusinessSpecificLogic.EF
     using System.Linq;
     using Reusable;
 
-    public partial class CQAContext : DbContext
+    public partial class CAPAINVContext : DbContext
     {
-        public CQAContext()
-            : base("name=CQAConn")
+        public CAPAINVContext()
+            : base("name=CAPAINVConn")
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
-
-            //Database.Log = Console.Write;
         }
 
-        public virtual DbSet<cat_ConcernType> cat_ConcernType { get; set; }
-        public virtual DbSet<cat_ProductLine> cat_ProductLine { get; set; }
-        public virtual DbSet<cat_Result> cat_Result { get; set; }
-        public virtual DbSet<cat_Status> cat_Status { get; set; }
-        public virtual DbSet<CQAHeader> CQAHeaders { get; set; }
-        public virtual DbSet<CQALine> CQALines { get; set; }
-        public virtual DbSet<CQANumber> CQANumbers { get; set; }
+        public virtual DbSet<cat_TicketType> cat_TicketType { get; set; }
+        public virtual DbSet<InventoryEvent> InventoryEvents { get; set; }
+        public virtual DbSet<MOTagCount> MOTagCounts { get; set; }
+        public virtual DbSet<MOTagHeader> MOTagHeaders { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<TicketCount> TicketCounts { get; set; }
+
 
         #region From Reusable Modules
         public virtual DbSet<Track> Tracks { get; set; }
@@ -32,22 +30,16 @@ namespace BusinessSpecificLogic.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CQAHeader>()
-                .Property(e => e.ConcertDescription)
-                .IsUnicode(false);
+            modelBuilder.Entity<MOTagCount>()
+                .Property(e => e.UM)
+                .IsFixedLength();
 
-            modelBuilder.Entity<CQALine>()
-                .Property(e => e.OngoingActivities)
-                .IsUnicode(false);
+            modelBuilder.Entity<Ticket>()
+                .HasMany(e => e.MOTagHeaders)
+                .WithRequired(e => e.Ticket)
+                .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<CQANumber>()
-                .Property(e => e.GeneratedNumber)
-                .IsUnicode(false);
 
-            modelBuilder.Entity<CQANumber>()
-                .Property(e => e.TaskDescriptionRevisionReason)
-                .IsUnicode(false);
-            
             #region Reusable
             modelBuilder.Entity<User>()
                 .Property(e => e.Identicon64)
@@ -89,6 +81,7 @@ namespace BusinessSpecificLogic.EF
                 .HasForeignKey(e => e.User_CreatedByKey);
 
             #endregion
+
         }
     }
 }

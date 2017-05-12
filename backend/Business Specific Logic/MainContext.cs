@@ -2,7 +2,7 @@
 
 namespace BusinessSpecificLogic
 {
-    public partial class MainContext : CQAContext
+    public partial class MainContext : CAPAINVContext
     {
     }
 }

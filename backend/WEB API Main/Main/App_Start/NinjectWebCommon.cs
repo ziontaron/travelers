@@ -14,7 +14,7 @@ namespace ReusableWebAPI.App_Start
     using BusinessSpecificLogic;
     using ReusableWebAPI.Controllers;
     using Reusable;
-    using BusinessSpecificLogic.Logic;
+    //using BusinessSpecificLogic.Logic;
     using BusinessSpecificLogic.FS.Customer;
     using BusinessSpecificLogic.FS;
 
@@ -75,15 +75,9 @@ namespace ReusableWebAPI.App_Start
             kernel.Bind(typeof(BaseLogic<>)).ToSelf().InRequestScope();
 
             //START SPECIFIC APP BINDINGS:
-            kernel.Bind<ICQAHeaderLogic>().To<CQAHeaderLogic>();
-            kernel.Bind<ICQALineLogic>().To<CQALineLogic>();
-            kernel.Bind<ICatStatusLogic>().To<catStatusLogic>();
-            kernel.Bind<ICatResultLogic>().To<catResultLogic>();
-            kernel.Bind<ICatConcernTypeLogic>().To<catConcernTypeLogic>();
+            
 
-            kernel.Bind<IFSCustomerLogic>().To<FSCustomerLogic>();//.WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
             kernel.Bind<IFSItemLogic>().To<FSItemLogic>();//.WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
-            kernel.Bind<IReadOnlyRepository<FSCustomer>>().To(typeof(FSReadOnlyRepository<FSCustomer>));
             kernel.Bind<IReadOnlyRepository<FSItem>>().To(typeof(FSReadOnlyRepository<FSItem>));
             //END SPECIFIC APP BINDINGS
 
