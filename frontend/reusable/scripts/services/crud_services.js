@@ -84,22 +84,22 @@ angular.module('CRUDServices', [])
     };
 
     return crudInstance;
-}).service('CQAHeaderService', function(crudFactory) {
+}).service('TicketService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: 'CQAHeader',
+        entityName: 'Ticket',
 
-        catalogs: ['Customer', 'User', 'Status'],
+        catalogs: [],
 
         adapter: function(theEntity) {
-            theEntity.ConvertedNotificationDate = theEntity.NotificationDate ? moment(theEntity.NotificationDate, moment.ISO_8601).toDate() : null;
+            //theEntity.ConvertedNotificationDate = theEntity.NotificationDate ? moment(theEntity.NotificationDate, moment.ISO_8601).toDate() : null;
             return theEntity;
         },
 
         adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
-            theEntity.NotificationDate = theEntity.ConvertedNotificationDate ? moment(theEntity.ConvertedNotificationDate).format() : null;
+            //theEntity.NotificationDate = theEntity.ConvertedNotificationDate ? moment(theEntity.ConvertedNotificationDate).format() : null;
         },
 
         dependencies: [
@@ -107,6 +107,47 @@ angular.module('CRUDServices', [])
         ]
     });
 
+    crudInstance.setRawAll([{
+        id: 1,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 2,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 2,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 3,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 4,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 5,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 6,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }, {
+        id: 7,
+        folio: 1234,
+        item: 'test',
+        QTY: 123
+    }]);
 
     return crudInstance;
 

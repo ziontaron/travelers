@@ -27,6 +27,7 @@ angular.module('inspiracode.crudFactory', [])
         if (theDate.isBefore(minDate)) {
             sError = 'Date too old.';
         }
+        
         if (theDate.isAfter(maxDate)) {
             sError = 'Date not allowed.';
         }

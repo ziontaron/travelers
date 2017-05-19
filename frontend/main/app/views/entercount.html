@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <div class="col-xs-12">
+            <input type="text" class="form-control" ng-model="filterOptions.filterGeneral">
+        </div>
+    </div>
+    <div ng-style="{visibility: isLoading ? 'hidden' : 'inherited'}">
+        <div class="text-right" style="min-height: 30px;">
+            <dir-pagination-controls on-page-change="pageChanged(newPageNumber)" pagination-id="tickets"></dir-pagination-controls>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item" dir-paginate="item in baseList | itemsPerPage: filterOptions.perPage track by item.id" total-items="filterOptions.itemsCount" current-page="filterOptions.page" pagination-id="tickets">
+
+{{item.folio}}
+
+            </li>
+        </ul>
+        <div class="text-right">
+            <dir-pagination-controls on-page-change="pageChanged(newPageNumber)" pagination-id="tickets"></dir-pagination-controls>
+        </div>
+    </div>
+</div>
+<modal title="Ticket" modal-id="modal-ticket" ok-label="OK" max-width="80%">
+    <ticket></ticket>
+</modal>

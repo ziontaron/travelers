@@ -51,6 +51,11 @@ angular.module('appApp', [
             controller: 'EmailaccountCtrl',
             controllerAs: 'emailAccount'
         })
+        .when('/enterCount', {
+          templateUrl: 'views/entercount.html',
+          controller: 'EntercountCtrl',
+          controllerAs: 'enterCount'
+        })
         .otherwise({
             redirectTo: '/'
         });

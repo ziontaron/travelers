@@ -3,10 +3,145 @@
 	{
 		"selected_items":
 		[
+			[
+				"o",
+				"oEntity"
+			],
+			[
+				"lis",
+				"listController"
+			],
+			[
+				"list",
+				"listCtrl"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"in",
+				"input\tTag"
+			],
+			[
+				"col",
+				"col-sm-3"
+			],
+			[
+				"di",
+				"div\tTag"
+			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "app/scripts/services/appconfig.js",
+			"settings":
+			{
+				"buffer_size": 301,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/scripts/app.js",
+			"settings":
+			{
+				"buffer_size": 3217,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/index.html",
+			"settings":
+			{
+				"buffer_size": 5681,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/styles/csstuto.css",
+			"settings":
+			{
+				"buffer_size": 225,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "csstuto"
+			}
+		},
+		{
+			"file": "app/views/entercount.html",
+			"settings":
+			{
+				"buffer_size": 1097,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/scripts/controllers/entercount.js",
+			"settings":
+			{
+				"buffer_size": 1124,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/ticket.html",
+			"settings":
+			{
+				"buffer_size": 2037,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/GitRepositories/CAPAINV/frontend/reusable/scripts/services/crud_services.js",
+			"settings":
+			{
+				"buffer_size": 6422,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/scripts/directives/ticket.js",
+			"settings":
+			{
+				"buffer_size": 250,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/scripts/controllers/main.js",
+			"settings":
+			{
+				"buffer_size": 1539,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/views/main.html",
+			"settings":
+			{
+				"buffer_size": 17,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/scripts/directives/commonDirectives.js",
+			"settings":
+			{
+				"buffer_size": 12147,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -15,16 +150,36 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 269.0,
-		"last_filter": "ja",
+		"height": 490.0,
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"bs3-list",
+				"Snippet: bs3-list-group"
+			],
+			[
+				"bs3t",
+				"Snippet: bs3-table"
+			],
+			[
+				"bs3for",
+				"Snippet: bs3-form-horizontal"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Install Package Control"
+			],
 			[
 				"ja",
 				"Set Syntax: JavaScript"
 			]
 		],
-		"width": 593.0
+		"width": 549.0
 	},
 	"console":
 	{
@@ -44,17 +199,32 @@
 	},
 	"expanded_folders":
 	[
-		"/C/GitRepositories/CAPAINV/frontend/main/app"
+		"/C/GitRepositories/CAPAINV/frontend/main/app",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/fonts",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/images",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/scripts",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/styles",
+		"/C/GitRepositories/CAPAINV/frontend/reusable",
+		"/C/GitRepositories/CAPAINV/frontend/reusable/scripts",
+		"/C/GitRepositories/CAPAINV/frontend/reusable/scripts/directives",
+		"/C/GitRepositories/CAPAINV/frontend/reusable/scripts/services",
+		"/C/GitRepositories/CAPAINV/frontend/reusable/scripts/vendor",
+		"/C/GitRepositories/CAPAINV/frontend/reusable/styles"
 	],
 	"file_history":
 	[
+		"/C/GitRepositories/CAPAINV/frontend/main/app/styles/theme-simplex.css",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/scripts/services/CRUD_Factory.js",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/styles/main.scss",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/scripts/directives/cqaline.js",
+		"/C/GitRepositories/CAPAINV/frontend/main/app/scripts/controllers/cqalist.js",
 		"/C/GitRepositories/Amalgamma API v2/Amal FronEnd/app/index.html",
 		"/C/GitRepositories/Amalgamma API v2/Amalgamma FrontEnd.sublime-project",
 		"/C/Users/zion_/Desktop/Bookmarks - Copy.bak"
 	],
 	"find":
 	{
-		"height": 28.0
+		"height": 33.0
 	},
 	"find_in_files":
 	{
@@ -68,6 +238,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"<div class=\"conteiner-fluid\">\n    <form class=\"form-horizontal\" role=\"form\">        <div class=\"form-group\">\n            <div class=\"col-sm-3 \">\n                <label>Folio:</label>\n                <p class=\"form-control-static\">000001</p>\n            </div>\n            <div class=\"col-sm-3 col-sm-offset-6\">\n                <label>Date Counted:</label>\n                <p class=\"form-control-static\">06/03/87</p>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n                <label>Item:</label>\n                <p class=\"form-control-static\">950420</p>\n            </div>\n            <div class=\"col-sm-7\">\n                <label>Item Description:</label>\n                <p class=\"form-control-static\">BUNDLED CABLE ASSEMBLY CHH006</p>\n            </div>\n            <div class=\"col-sm-2\">\n                <label>UM:</label>\n                <p class=\"form-control-static\">EA</p>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n                <label>STK:</label>\n                <p class=\"form-control-static\">FL</p>\n            </div>\n            <div class=\"col-sm-3\">\n                <label>BIN:</label>\n                <p class=\"form-control-static\">27-00</p>\n            </div>\n            <div class=\"col-sm-3\">\n                <label>IC:</label>\n                <p class=\"form-control-static\">OnHand</p>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"col-sm-9\">\n                <label>Lot:</label>\n                <p class=\"form-control-static\">05020116350216</p>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n                <label>Count:</label>\n                <input type=\"text\" class=\"form-control\">\n            </div>\n            <div class=\"col-sm-3\">\n                <label>Re-Count</label>\n                <input type=\"text\" class=\"form-control\">\n            </div>\n        </div>\n    </form>\n</div>\n",
+			"areas",
+			"folio",
+			"_setRawAll",
+			"modal-Area",
+			">\n",
 			"SendTransaction",
 			"DoMORV",
 			"DoMORV()",
@@ -79,6 +255,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			""
 		],
 		"reverse": false,
 		"show_context": true,
@@ -89,18 +266,366 @@
 	"groups":
 	[
 		{
+			"selected": 6,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "app/scripts/services/appconfig.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 301,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								266,
+								266
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/scripts/app.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3217,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1413,
+								1413
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 525.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5681,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3040,
+								3040
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1036.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/styles/csstuto.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 225,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								225,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "csstuto",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/views/entercount.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1097,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								988,
+								988
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/scripts/controllers/entercount.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1102,
+								1102
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/views/ticket.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2037,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2031,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/GitRepositories/CAPAINV/frontend/reusable/scripts/services/crud_services.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6422,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2069,
+								2082
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1893.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/scripts/directives/ticket.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 250,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								238,
+								238
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "app/scripts/controllers/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1539,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "app/views/main.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								17,
+								17
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "app/scripts/directives/commonDirectives.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12147,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 31.0,
+						"translation.y": 4725.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 33.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 43.0
 	},
 	"layout":
 	{
@@ -133,7 +658,7 @@
 	"project": "CAPINV.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 2930.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -142,6 +667,34 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"crud",
+				"app\\scripts\\services\\CRUD_Factory.js"
+			],
+			[
+				"entro",
+				"app\\scripts\\controllers\\entercount.js"
+			],
+			[
+				"",
+				"app\\views\\main.html"
+			],
+			[
+				"enter",
+				"app\\views\\entercount.html"
+			],
+			[
+				"inde",
+				"app\\index.html"
+			],
+			[
+				"ti",
+				"app\\scripts\\directives\\ticket.js"
+			],
+			[
+				"main",
+				"app\\views\\main.html"
+			]
 		],
 		"width": 0.0
 	},
@@ -168,10 +721,10 @@
 	{
 	},
 	"show_minimap": true,
-	"show_open_files": false,
+	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 188.0,
+	"side_bar_width": 400.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

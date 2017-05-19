@@ -41,24 +41,14 @@
                 <div class="collapse navbar-collapse" id="js-navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a href="#!/">Home</a></li>
-                        <!-- <li><a ng-href="#!/CQAList">CQA List</a></li> -->
-                        <!-- <li><a ng-href="#!/about">Catalogs</a></li> -->
+                        <li><a ng-href="#!/enterCount">Enter Ticket Counts</a></li>
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{currentUser.Value}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <!-- <li><a ng-href="#!/emailAccount">Email Account</a></li> -->
                                 <li><a href="" ng-click="logOut()">Logout</a></li>
                             </ul>
                         </li>
                     </ul>
-                    <!-- <ul class="nav navbar-nav navbar-right" ng-if="true">
-                        <li class="dropdown">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{theme.name}} <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li ng-repeat="aTheme in bootstraps"><a href="" ng-click="setTheme($index)">{{aTheme.name}}</a></li>
-                            </ul>
-                        </li>
-                    </ul> -->
                 </div>
             </div>
         </div>
@@ -101,10 +91,12 @@
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/services/appconfig.js"></script>
     <script src="scripts/services/authinterceptorservice.js"></script>
-    <script src="scripts/services/authservice.js"></script>    
+    <script src="scripts/services/authservice.js"></script>
     <script src="scripts/directives/parts.js"></script>
     <script src="scripts/directives/sendemail.js"></script>
     <script src="scripts/controllers/emailaccount.js"></script>
+    <script src="scripts/directives/ticket.js"></script>
+    <script src="scripts/controllers/entercount.js"></script>
     <!-- endbuild -->
 </body>
 
