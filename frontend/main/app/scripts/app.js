@@ -56,6 +56,11 @@ angular.module('appApp', [
           controller: 'EntercountCtrl',
           controllerAs: 'enterCount'
         })
+        .when('/EnterTraveler', {
+          templateUrl: 'views/entertraveler.html',
+          controller: 'EntertravelerCtrl',
+          controllerAs: 'EnterTraveler'
+        })
         .otherwise({
             redirectTo: '/'
         });

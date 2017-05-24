@@ -5,14 +5,14 @@ namespace BusinessSpecificLogic.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<BusinessSpecificLogic.EF.CAPAINVContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<BusinessSpecificLogic.EF.TravelersContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(BusinessSpecificLogic.EF.CAPAINVContext context)
+        protected override void Seed(BusinessSpecificLogic.EF.TravelersContext context)
         {
             //  This method will be called after migrating to the latest version.
 

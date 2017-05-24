@@ -6,21 +6,14 @@ namespace BusinessSpecificLogic.EF
     using System.Linq;
     using Reusable;
 
-    public partial class CAPAINVContext : DbContext
+    public partial class TravelersContext : DbContext
     {
-        public CAPAINVContext()
-            : base("name=CAPAINVConn")
+        public TravelersContext() : base("name=TravelersContext")
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
         }
-
-        public virtual DbSet<cat_TicketType> cat_TicketType { get; set; }
-        public virtual DbSet<InventoryEvent> InventoryEvents { get; set; }
-        public virtual DbSet<MOTagCount> MOTagCounts { get; set; }
-        public virtual DbSet<MOTagHeader> MOTagHeaders { get; set; }
-        public virtual DbSet<Ticket> Tickets { get; set; }
-        public virtual DbSet<TicketCount> TicketCounts { get; set; }
+        
+        public virtual DbSet<TravelerHeader> TravelerHeaders { get; set; }
+        public virtual DbSet<TravelerLine> TravelerLines { get; set; }
 
 
         #region From Reusable Modules
@@ -30,14 +23,7 @@ namespace BusinessSpecificLogic.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MOTagCount>()
-                .Property(e => e.UM)
-                .IsFixedLength();
 
-            modelBuilder.Entity<Ticket>()
-                .HasMany(e => e.MOTagHeaders)
-                .WithRequired(e => e.Ticket)
-                .WillCascadeOnDelete(false);
 
 
             #region Reusable
@@ -81,6 +67,7 @@ namespace BusinessSpecificLogic.EF
                 .HasForeignKey(e => e.User_CreatedByKey);
 
             #endregion
+
 
         }
     }

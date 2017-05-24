@@ -75,13 +75,9 @@
   <ItemGroup>
     <Compile Include="Auth\AuthRepository.cs" />
     <Compile Include="Auth\AuthContext.cs" />
-    <Compile Include="EF\CAPAINVContext.cs" />
-    <Compile Include="EF\cat_TicketType.cs" />
-    <Compile Include="EF\InventoryEvent.cs" />
-    <Compile Include="EF\MOTagCount.cs" />
-    <Compile Include="EF\MOTagHeader.cs" />
-    <Compile Include="EF\Ticket.cs" />
-    <Compile Include="EF\TicketCount.cs" />
+    <Compile Include="EF\TravelerHeader.cs" />
+    <Compile Include="EF\TravelerLine.cs" />
+    <Compile Include="EF\TravelesContext.cs" />
     <Compile Include="FS\FSContext.cs" />
     <Compile Include="FS\FSEntity.cs" />
     <Compile Include="FS\FSReadOnlyRepository.cs" />
@@ -89,25 +85,17 @@
     <Compile Include="FS\Item\FSItem.cs" />
     <Compile Include="Logic\UserLogic.cs" />
     <Compile Include="MainContext.cs" />
-    <Compile Include="Migrations\201705122018087_initial.cs" />
-    <Compile Include="Migrations\201705122018087_initial.Designer.cs">
-      <DependentUpon>201705122018087_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201705242201356_initial.cs" />
+    <Compile Include="Migrations\201705242201356_initial.Designer.cs">
+      <DependentUpon>201705242201356_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.cs" />
-    <Compile Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.Designer.cs">
-      <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\AuthConfiguration\201705242215545_initial.cs" />
+    <Compile Include="Migrations\AuthConfiguration\201705242215545_initial.Designer.cs">
+      <DependentUpon>201705242215545_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\AuthConfiguration\Configuration.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705122018087_initial.resx">
-      <DependentUpon>201705122018087_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\AuthConfiguration\201703272102025_InitialCreate.resx">
-      <DependentUpon>201703272102025_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -121,6 +109,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201705242201356_initial.resx">
+      <DependentUpon>201705242201356_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\AuthConfiguration\201705242215545_initial.resx">
+      <DependentUpon>201705242215545_initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

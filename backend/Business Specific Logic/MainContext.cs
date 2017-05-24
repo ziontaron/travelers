@@ -2,7 +2,7 @@
 
 namespace BusinessSpecificLogic
 {
-    public partial class MainContext : CAPAINVContext
+    public partial class MainContext : TravelersContext
     {
     }
 }

@@ -8,99 +8,6 @@ namespace BusinessSpecificLogic.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.cat_TicketType",
-                c => new
-                    {
-                        TicketTypeKey = c.Int(nullable: false, identity: true),
-                        TicketType = c.String(nullable: false, maxLength: 50),
-                        TicketTypeDescirption = c.String(nullable: false, maxLength: 100),
-                    })
-                .PrimaryKey(t => t.TicketTypeKey);
-            
-            CreateTable(
-                "dbo.InventoryEvent",
-                c => new
-                    {
-                        InventoryEventKey = c.Int(nullable: false, identity: true),
-                        InventoryEventName = c.String(nullable: false, maxLength: 50),
-                        InventoryEventDescription = c.String(nullable: false),
-                        CreationDate = c.DateTime(nullable: false, storeType: "date"),
-                        TerminationDate = c.DateTime(nullable: false, storeType: "date"),
-                        Status = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.InventoryEventKey);
-            
-            CreateTable(
-                "dbo.MOTagCount",
-                c => new
-                    {
-                        MOTagCountKey = c.Int(nullable: false, identity: true),
-                        MOTagHeaderKey = c.Int(nullable: false),
-                        SeqNum = c.Int(nullable: false),
-                        Component = c.String(nullable: false, maxLength: 50),
-                        CompDesc = c.String(nullable: false, maxLength: 50),
-                        UM = c.String(nullable: false, maxLength: 10, fixedLength: true),
-                    })
-                .PrimaryKey(t => t.MOTagCountKey)
-                .ForeignKey("dbo.MOTagHeader", t => t.MOTagHeaderKey, cascadeDelete: true)
-                .Index(t => t.MOTagHeaderKey);
-            
-            CreateTable(
-                "dbo.MOTagHeader",
-                c => new
-                    {
-                        MOTagHeaderKey = c.Int(nullable: false, identity: true),
-                        TicketKey = c.Int(nullable: false),
-                        Planner = c.String(maxLength: 50),
-                        MO = c.String(maxLength: 50),
-                        MO_Ln = c.String(maxLength: 10),
-                        MO_Status = c.String(maxLength: 3),
-                        Order_Qty = c.Int(),
-                        QtyRecv = c.Int(),
-                        LineType = c.String(maxLength: 3),
-                        QtyWip = c.Int(),
-                    })
-                .PrimaryKey(t => t.MOTagHeaderKey)
-                .ForeignKey("dbo.Ticket", t => t.TicketKey)
-                .Index(t => t.TicketKey);
-            
-            CreateTable(
-                "dbo.Ticket",
-                c => new
-                    {
-                        TicketKey = c.Int(nullable: false),
-                        TicketCounter = c.Int(nullable: false, identity: true),
-                        cat_TicketTypeKey = c.Int(nullable: false),
-                        InventoryEventKey = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.TicketKey);
-            
-            CreateTable(
-                "dbo.TicketCount",
-                c => new
-                    {
-                        TagCountKey = c.Int(nullable: false, identity: true),
-                        CounterInitials = c.String(maxLength: 10),
-                        CountedDate = c.DateTime(),
-                        TicketKey = c.Int(nullable: false),
-                        ItemNumber = c.String(maxLength: 50),
-                        ItemDescription = c.String(maxLength: 100),
-                        ItemRef = c.String(maxLength: 10),
-                        LotNumber = c.String(maxLength: 50),
-                        CountQTY = c.Int(nullable: false),
-                        ReCountQty = c.Int(nullable: false),
-                        SKT = c.String(maxLength: 15),
-                        BIN = c.String(maxLength: 15),
-                        IC = c.String(maxLength: 3),
-                        Verified = c.Boolean(nullable: false),
-                        CountStatus = c.String(maxLength: 10),
-                        BlankTag = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.TagCountKey)
-                .ForeignKey("dbo.Ticket", t => t.TicketKey, cascadeDelete: true)
-                .Index(t => t.TicketKey);
-            
-            CreateTable(
                 "dbo.Track",
                 c => new
                     {
@@ -191,10 +98,34 @@ namespace BusinessSpecificLogic.Migrations
                 .ForeignKey("dbo.User", t => t.Sort_User_ID)
                 .Index(t => t.Sort_User_ID);
             
+            CreateTable(
+                "dbo.TravelerHeader",
+                c => new
+                    {
+                        TravelerHeaderKey = c.Int(nullable: false, identity: true),
+                        PartNumber = c.String(nullable: false, maxLength: 50),
+                        PartDescription = c.String(nullable: false, maxLength: 50),
+                        TravelerNumber = c.String(nullable: false, maxLength: 50),
+                        CreatedDate = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.TravelerHeaderKey);
+            
+            CreateTable(
+                "dbo.TravelerLine",
+                c => new
+                    {
+                        TravelerLineKey = c.Int(nullable: false, identity: true),
+                        TravelerHeaderKey = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.TravelerLineKey)
+                .ForeignKey("dbo.TravelerHeader", t => t.TravelerHeaderKey, cascadeDelete: true)
+                .Index(t => t.TravelerHeaderKey);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.TravelerLine", "TravelerHeaderKey", "dbo.TravelerHeader");
             DropForeignKey("dbo.Track", "User_CreatedByKey", "dbo.User");
             DropForeignKey("dbo.Track", "User_AssignedByKey", "dbo.User");
             DropForeignKey("dbo.Track", "User_AssignedToKey", "dbo.User");
@@ -202,9 +133,7 @@ namespace BusinessSpecificLogic.Migrations
             DropForeignKey("dbo.Track", "User_LastEditedByKey", "dbo.User");
             DropForeignKey("dbo.Sort", "Sort_User_ID", "dbo.User");
             DropForeignKey("dbo.Gridster", "Gridster_User_ID", "dbo.User");
-            DropForeignKey("dbo.TicketCount", "TicketKey", "dbo.Ticket");
-            DropForeignKey("dbo.MOTagHeader", "TicketKey", "dbo.Ticket");
-            DropForeignKey("dbo.MOTagCount", "MOTagHeaderKey", "dbo.MOTagHeader");
+            DropIndex("dbo.TravelerLine", new[] { "TravelerHeaderKey" });
             DropIndex("dbo.Sort", new[] { "Sort_User_ID" });
             DropIndex("dbo.Gridster", new[] { "Gridster_User_ID" });
             DropIndex("dbo.User", new[] { "UserName" });
@@ -213,19 +142,12 @@ namespace BusinessSpecificLogic.Migrations
             DropIndex("dbo.Track", new[] { "User_RemovedByKey" });
             DropIndex("dbo.Track", new[] { "User_LastEditedByKey" });
             DropIndex("dbo.Track", new[] { "User_CreatedByKey" });
-            DropIndex("dbo.TicketCount", new[] { "TicketKey" });
-            DropIndex("dbo.MOTagHeader", new[] { "TicketKey" });
-            DropIndex("dbo.MOTagCount", new[] { "MOTagHeaderKey" });
+            DropTable("dbo.TravelerLine");
+            DropTable("dbo.TravelerHeader");
             DropTable("dbo.Sort");
             DropTable("dbo.Gridster");
             DropTable("dbo.User");
             DropTable("dbo.Track");
-            DropTable("dbo.TicketCount");
-            DropTable("dbo.Ticket");
-            DropTable("dbo.MOTagHeader");
-            DropTable("dbo.MOTagCount");
-            DropTable("dbo.InventoryEvent");
-            DropTable("dbo.cat_TicketType");
         }
     }
 }
