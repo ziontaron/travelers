@@ -17,6 +17,7 @@ namespace ReusableWebAPI.App_Start
     //using BusinessSpecificLogic.Logic;
     using BusinessSpecificLogic.FS.Customer;
     using BusinessSpecificLogic.FS;
+    using BusinessSpecificLogic.Logic;
 
     public static class NinjectWebCommon 
     {
@@ -75,7 +76,8 @@ namespace ReusableWebAPI.App_Start
             kernel.Bind(typeof(BaseLogic<>)).ToSelf().InRequestScope();
 
             //START SPECIFIC APP BINDINGS:
-            
+
+            kernel.Bind<ITravelerHeaderLogic>().To<TravelerHeaderLogic>();
 
             kernel.Bind<IFSItemLogic>().To<FSItemLogic>();//.WithConstructorArgument("context", ctx => ctx.Kernel.Get<FSContext>());
             kernel.Bind<IReadOnlyRepository<FSItem>>().To(typeof(FSReadOnlyRepository<FSItem>));

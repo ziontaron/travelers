@@ -13,6 +13,7 @@ namespace BusinessSpecificLogic.EF
         public TravelerHeader()
         {
             TravelerLines = new HashSet<TravelerLine>();
+            sys_active = true;
         }
 
         [Key]

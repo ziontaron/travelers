@@ -7,7 +7,7 @@
  * # TravelerHeader
  */
 angular.module('appApp')
-  .directive('TravelerHeader', function () {
+  .directive('travelerHeader', function () {
     return {
       template: '<div></div>',
       restrict: 'E',

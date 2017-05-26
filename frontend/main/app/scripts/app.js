@@ -36,11 +36,6 @@ angular.module('appApp', [
             controller: 'MainCtrl',
             controllerAs: 'main'
         })
-        .when('/about', {
-            templateUrl: 'views/about.html',
-            controller: 'AboutCtrl',
-            controllerAs: 'about'
-        })
         .when('/login', {
             templateUrl: 'views/login.html',
             controller: 'LoginCtrl',
@@ -50,11 +45,6 @@ angular.module('appApp', [
             templateUrl: 'views/emailaccount.html',
             controller: 'EmailaccountCtrl',
             controllerAs: 'emailAccount'
-        })
-        .when('/enterCount', {
-          templateUrl: 'views/entercount.html',
-          controller: 'EntercountCtrl',
-          controllerAs: 'enterCount'
         })
         .when('/EnterTraveler', {
           templateUrl: 'views/entertraveler.html',

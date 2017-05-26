@@ -84,21 +84,21 @@ angular.module('CRUDServices', [])
     };
 
     return crudInstance;
-}).service('CQALineService', function(crudFactory, utilsService) {
+}).service('TravelerHeaderService', function(crudFactory, utilsService) {
     var crudInstance = new crudFactory({
-        entityName: 'CQALine',
+        entityName: 'Traveler',
 
         catalogs: [],
 
         adapter: function(theEntity) {
-            theEntity.ConvertedDueDate = utilsService.toJavascriptDate(theEntity.DueDate);
-            theEntity.ConvertedClosedDate = utilsService.toJavascriptDate(theEntity.ClosedDate);
+            // theEntity.ConvertedDueDate = utilsService.toJavascriptDate(theEntity.DueDate);
+            // theEntity.ConvertedClosedDate = utilsService.toJavascriptDate(theEntity.ClosedDate);
             return theEntity;
         },
 
         adapterOut: function(theEntity, self) {
-            theEntity.DueDate = utilsService.toServerDate(theEntity.ConvertedDueDate);
-            theEntity.ClosedDate = utilsService.toServerDate(theEntity.ConvertedClosedDate);
+            // theEntity.DueDate = utilsService.toServerDate(theEntity.ConvertedDueDate);
+            // theEntity.ClosedDate = utilsService.toServerDate(theEntity.ConvertedClosedDate);
         },
 
         dependencies: []

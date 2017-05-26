@@ -78,16 +78,22 @@
     <Compile Include="EF\TravelerHeader.cs" />
     <Compile Include="EF\TravelerLine.cs" />
     <Compile Include="EF\TravelesContext.cs" />
+    <Compile Include="Entities\TravelerHeader.cs" />
     <Compile Include="FS\FSContext.cs" />
     <Compile Include="FS\FSEntity.cs" />
     <Compile Include="FS\FSReadOnlyRepository.cs" />
     <Compile Include="FS\Item\FSItemLogic.cs" />
     <Compile Include="FS\Item\FSItem.cs" />
+    <Compile Include="Logic\TravelerHeaderLogic.cs" />
     <Compile Include="Logic\UserLogic.cs" />
     <Compile Include="MainContext.cs" />
     <Compile Include="Migrations\201705242201356_initial.cs" />
     <Compile Include="Migrations\201705242201356_initial.Designer.cs">
       <DependentUpon>201705242201356_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705261908158_TravelerIsaDocument.cs" />
+    <Compile Include="Migrations\201705261908158_TravelerIsaDocument.Designer.cs">
+      <DependentUpon>201705261908158_TravelerIsaDocument.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\AuthConfiguration\201705242215545_initial.cs" />
     <Compile Include="Migrations\AuthConfiguration\201705242215545_initial.Designer.cs">
@@ -107,12 +113,13 @@
       <Name>Reusable</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705242201356_initial.resx">
       <DependentUpon>201705242201356_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705261908158_TravelerIsaDocument.resx">
+      <DependentUpon>201705261908158_TravelerIsaDocument.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201705242215545_initial.resx">
       <DependentUpon>201705242215545_initial.cs</DependentUpon>
