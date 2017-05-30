@@ -91,13 +91,13 @@ angular.module('CRUDServices', [])
         catalogs: [],
 
         adapter: function(theEntity) {
-            // theEntity.ConvertedDueDate = utilsService.toJavascriptDate(theEntity.DueDate);
+            theEntity.ConvertedCreatedDate = utilsService.toJavascriptDate(theEntity.CreatedDate);
             // theEntity.ConvertedClosedDate = utilsService.toJavascriptDate(theEntity.ClosedDate);
             return theEntity;
         },
 
         adapterOut: function(theEntity, self) {
-            // theEntity.DueDate = utilsService.toServerDate(theEntity.ConvertedDueDate);
+            theEntity.CreatedDate = utilsService.toServerDate(theEntity.ConvertedCreatedDate);
             // theEntity.ClosedDate = utilsService.toServerDate(theEntity.ConvertedClosedDate);
         },
 

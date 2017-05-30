@@ -14,6 +14,7 @@ namespace BusinessSpecificLogic.EF
         {
             TravelerLines = new HashSet<TravelerLine>();
             sys_active = true;
+            CreatedDate = DateTime.Now;
         }
 
         [Key]
@@ -31,7 +32,7 @@ namespace BusinessSpecificLogic.EF
         [StringLength(50)]
         public string TravelerNumber { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TravelerLine> TravelerLines { get; set; }

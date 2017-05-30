@@ -10,6 +10,9 @@ namespace BusinessSpecificLogic.EF
     {
         public TravelersContext() : base("name=TravelersContext")
         {
+
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
         
         public virtual DbSet<TravelerHeader> TravelerHeaders { get; set; }

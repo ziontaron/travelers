@@ -23,7 +23,7 @@ alertify.defaults = {
 	// language resources
 	glossary : {
 		// dialogs default title
-		title : 'CQA',
+		title : 'Travelers',
 		// ok button text
 		ok : 'Aceptar',
 		// cancel button text

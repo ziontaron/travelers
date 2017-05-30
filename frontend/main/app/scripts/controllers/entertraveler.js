@@ -7,8 +7,7 @@
  * # EntertravelerCtrl
  * Controller of the appApp
  */
-angular.module('appApp')
-  .controller('EntertravelerCtrl', function ($scope, listController, TravelerHeaderService, $location) {
+angular.module('appApp').controller('EntertravelerCtrl', function($scope, listController, TravelerHeaderService, $location) {
 
     $scope.screenTitle = 'Traveler List';
 
@@ -20,7 +19,21 @@ angular.module('appApp')
             // $scope.saveItem(oInstance).then(function(oEntity) {
             //     go('/cqa?id=' + oEntity.id);
             // });
-            console.log(oInstance);
+            $('#modal-traveler').off('shown.bs.modal').on('shown.bs.modal', function(e) {
+                $scope.$apply(function() {
+                    //on show modal
+                    $scope.$broadcast('load_Traveler', oInstance);
+                    $('#modal-traveler').find('input').filter(':input:visible:first').focus();
+                });
+            }).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
+                $scope.$apply(function() {
+                    //on hide modal'
+                    // $scope.$broadcast('unload_user_form');
+                    ctrl.load();
+                });
+            }).modal('show');
+
+            // console.log(oInstance);
         },
         afterLoad: function() {
             $scope.filterLabel = "Total CQAs Current View: " + $scope.filterOptions.itemsCount;
@@ -43,4 +56,5 @@ angular.module('appApp')
     };
 
     ctrl.load();
-  });
+
+});
