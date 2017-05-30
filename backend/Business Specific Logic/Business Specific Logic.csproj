@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201705292226015_DateNullable.Designer.cs">
       <DependentUpon>201705292226015_DateNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705301424568_newTravelerFields.cs" />
+    <Compile Include="Migrations\201705301424568_newTravelerFields.Designer.cs">
+      <DependentUpon>201705301424568_newTravelerFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AuthConfiguration\201705242215545_initial.cs" />
     <Compile Include="Migrations\AuthConfiguration\201705242215545_initial.Designer.cs">
       <DependentUpon>201705242215545_initial.cs</DependentUpon>
@@ -127,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705292226015_DateNullable.resx">
       <DependentUpon>201705292226015_DateNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705301424568_newTravelerFields.resx">
+      <DependentUpon>201705301424568_newTravelerFields.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\AuthConfiguration\201705242215545_initial.resx">
       <DependentUpon>201705242215545_initial.cs</DependentUpon>

@@ -26,11 +26,26 @@ namespace BusinessSpecificLogic.EF
 
         [Required]
         [StringLength(50)]
+        public string PartNumberRev { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string PartDescription { get; set; }
 
         [Required]
         [StringLength(50)]
         public string TravelerNumber { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string MOOrder { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string MOLine { get; set; }
+
+        [Required]
+        public int MOQty { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

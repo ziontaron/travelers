@@ -6,31 +6,43 @@
         <div class="form-group">
             <div class="col-sm-3 ">
                 <label>Traveler Number:</label>
-                <p class="form-control-static">{{baseEntity.TravelerNumber}}</p>
                 <input type="text" class="form-control" ng-model="baseEntity.TravelerNumber">
             </div>
             <div class="col-sm-3 col-sm-offset-6">
                 <label>Date Created:</label>
                 <p class="form-control-static">{{item.InfoTrack.Date_CreatedOn | date:'short'}}</p>
-                <!-- <input type="datetime-local" class="form-control" ng-model="baseEntity.ConvertedCreatedDate"> -->
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-3">
                 <label>Part Number:</label>
-                <p class="form-control-static">{{baseEntity.PartNumber}}</p>
                 <input type="text" class="form-control" ng-model="baseEntity.PartNumber">
             </div>
             <div class="col-sm-7">
                 <label>Part Description:</label>
-                <p class="form-control-static">{{baseEntity.PartDescription}}</p>
                 <input type="text" class="form-control" ng-model="baseEntity.PartDescription">
             </div>
+            <div class="col-sm-2">
+                <label>Part Rev:</label>
+                <input type="text" class="form-control" ng-model="baseEntity.PartNumberRev">
+            </div>
         </div>
-
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label>MO Order:</label>
+                <input type="text" class="form-control" ng-model="baseEntity.MOOrder">
+            </div>
+            <div class="col-sm-7">
+                <label>MO Line:</label>
+                <input type="text" class="form-control" ng-model="baseEntity.MOLine">
+            </div>
+            <div class="col-sm-2">
+                <label>Order QTY:</label>
+                <input type="text" class="form-control" ng-model="baseEntity.MOQty">
+            </div>
+        </div>
         <div>
-           <!--  <attachments-box owner-entity="baseEntity" kind="" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_a ttachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>-->
-
+            <!--  <attachments-box owner-entity="baseEntity" kind="" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_a ttachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>-->
         </div>
         <!-- 
             <div>

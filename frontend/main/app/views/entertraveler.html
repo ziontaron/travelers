@@ -1,21 +1,19 @@
 {{::screenTitle}}
 <dir-pagination-controls on-page-change="pageChanged(newPageNumber)">
-    
-
 </dir-pagination-controls>
 <br>
 <button type="button" class="btn btn-default btn-sm" ng-click="create();">New</button>
 <!-- <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters();refresh();">Clear Filters</button>
  -->
 <div hide-when-loading="isLoading" class="CQAListItem panel panel-default" dir-paginate="item in baseList | itemsPerPage: filterOptions.perPage track by item.id" total-items="filterOptions.itemsCount" current-page="filterOptions.page">
-<div class="well"  >
-        <span>{{item.itemIndex}}</span>
-<pre>{{item | json:4}}</pre>
-
+    <div class="well">
+        <!-- <span>{{item.itemIndex}}</span> -->
+        <!-- <pre>{{item | json:4}}</pre> -->
+        <!--
 <p>Traveler Number: {{item.TravelerNumber}}</p>
 <p>Date: {{item.ConvertedCreatedDate | date:'short'}}</p>
-<p>Date_CreatedOn: {{item.InfoTrack.Date_CreatedOn | date:'short'}} </p>
-
+<p>Date_CreatedOn: {{item.InfoTrack.Date_CreatedOn | date:'short'}} </p> -->
+        <traveler-header-ro base-entity="item"></traveler-header-ro>
         <button class="btn btn-default btn-xs" ng-click="removeItem(item);$event.stopPropagation();">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </button>
@@ -23,12 +21,11 @@
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
         </button>
     </div>
-
 </div>
 <dir-pagination-controls></dir-pagination-controls>
 <button type="button" class="btn btn-default btn-sm" ng-click="create();">New</button>
 <!-- <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters();refresh();">Clear Filters</button> -->
- <attachments-box owner-entity="baseEntity" kind="TravelerDocs" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_attachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>
+<attachments-box owner-entity="baseEntity" kind="TravelerDocs" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_attachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>
 <modal title="Traveler Header" modal-id="modal-traveler" ok-label="OK" max-width="80%">
     <traveler-header></traveler-header>
 </modal>

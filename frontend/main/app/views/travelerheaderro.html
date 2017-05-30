@@ -1,0 +1,41 @@
+<div class="conteiner-fluid">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <div class="col-sm-3 ">
+                <label>Traveler Number: <b>{{baseEntity.TravelerNumber}}</b></label>
+            </div>
+            <div class="col-sm-3 col-sm-offset-6">
+                <label>Date Created: <b>{{baseEntity.InfoTrack.Date_CreatedOn | date:'short'}}</b></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label>Part Number: <b>{{baseEntity.PartNumber}}</b></label>
+            </div>
+            <div class="col-sm-7">
+                <label>Part Description: <b>{{baseEntity.PartDescription}}</b></label>
+            </div>
+            <div class="col-sm-2">
+                <label>Part Rev: <b>{{baseEntity.PartNumberRev}}</b></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label>MO Order: <b>{{baseEntity.MOOrder}}</b></label>
+            </div>
+            <div class="col-sm-7">
+                <label>MO Line: <b>{{baseEntity.MOLine}}</b></label>
+            </div>
+            <div class="col-sm-2">
+                <label>Order QTY: <b>{{baseEntity.MOQty}}</b></label>
+            </div>
+        </div>
+        <div>
+            <!--  <attachments-box owner-entity="baseEntity" kind="" after-upload="saveAfterUpload(oEntity, oDeferred)" read-only="false" when-change="on_a ttachments_change(oEntity)" after-delete="afterRemoveFile(oEntity)"></attachments-box>-->
+        </div>
+        <!-- 
+            <div>
+                <button type="button" class="btn btn-default btn-sm" ng-click="create();">Save</button>
+            </div> -->
+    </form>
+</div>

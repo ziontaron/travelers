@@ -2,15 +2,16 @@
 
 /**
  * @ngdoc directive
- * @name appApp.directive:TravelerHeader
+ * @name appApp.directive:travelerHeaderRO
  * @description
- * # TravelerHeader
+ * # travelerHeaderRO
  */
 angular.module('appApp')
-    .directive('travelerHeader', function() {
+    .directive('travelerHeaderRo', function() {
         return {
-            templateUrl: 'views/travelerheader.html',
+            templateUrl: 'views/travelerheaderro.html',
             restrict: 'E',
+            scope: { baseEntity: "=" },
             controller: function($scope, formController, TravelerHeaderService, $activityIndicator) {
 
                 $scope.screenTitle = 'Traveler';
@@ -24,21 +25,21 @@ angular.module('appApp')
                 });
 
 
-                $scope.$on('modal_ok', function() {
-                    // $scope.baseEntity.CQAHeaderKey = $scope.baseEntity.CQAHeaderKey || _forCQAHeader.id;
-                    // $activityIndicator.startAnimating();
-                    // return $scope.baseEntity.api_attachments.uploadFiles();
-                    // alert("hola")
-                    $scope.save($scope.baseEntity).then(function() {
-                            $('#modal-traveler').modal('hide');
-                            // oDeferred.resolve(oEntity);
-                        }
-                        // , function() {
-                        //     oDeferred.reject(oEntity);
-                        //     $activityIndicator.stopAnimating();
-                        // }
-                    );
-                });
+                // $scope.$on('modal_ok', function() {
+                //     // $scope.baseEntity.CQAHeaderKey = $scope.baseEntity.CQAHeaderKey || _forCQAHeader.id;
+                //     // $activityIndicator.startAnimating();
+                //     // return $scope.baseEntity.api_attachments.uploadFiles();
+                //     // alert("hola")
+                //     $scope.save($scope.baseEntity).then(function() {
+                //             $('#modal-traveler').modal('hide');
+                //             // oDeferred.resolve(oEntity);
+                //         }
+                //         // , function() {
+                //         //     oDeferred.reject(oEntity);
+                //         //     $activityIndicator.stopAnimating();
+                //         // }
+                //     );
+                // });
 
 
                 $scope.$on('load_Traveler', function(scope, oEntity) {
@@ -64,5 +65,6 @@ angular.module('appApp')
                 };
 
             }
+
         };
     });
